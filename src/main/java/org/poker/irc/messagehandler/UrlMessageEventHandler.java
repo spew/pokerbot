@@ -41,7 +41,7 @@ public class UrlMessageEventHandler implements MessageEventHandler {
       throw new RuntimeException(e);
     }
     Matcher matcher = twitterPattern.matcher(url);
-    if (matcher.matches()) {
+    if (matcher.matches() && false) {
       String statusId = matcher.group(2);
       Twitter twitter = new Twitter();
       // TODO: rotate these keys since I checked them in
