@@ -5,6 +5,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.UtilSSLSocketFactory;
 import org.pircbotx.cap.TLSCapHandler;
 import org.pircbotx.exception.IrcException;
+import org.poker.irc.messagehandler.BitcoinMessageEventHandler;
 import org.poker.irc.messagehandler.DotabuffMessageEventHandler;
 import org.poker.irc.messagehandler.GoogleSearchMessageEventHandler;
 import org.poker.irc.messagehandler.RottenTomatoesMessageEventHandler;
@@ -44,6 +45,7 @@ public class BotRunner {
     eventHandler.addMessageEventHandler(new RottenTomatoesMessageEventHandler());
     eventHandler.addMessageEventHandler(new DotabuffMessageEventHandler());
     eventHandler.addMessageEventHandler(new GoogleSearchMessageEventHandler());
+    eventHandler.addMessageEventHandler(new BitcoinMessageEventHandler());
     return eventHandler;
   }
 }
