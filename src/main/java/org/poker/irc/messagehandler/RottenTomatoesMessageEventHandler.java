@@ -5,12 +5,15 @@ import it.jtomato.JTomato;
 import it.jtomato.gson.Movie;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.MessageEventHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class RottenTomatoesMessageEventHandler implements MessageEventHandler {
+  Logger LOG = LoggerFactory.getLogger(RottenTomatoesMessageEventHandler.class);
   @Override
   public String[] getMessagePrefixes() {
     return new String[] {".rt", "!rt"};
@@ -32,7 +35,8 @@ public class RottenTomatoesMessageEventHandler implements MessageEventHandler {
 
     if (Strings.isNullOrEmpty(API_KEY)) {
       event.getChannel().send().message("Can't RottenTomato: set the RT_API_KEY environment variable");
-    }else{
+    } else{
+      try {
       JTomato jTomato = new JTomato(API_KEY);
       List<Movie> movies = new ArrayList<Movie>();
       int total = jTomato.searchMovie(movieName, movies, 1);
@@ -42,6 +46,9 @@ public class RottenTomatoesMessageEventHandler implements MessageEventHandler {
           Movie movie = movies.get(0);
           event.getChannel().send().message("Name: " + movie.title + "  Audience Rating: " + movie.rating.audienceScore +
                                                 "%  Critics Rating: " + movie.rating.criticsScore + "%");
+      }
+      } catch (Throwable t) {
+        LOG.error("Unknown exception", t);
       }
     }
   }
