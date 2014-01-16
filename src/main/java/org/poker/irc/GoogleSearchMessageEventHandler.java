@@ -17,13 +17,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created with IntelliJ IDEA.
- * User: brett
- * Date: 1/16/14
- * Time: 1:54 AM
- * To change this template use File | Settings | File Templates.
- */
 public class GoogleSearchMessageEventHandler implements MessageEventHandler {
 
     @Override

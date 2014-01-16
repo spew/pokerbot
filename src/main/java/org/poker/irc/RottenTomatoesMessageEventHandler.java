@@ -8,13 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created with IntelliJ IDEA.
- * User: brett
- * Date: 1/16/14
- * Time: 12:05 AM
- * To change this template use File | Settings | File Templates.
- */
 public class RottenTomatoesMessageEventHandler implements MessageEventHandler {
     @Override
     public String[] getMessagePrefixes(){
