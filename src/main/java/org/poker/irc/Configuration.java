@@ -61,7 +61,6 @@ public class Configuration {
         .withLongOpt("channels")
         .hasArgs()
         .withValueSeparator()
-        .withArgName("channel")
         .withDescription("The list of channel to join")
         .create("c");
     options.addOption(channelsOption);
