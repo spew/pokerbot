@@ -101,7 +101,13 @@ public class Configuration {
     if (commandLine.hasOption(channelsOption.getOpt())) {
       List<String> channels = Arrays.asList(commandLine.getOptionValues(channelsOption.getOpt()));
       if (channels.size() > 0) {
-        this.channels = channels;
+        this.channels = Lists.newArrayList();
+        for (String channel : channels) {
+          if (!channel.startsWith("#")) {
+            channel = "#" + channel;
+          }
+          this.channels.add(channel);
+        }
       }
     }
     if (commandLine.hasOption(serverHostNameOption.getOpt())) {
