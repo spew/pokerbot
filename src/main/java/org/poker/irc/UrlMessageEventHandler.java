@@ -1,7 +1,7 @@
 package org.poker.irc;
 
 
-import org.pircbotx.hooks.types.GenericMessageEvent;
+import org.pircbotx.hooks.events.MessageEvent;
 
 public class UrlMessageEventHandler implements MessageEventHandler {
   @Override
@@ -10,9 +10,7 @@ public class UrlMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
-  public void onMessage(GenericMessageEvent event) {
-    event.respond("hello world");
-    event.
-    event.getBot().
+  public void onMessage(MessageEvent event) {
+    event.getChannel().send().message("donk spew");
   }
 }

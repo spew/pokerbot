@@ -1,8 +1,8 @@
 package org.poker.irc;
 
-import org.pircbotx.hooks.types.GenericMessageEvent;
+import org.pircbotx.hooks.events.MessageEvent;
 
 public interface MessageEventHandler {
   public String[] getMessagePrefixes();
-  public void onMessage(final GenericMessageEvent event);
+  public void onMessage(final MessageEvent event);
 }
