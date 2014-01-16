@@ -2,6 +2,7 @@ package org.poker.irc;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.api.client.util.Lists;
+import com.google.common.base.Joiner;
 import com.google.common.collect.ImmutableList;
 import org.apache.commons.cli.BasicParser;
 import org.apache.commons.cli.CommandLine;
@@ -11,12 +12,15 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.Arrays;
 import java.util.List;
 
 
 public class Configuration {
+  private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
   private String serverHostname = "irc.enterthegame.com";
   private List<String> channels = Arrays.asList(new String[] { "#test" });
   private String nick = "testbot";
@@ -28,6 +32,8 @@ public class Configuration {
   }
 
   public void initialize(String[] args) {
+    String arguments = Joiner.on(' ').join(args);
+    LOG.info("Arguments: " + arguments);
     this.googleSearchApiKey = System.getenv().get("SEARCH_API_KEY");
     this.googleSearchCxKey = System.getenv().get("SEARCH_CX_KEY");
     Options options = new Options();
@@ -61,7 +67,7 @@ public class Configuration {
         .withLongOpt("channels")
         .hasArgs()
         .withValueSeparator()
-        .withDescription("The list of channel to join")
+        .withDescription("The list of channels to join")
         .create("c");
     options.addOption(channelsOption);
     Option serverHostNameOption = OptionBuilder
