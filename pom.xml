@@ -87,6 +87,16 @@
       <artifactId>tomatoclient</artifactId>
       <version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.google.apis</groupId>
+      <artifactId>google-api-services-customsearch</artifactId>
+      <version>v1-rev33-1.17.0-rc</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.http-client</groupId>
+      <artifactId>google-http-client-jackson</artifactId>
+      <version>1.15.0-rc</version>
+    </dependency>
   </dependencies>
 
   <build>
