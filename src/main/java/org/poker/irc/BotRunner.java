@@ -5,6 +5,10 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.UtilSSLSocketFactory;
 import org.pircbotx.cap.TLSCapHandler;
 import org.pircbotx.exception.IrcException;
+import org.poker.irc.messagehandler.DotabuffMessageEventHandler;
+import org.poker.irc.messagehandler.GoogleSearchMessageEventHandler;
+import org.poker.irc.messagehandler.RottenTomatoesMessageEventHandler;
+import org.poker.irc.messagehandler.UrlMessageEventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

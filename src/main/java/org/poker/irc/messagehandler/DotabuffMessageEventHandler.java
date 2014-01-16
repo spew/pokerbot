@@ -1,10 +1,11 @@
-package org.poker.irc;
+package org.poker.irc.messagehandler;
 
 import com.google.common.collect.Maps;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.poker.irc.MessageEventHandler;
 
 import java.io.IOException;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String[] getMessagePrefixes() {
-    return new String[] { "!dota", "!dotabuff"};
+    return new String[] { "!dota", "!dotabuff", ".dota", ".dotabuff"};
   }
 
   @Override

@@ -1,9 +1,10 @@
-package org.poker.irc;
+package org.poker.irc.messagehandler;
 
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.poker.irc.MessageEventHandler;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -42,14 +43,14 @@ public class UrlMessageEventHandler implements MessageEventHandler {
     Matcher matcher = twitterPattern.matcher(url);
     if (matcher.matches()) {
       String statusId = matcher.group(2);
-      String twitterUrl = "https://api.twitter.com/1/statuses/show/#" + statusId + ".json";
       Twitter twitter = new Twitter();
-      //twitter.setOAuthConsumer();
+      twitter.setOAuthConsumer("xPSflh20vuMYawYkW35mHw", "Rw1RlJI2xrIyzEHnwa9YQJ2ldUclUdyaeCVAcEks");
 
       Status status;
       try {
         status = twitter.showStatus(Long.parseLong(statusId));
       } catch (TwitterException e) {
+        event.getChannel().send().message("Twitter is broken :(");
         throw new RuntimeException(e);
       }
       event.getChannel().send().message(status.getUser().getName() + ": " + status.getText());
