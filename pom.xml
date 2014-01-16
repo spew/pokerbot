@@ -21,6 +21,7 @@
     <log4j.version>(1.2,)</log4j.version>
     <jsoup.version>1.7.3</jsoup.version>
     <pircbotx.version>2.0.1</pircbotx.version>
+    <twitter4j.version>2.0.10</twitter4j.version>
 
     <!-- Java -->
     <java.version>1.7</java.version>
@@ -75,6 +76,11 @@
       <groupId>org.pircbotx</groupId>
       <artifactId>pircbotx</artifactId>
       <version>${pircbotx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.homeip.yusuke</groupId>
+      <artifactId>twitter4j</artifactId>
+      <version>${twitter4j.version}</version>
     </dependency>
     <dependency>
       <groupId>it</groupId>

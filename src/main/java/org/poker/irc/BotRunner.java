@@ -38,6 +38,7 @@ public class BotRunner {
     EventHandler eventHandler = new EventHandler();
     eventHandler.addMessageEventHandler(new UrlMessageEventHandler());
     eventHandler.addMessageEventHandler(new RottenTomatoesMessageEventHandler());
+    eventHandler.addMessageEventHandler(new DotabuffMessageEventHandler());
     return eventHandler;
   }
 }

@@ -4,10 +4,16 @@ package org.poker.irc;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.pircbotx.hooks.events.MessageEvent;
+import twitter4j.Status;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class UrlMessageEventHandler implements MessageEventHandler {
+  Pattern twitterPattern = Pattern.compile("https?:\\/\\/(mobile\\.)?twitter\\.com\\/.*?\\/status\\/([0-9]+)");
   @Override
   public String[] getMessagePrefixes() {
     return new String[] { "http://", "https://", "www." };
@@ -33,7 +39,23 @@ public class UrlMessageEventHandler implements MessageEventHandler {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    String title = document.title();
-    event.getChannel().send().message(title);
+    Matcher matcher = twitterPattern.matcher(url);
+    if (matcher.matches()) {
+      String statusId = matcher.group(2);
+      String twitterUrl = "https://api.twitter.com/1/statuses/show/#" + statusId + ".json";
+      Twitter twitter = new Twitter();
+      //twitter.setOAuthConsumer();
+
+      Status status;
+      try {
+        status = twitter.showStatus(Long.parseLong(statusId));
+      } catch (TwitterException e) {
+        throw new RuntimeException(e);
+      }
+      event.getChannel().send().message(status.getUser().getName() + ": " + status.getText());
+    } else {
+      String title = document.title();
+      event.getChannel().send().message(title);
+    }
   }
 }
