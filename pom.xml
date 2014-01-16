@@ -76,6 +76,11 @@
       <artifactId>pircbotx</artifactId>
       <version>${pircbotx.version}</version>
     </dependency>
+    <dependency>
+      <groupId>it</groupId>
+      <artifactId>tomatoclient</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 
   <build>
