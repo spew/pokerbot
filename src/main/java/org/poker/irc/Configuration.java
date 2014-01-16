@@ -37,22 +37,26 @@ public class Configuration {
         .withArgName("google search API key")
         .withDescription("Google custom search API key")
         .create("gapi");
+    options.addOption(googleSearchApiKeyOption);
     Option googleSearchCxKeyOption = OptionBuilder
         .withLongOpt("google-search-cx-key")
         .hasArg()
         .withArgName("google search CX key")
         .withDescription("Google custom search CX key")
         .create("gcx");
+    options.addOption(googleSearchCxKeyOption);
     Option helpOption = OptionBuilder
         .withLongOpt("help")
         .withDescription("print this message")
         .create("h");
+    options.addOption(helpOption);
     Option nickOption = OptionBuilder
         .withLongOpt("nick")
         .hasArg()
         .withArgName("nick")
         .withDescription("The /nick value to use on IRC")
         .create("n");
+    options.addOption(nickOption);
     Option channelsOption = OptionBuilder
         .withLongOpt("channels")
         .hasArgs()
@@ -60,12 +64,14 @@ public class Configuration {
         .withArgName("channel")
         .withDescription("The list of channel to join")
         .create("c");
+    options.addOption(channelsOption);
     Option serverHostNameOption = OptionBuilder
         .withLongOpt("server-hostname")
         .hasArg()
         .withArgName("hostname")
         .withDescription("The hostname of the IRC server to connect to")
         .create("s");
+    options.addOption(serverHostNameOption);
     CommandLineParser parser = new BasicParser();
     CommandLine commandLine;
     try {
@@ -78,21 +84,23 @@ public class Configuration {
       formatter.printHelp( "java org.poker.irc.Program", options );
       System.exit(0);
     }
-    if (!Strings.isNullOrEmpty(googleSearchApiKeyOption.getValue())) {
-      this.googleSearchApiKey = googleSearchApiKeyOption.getValue();
+    if (commandLine.hasOption(googleSearchApiKeyOption.getOpt())) {
+      this.googleSearchApiKey = commandLine.getOptionValue(googleSearchApiKeyOption.getValue());
     }
-    if (!Strings.isNullOrEmpty(googleSearchCxKeyOption.getValue())) {
-      this.googleSearchCxKey = googleSearchCxKeyOption.getValue();
+    if (commandLine.hasOption(googleSearchCxKeyOption.getOpt())) {
+      this.googleSearchCxKey = commandLine.getOptionValue(googleSearchCxKeyOption.getValue());
     }
-    if (!Strings.isNullOrEmpty(nickOption.getValue())) {
-      this.nick = nickOption.getValue();
+    if (commandLine.hasOption(nickOption.getOpt())) {
+      this.nick = commandLine.getOptionValue(nickOption.getOpt());
     }
-    List<String> channels = channelsOption.getValuesList();
-    if (channels != null && channels.size() > 0) {
-      this.channels = channels;
+    if (commandLine.hasOption(channelsOption.getOpt())) {
+      List<String> channels = Arrays.asList(commandLine.getOptionValues(channelsOption.getOpt()));
+      if (channels.size() > 0) {
+        this.channels = channels;
+      }
     }
-    if (!Strings.isNullOrEmpty(serverHostNameOption.getValue())) {
-      this.serverHostname = serverHostNameOption.getValue();
+    if (commandLine.hasOption(serverHostNameOption.getOpt())) {
+      this.serverHostname = commandLine.getOptionValue(serverHostNameOption.getValue());
     }
   }
 
