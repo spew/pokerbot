@@ -44,6 +44,7 @@ public class UrlMessageEventHandler implements MessageEventHandler {
     if (matcher.matches()) {
       String statusId = matcher.group(2);
       Twitter twitter = new Twitter();
+      // TODO: rotate these keys since I checked them in
       twitter.setOAuthConsumer("xPSflh20vuMYawYkW35mHw", "Rw1RlJI2xrIyzEHnwa9YQJ2ldUclUdyaeCVAcEks");
 
       Status status;

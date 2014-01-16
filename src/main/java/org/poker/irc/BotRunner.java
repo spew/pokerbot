@@ -1,6 +1,5 @@
 package org.poker.irc;
 
-import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.UtilSSLSocketFactory;
 import org.pircbotx.cap.TLSCapHandler;
@@ -17,18 +16,9 @@ import java.io.IOException;
 
 public class BotRunner {
   private static final Logger LOG = LoggerFactory.getLogger(BotRunner.class);
-  public void run() throws InterruptedException {
-    EventHandler eventHandler = this.getEventHandler();
-    Configuration configuration = new Configuration.Builder()
-        .setName("donkbot")             // set the nick of the bot
-        .setAutoNickChange(true)        // automatically change nick when the current one is in use
-        .setCapEnabled(true)            // enable CAP features
-        .addCapHandler(new TLSCapHandler(new UtilSSLSocketFactory().trustAllCertificates(), true))
-        .addListener(eventHandler)
-        .setServerHostname("irc.enterthegame.com")
-        .addAutoJoinChannel("#test")
-        .buildConfiguration();
-    PircBotX bot = new PircBotX(configuration);
+  public void run(Configuration configuration) throws InterruptedException {
+    org.pircbotx.Configuration ircConfiguration = this.getIrcBotConfiguration(configuration);
+    PircBotX bot = new PircBotX(ircConfiguration);
     while (true) {
       try {
         bot.startBot();
@@ -39,12 +29,31 @@ public class BotRunner {
     }
   }
 
-  private EventHandler getEventHandler() {
+  private org.pircbotx.Configuration getIrcBotConfiguration(Configuration configuration) {
+    EventHandler eventHandler = this.getEventHandler(configuration);
+    org.pircbotx.Configuration.Builder configurationBuilder = new org.pircbotx.Configuration.Builder()
+        .setName(configuration.getNick())             // set the nick of the bot
+        // TODO add identserver
+        // .setIdentServerEnabled(true)
+        .setFinger("stfu pete")
+        .setRealName("pete is a donk")
+        .setAutoNickChange(true)        // automatically change nick when the current one is in use
+        .setCapEnabled(true)            // enable CAP features
+        .addCapHandler(new TLSCapHandler(new UtilSSLSocketFactory().trustAllCertificates(), true))
+        .addListener(eventHandler)
+        .setServerHostname(configuration.getServerHostname());
+    for (String channel : configuration.getChannels()) {
+      configurationBuilder.addAutoJoinChannel(channel);
+    }
+    return configurationBuilder.buildConfiguration();
+  }
+
+  private EventHandler getEventHandler(Configuration configuration) {
     EventHandler eventHandler = new EventHandler();
     eventHandler.addMessageEventHandler(new UrlMessageEventHandler());
     eventHandler.addMessageEventHandler(new RottenTomatoesMessageEventHandler());
     eventHandler.addMessageEventHandler(new DotabuffMessageEventHandler());
-    eventHandler.addMessageEventHandler(new GoogleSearchMessageEventHandler());
+    eventHandler.addMessageEventHandler(new GoogleSearchMessageEventHandler(configuration));
     eventHandler.addMessageEventHandler(new BitcoinMessageEventHandler());
     return eventHandler;
   }

@@ -14,6 +14,7 @@ import com.google.api.services.customsearch.CustomsearchRequestInitializer;
 import com.google.api.services.customsearch.model.Result;
 import com.google.api.services.customsearch.model.Search;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.poker.irc.Configuration;
 import org.poker.irc.MessageEventHandler;
 
 import java.io.IOException;
@@ -23,9 +24,11 @@ import java.util.List;
 
 public class GoogleSearchMessageEventHandler implements MessageEventHandler {
   private Customsearch customsearch;
+  private Configuration configuration;
 
-  public GoogleSearchMessageEventHandler() {
+  public GoogleSearchMessageEventHandler(Configuration configuration) {
     this.customsearch = this.createClient();
+    this.configuration = configuration;
   }
 
   @Override
@@ -43,8 +46,8 @@ public class GoogleSearchMessageEventHandler implements MessageEventHandler {
       query = message.substring("!google".length()).trim();
     }
 
-    String API_KEY = System.getenv().get("SEARCH_API_KEY");
-    String CX_KEY = System.getenv().get("SEARCH_CX_KEY");
+    String API_KEY = this.configuration.getGoogleSearchApiKey();
+    String CX_KEY = this.configuration.getGoogleSearchCxKey();
 
     if (Strings.isNullOrEmpty(API_KEY)) {
       event.getChannel().send().message("Can't google: set the API_KEY environment variable");
