@@ -57,21 +57,5 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     //sb.append(" | w.avg: ");
     //sb.append(ticker.get());
     event.getChannel().send().message(sb.toString());
-    /*final String url = "https://www.mtgox.com/";
-    Gson gson = new GsonBuilder().create();
-    gson.
-    Document document;
-    try {
-      document = Jsoup.connect(url).followRedirects(true).timeout(3000).get();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-    // shit is broken because mtgox delay loads the data, their json API doesn't let me get anything other than
-    // last price tho :(
-    Element dataHolderElement = document.select("div#dataholder").first();
-    Element lastPriceElement = dataHolderElement.select("li#lastPrice").first();
-    Element highPriceElement = dataHolderElement.select("li#highPrice").first();
-    Element lowPriceElement = dataHolderElement.select("li#lowPrice").first();
-    Element weightedAveragePriceElement = dataHolderElement.select("li#weightedAverage").first();*/
   }
 }
