@@ -45,6 +45,7 @@ public class GoogleSearchMessageEventHandler implements MessageEventHandler {
 
     String API_KEY = System.getenv().get("SEARCH_API_KEY");
     String CX_KEY = System.getenv().get("SEARCH_CX_KEY");
+
     if (Strings.isNullOrEmpty(API_KEY)) {
       event.getChannel().send().message("Can't google: set the API_KEY environment variable");
       return;
@@ -62,7 +63,7 @@ public class GoogleSearchMessageEventHandler implements MessageEventHandler {
       Search result = list.execute();
       List<Result> listResult = result.getItems();
 
-      if (listResult.isEmpty()) {
+      if (listResult == null || listResult.isEmpty() ) {
         event.getChannel().send().message("Nothing found.");
       } else {
         Result first = listResult.get(0);
