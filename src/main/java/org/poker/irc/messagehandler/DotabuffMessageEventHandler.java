@@ -19,7 +19,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String[] getMessagePrefixes() {
-    return new String[] { "!dota", "!dotabuff", ".dota", ".dotabuff"};
+    return new String[] { "!dota ", "!dotabuff ", ".dota ", ".dotabuff "};
   }
 
   @Override

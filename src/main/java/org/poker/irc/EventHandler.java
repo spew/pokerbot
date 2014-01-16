@@ -11,7 +11,7 @@ public class EventHandler extends ListenerAdapter {
   private Map<String, MessageEventHandler> messageEventHandlerMap = Maps.newHashMap();
   public void addMessageEventHandler(final MessageEventHandler messageEventHandler) {
     for (String prefix : messageEventHandler.getMessagePrefixes()) {
-      this.messageEventHandlerMap.put(prefix + " ", messageEventHandler);
+      this.messageEventHandlerMap.put(prefix, messageEventHandler);
     }
   }
 
