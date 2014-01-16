@@ -37,6 +37,7 @@ public class BotRunner {
   private EventHandler getEventHandler() {
     EventHandler eventHandler = new EventHandler();
     eventHandler.addMessageEventHandler(new UrlMessageEventHandler());
+    eventHandler.addMessageEventHandler(new RottenTomatoesMessageEventHandler());
     return eventHandler;
   }
 }
