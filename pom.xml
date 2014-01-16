@@ -24,6 +24,7 @@
     <xchange.version>1.10.0</xchange.version>
     <junit.version>(4,)</junit.version>
     <commons-cli.version>1.2</commons-cli.version>
+    <httpclient.version>4.2.4</httpclient.version>
 
     <!-- Java -->
     <java.version>1.7</java.version>
@@ -57,6 +58,11 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>${gson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${httpclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
