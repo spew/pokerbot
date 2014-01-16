@@ -2,6 +2,7 @@ package org.poker.irc;
 
 import com.google.common.collect.Maps;
 import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.KickEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 import org.slf4j.Logger;
@@ -16,6 +17,15 @@ public class EventHandler extends ListenerAdapter {
     for (String prefix : messageEventHandler.getMessagePrefixes()) {
       this.messageEventHandlerMap.put(prefix, messageEventHandler);
     }
+  }
+
+  @Override
+  public void onKick(final KickEvent event) throws Exception {
+    /*LOG.warn("Kicked from " + event.getChannel().getName() + ": " event.getReason())
+    while (true) {
+
+     event.getChannel()
+    }*/
   }
 
   @Override

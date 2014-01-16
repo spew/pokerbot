@@ -19,7 +19,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String[] getMessagePrefixes() {
-    return new String[] { "!dota ", "!dotabuff ", ".dota ", ".dotabuff "};
+    return new String[] { "!dota ", "!dotabuff ", ".dota", ".dotabuff "};
   }
 
   @Override
@@ -27,8 +27,12 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     String message = event.getMessage();
     if (message.startsWith("!dotabuff")) {
       message = message.substring("!dotabuff".length()).trim();
-    } else {
+    } else if (message.startsWith(".dotabuff")) {
+      message = message.substring(".dotabuff".length()).trim();
+    } else if (message.startsWith("!dota")) {
       message = message.substring("!dota".length()).trim();
+    } else {
+      message = message.substring(".dota".length()).trim();
     }
     message = message.toLowerCase();
     if (this.nameToId.containsKey(message)) {
