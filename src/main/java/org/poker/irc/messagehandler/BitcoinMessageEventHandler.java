@@ -7,6 +7,7 @@ import com.xeiam.xchange.ExchangeFactory;
 import com.xeiam.xchange.currency.Currencies;
 import com.xeiam.xchange.dto.marketdata.Ticker;
 import com.xeiam.xchange.service.polling.PollingMarketDataService;
+import org.joda.money.*;
 import org.joda.money.format.MoneyAmountStyle;
 import org.joda.money.format.MoneyFormatter;
 import org.joda.money.format.MoneyFormatterBuilder;
@@ -18,7 +19,7 @@ import org.poker.irc.MessageEventHandler;
 
 import java.io.IOException;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
+import java.text.*;
 
 public class BitcoinMessageEventHandler implements MessageEventHandler {
 
@@ -51,16 +52,21 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
       throw new RuntimeException(e);
     }
     StringBuilder sb = new StringBuilder();
-    sb.append("BitCoin - last: $");
-    sb.append(this.moneyFormatter.print(ticker.getLast().rounded(2, RoundingMode.UP)));
-    sb.append(" | high: $");
-    sb.append(this.moneyFormatter.print(ticker.getHigh().rounded(2, RoundingMode.UP)));
-    sb.append(" | low: $");
-    sb.append(this.moneyFormatter.print(ticker.getLow().rounded(2, RoundingMode.UP)));
+    sb.append("BitCoin - last: ");
+    this.appendMoney(ticker.getLast(), sb);
+    sb.append(" | high: ");
+    this.appendMoney(ticker.getHigh(), sb);
+    sb.append(" | low: ");
+    this.appendMoney(ticker.getLow(), sb);
     sb.append(" | vol: ");
     sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));
     //sb.append(" | w.avg: ");
     //sb.append(ticker.get());
     event.getChannel().send().message(sb.toString());
+  }
+
+  private void appendMoney(BigMoney bigMoney, StringBuilder sb) {
+    sb.append(bigMoney.getCurrencyUnit().getSymbol());
+    sb.append(NumberFormat.getCurrencyInstance().format(bigMoney.getAmount()));
   }
 }
