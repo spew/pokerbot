@@ -23,7 +23,7 @@ import java.text.NumberFormat;
 public class BitcoinMessageEventHandler implements MessageEventHandler {
 
   private MoneyFormatter moneyFormatter = new MoneyFormatterBuilder()
-      .appendCurrencyCode()
+      .appendCurrencySymbolLocalized()
       .appendAmount()
       .toFormatter();
 
@@ -52,9 +52,9 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     }
     StringBuilder sb = new StringBuilder();
     sb.append("BitCoin - last: $");
-    sb.append(ticker.getLast());
+    sb.append(this.moneyFormatter.print(ticker.getLast().rounded(2, RoundingMode.UP)));
     sb.append(" | high: $");
-    sb.append(ticker.getHigh().rounded(2, RoundingMode.UP));
+    sb.append(this.moneyFormatter.print(ticker.getHigh().rounded(2, RoundingMode.UP)));
     sb.append(" | low: $");
     sb.append(this.moneyFormatter.print(ticker.getLow().rounded(2, RoundingMode.UP)));
     sb.append(" | vol: ");
