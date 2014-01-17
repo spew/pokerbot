@@ -76,7 +76,7 @@ public class BotRunner {
         }
       }
     };
-    scheduler.scheduleAtFixedRate(checkEspnNews,1,60, TimeUnit.MINUTES);
+    scheduler.scheduleAtFixedRate(checkEspnNews,1,5, TimeUnit.MINUTES);
   }
 
   private org.pircbotx.Configuration getIrcBotConfiguration(Configuration configuration) {
