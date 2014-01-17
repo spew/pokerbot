@@ -66,7 +66,7 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
         return;
       }
     }
-    int limit = 5;
+    int limit = 3;
     String gameName;
     switch (game) {
       case Dota:
