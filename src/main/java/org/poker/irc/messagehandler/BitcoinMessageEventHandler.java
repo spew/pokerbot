@@ -15,7 +15,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.poker.irc.BotUtils;
 import org.poker.irc.MessageEventHandler;
+import org.poker.irc.mtGox.TickerFactory;
 
 import java.io.IOException;
 import java.math.RoundingMode;
@@ -40,24 +42,16 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
 
   @Override
   public void onMessage(MessageEvent event) {
-    // Use the factory to get the version 2 MtGox exchange API using default settings
-    Exchange mtGox = ExchangeFactory.INSTANCE.createExchange("com.xeiam.xchange.mtgox.v2.MtGoxExchange");
-    // Interested in the public polling market data feed (no authentication)
-    PollingMarketDataService marketDataService = mtGox.getPollingMarketDataService();
-    // Get the latest ticker data showing BTC to USD
-    Ticker ticker;
-    try {
-      ticker = marketDataService.getTicker(Currencies.BTC, Currencies.USD);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+
+    Ticker ticker = org.poker.irc.mtGox.TickerFactory.CreateBtcTicker();
+
     StringBuilder sb = new StringBuilder();
     sb.append("BitCoin - last: ");
-    this.appendMoney(ticker.getLast(), sb);
+    BotUtils.appendMoney(ticker.getLast(), sb);
     sb.append(" | high: ");
-    this.appendMoney(ticker.getHigh(), sb);
+    BotUtils.appendMoney(ticker.getHigh(), sb);
     sb.append(" | low: ");
-    this.appendMoney(ticker.getLow(), sb);
+    BotUtils.appendMoney(ticker.getLow(), sb);
     sb.append(" | vol: ");
     sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));
     //sb.append(" | w.avg: ");
@@ -65,7 +59,4 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     event.getChannel().send().message(sb.toString());
   }
 
-  private void appendMoney(BigMoney bigMoney, StringBuilder sb) {
-    sb.append(NumberFormat.getCurrencyInstance().format(bigMoney.getAmount()));
-  }
 }
