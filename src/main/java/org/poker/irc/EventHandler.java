@@ -82,6 +82,7 @@ public class EventHandler extends ListenerAdapter {
           try {
             entry.getValue().onMessage(event);
           } catch (Throwable t) {
+            event.getUser().send().message("Error in handler " + entry.getKey());
             LOG.error("Error in handler", t);
           }
         }

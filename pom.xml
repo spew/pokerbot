@@ -20,7 +20,7 @@
     <log4j.version>(1.2,)</log4j.version>
     <jsoup.version>1.7.3</jsoup.version>
     <pircbotx.version>2.0.1</pircbotx.version>
-    <twitter4j.version>2.0.10</twitter4j.version>
+    <twitter4j.version>3.0.5</twitter4j.version>
     <xchange.version>1.10.0</xchange.version>
     <junit.version>(4,)</junit.version>
     <commons-cli.version>1.2</commons-cli.version>
@@ -60,6 +60,11 @@
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>${gson.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.twitter4j</groupId>
+      <artifactId>twitter4j-core</artifactId>
+      <version>${twitter4j.version}</version>
     </dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>

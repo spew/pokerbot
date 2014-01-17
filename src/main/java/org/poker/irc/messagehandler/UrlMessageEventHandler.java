@@ -48,7 +48,7 @@ public class UrlMessageEventHandler implements MessageEventHandler {
     Matcher matcher = twitterPattern.matcher(url);
     if (matcher.matches() && false) {
       String statusId = matcher.group(2);
-      Twitter twitter = new Twitter();
+      /*Twitter twitter = new Twitter();
       // TODO: rotate these keys since I checked them in
       twitter.setOAuthConsumer("xPSflh20vuMYawYkW35mHw", "Rw1RlJI2xrIyzEHnwa9YQJ2ldUclUdyaeCVAcEks");
 
@@ -59,7 +59,7 @@ public class UrlMessageEventHandler implements MessageEventHandler {
         event.getChannel().send().message("Twitter is broken :(");
         throw new RuntimeException(e);
       }
-      event.getChannel().send().message(status.getUser().getName() + ": " + status.getText());
+      event.getChannel().send().message(status.getUser().getName() + ": " + status.getText()); */
     } else {
       String title = document.title();
       event.getChannel().send().message(title);

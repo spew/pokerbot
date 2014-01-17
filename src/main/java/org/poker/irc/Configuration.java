@@ -27,6 +27,11 @@ public class Configuration {
   private String googleSearchApiKey;
   private String googleSearchCxKey;
   private String ident = nick;
+private String espnApiKey;
+
+  public String getEspnApiKey() {
+    return espnApiKey;
+  }
 
   public String getTwitchClientId() {
     return twitchClientId;
@@ -44,6 +49,7 @@ public class Configuration {
     this.googleSearchApiKey = System.getenv().get("SEARCH_API_KEY");
     this.googleSearchCxKey = System.getenv().get("SEARCH_CX_KEY");
     this.twitchClientId = System.getenv().get("TWITCH_CLIENT_ID");
+    this.espnApiKey = System.getenv("ESPN_API_KEY");
     Options options = new Options();
     Option googleSearchApiKeyOption = OptionBuilder
         .withLongOpt("google-search-api-key")

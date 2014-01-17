@@ -15,6 +15,7 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.UtilSSLSocketFactory;
 import org.pircbotx.cap.TLSCapHandler;
 import org.pircbotx.exception.IrcException;
+import org.poker.irc.espn.*;
 import org.poker.irc.messagehandler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,39 +32,8 @@ public class BotRunner {
   private static final Logger LOG = LoggerFactory.getLogger(BotRunner.class);
   public void run(Configuration configuration) throws InterruptedException {
     org.pircbotx.Configuration ircConfiguration = this.getIrcBotConfiguration(configuration);
-    //had to make this final to use this shit
     final PircBotX bot = new PircBotX(ircConfiguration);
-
-    final String ESPN_API_KEY = System.getenv("ESPN_API_KEY");
-    final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
-    Runnable checkEspnNews = new Runnable() {
-      @Override
-      public void run() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-        JsonParser jp = new JsonParser();
-        HttpGet httpGet = new HttpGet("https://api.espn.com/v1/sports/news/headlines/top?apikey=" + ESPN_API_KEY);
-        httpGet.addHeader("Accept", "application/json");
-        try (CloseableHttpClient httpClient = HttpClients.createDefault();
-             CloseableHttpResponse response = httpClient.execute(httpGet)) {
-          HttpEntity httpEntity = response.getEntity();
-          try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
-            JsonElement je = jp.parse(reader);
-            LOG.info(gson.toJson(je));
-          }
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-
-        for (Channel channel : bot.getUserBot().getChannels()){
-
-          channel.send().message("lol scheduled task");
-        }
-      }
-    };
-    scheduler.scheduleAtFixedRate(checkEspnNews,50,15, TimeUnit.SECONDS);
-
-
+    this.scheduleEspnChecker(bot, configuration);
     while (true) {
       try {
         bot.startBot();
@@ -74,17 +44,49 @@ public class BotRunner {
     }
   }
 
+  private void scheduleEspnChecker(final PircBotX bot, final Configuration configuration) {
+    final String ESPN_API_KEY = configuration.getEspnApiKey();
+    final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    Runnable checkEspnNews = new Runnable() {
+      @Override
+      public void run() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        HeadlinesResponse headlinesResponse;
+        HttpGet httpGet = new HttpGet("https://api.espn.com/v1/sports/news/headlines/top?apikey=" + ESPN_API_KEY);
+        httpGet.addHeader("Accept", "application/json");
+        try (CloseableHttpClient httpClient = HttpClients.createDefault();
+             CloseableHttpResponse response = httpClient.execute(httpGet)) {
+          HttpEntity httpEntity = response.getEntity();
+          try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
+            //JsonElement je = jp.parse(reader);
+            //JsonParser jp = new JsonParser();
+            //LOG.info(gson.toJson(je));
+            headlinesResponse = gson.fromJson(reader, HeadlinesResponse.class);
+          }
+        } catch (IOException e) {
+          throw new RuntimeException(e);
+        }
+
+        for (Channel channel : bot.getUserBot().getChannels()) {
+          channel.send().message("lol scheduled task");
+        }
+      }
+    };
+    scheduler.scheduleAtFixedRate(checkEspnNews,50,15, TimeUnit.SECONDS);
+
+  }
+
   private org.pircbotx.Configuration getIrcBotConfiguration(Configuration configuration) {
     EventHandler eventHandler = this.getEventHandler(configuration);
     org.pircbotx.Configuration.Builder configurationBuilder = new org.pircbotx.Configuration.Builder()
-        .setName(configuration.getNick())             // set the nick of the bot
+        .setName(configuration.getNick())                       // set the nick of the bot
         .setFinger("stfu pete")
         .setRealName("pete is a donk")
-        .setAutoNickChange(true)        // automatically change nick when the current one is in use
-        .setCapEnabled(true)            // enable CAP features
+        .setAutoNickChange(true)                                // automatically change nick when the current one is in use
+        .setCapEnabled(true)                                    // enable CAP features
         .addCapHandler(new TLSCapHandler(new UtilSSLSocketFactory().trustAllCertificates(), true))
         .addListener(eventHandler)
-        .setLogin(configuration.getIdent())
+        .setLogin(configuration.getIdent())                     // the login is the 'ident' part of the name "login@hostmask"
         .setServerHostname(configuration.getServerHostname());
     for (String channel : configuration.getChannels()) {
       configurationBuilder.addAutoJoinChannel(channel);
