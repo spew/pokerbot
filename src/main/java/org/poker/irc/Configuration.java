@@ -26,6 +26,13 @@ public class Configuration {
   private String nick = "testbot";
   private String googleSearchApiKey;
   private String googleSearchCxKey;
+  private String ident = nick;
+
+  public String getTwitchClientId() {
+    return twitchClientId;
+  }
+
+  private String twitchClientId;
 
   public Configuration() {
 
@@ -36,6 +43,7 @@ public class Configuration {
     LOG.info("Arguments: " + arguments);
     this.googleSearchApiKey = System.getenv().get("SEARCH_API_KEY");
     this.googleSearchCxKey = System.getenv().get("SEARCH_CX_KEY");
+    this.twitchClientId = System.getenv().get("TWITCH_CLIENT_ID");
     Options options = new Options();
     Option googleSearchApiKeyOption = OptionBuilder
         .withLongOpt("google-search-api-key")
@@ -63,6 +71,13 @@ public class Configuration {
         .withDescription("The /nick value to use on IRC")
         .create("n");
     options.addOption(nickOption);
+    Option identOption = OptionBuilder
+        .withLongOpt("ident")
+        .hasArg()
+        .withArgName("ident")
+        .withDescription("The <ident>@hostmask value to use on IRC")
+        .create("i");
+    options.addOption(identOption);
     Option channelsOption = OptionBuilder
         .withLongOpt("channels")
         .hasArgs()
@@ -97,6 +112,11 @@ public class Configuration {
     }
     if (commandLine.hasOption(nickOption.getOpt())) {
       this.nick = commandLine.getOptionValue(nickOption.getOpt());
+    }
+    if (commandLine.hasOption(identOption.getOpt())) {
+      this.ident = commandLine.getOptionValue(identOption.getOpt());
+    } else {
+      this.ident = this.nick;
     }
     if (commandLine.hasOption(channelsOption.getOpt())) {
       List<String> channels = Arrays.asList(commandLine.getOptionValues(channelsOption.getOpt()));
@@ -135,4 +155,7 @@ public class Configuration {
     return googleSearchApiKey;
   }
 
+  public String getIdent() {
+    return ident;
+  }
 }

@@ -1,14 +1,11 @@
 package org.poker.irc;
 
+import org.pircbotx.IdentServer;
 import org.pircbotx.PircBotX;
 import org.pircbotx.UtilSSLSocketFactory;
 import org.pircbotx.cap.TLSCapHandler;
 import org.pircbotx.exception.IrcException;
-import org.poker.irc.messagehandler.BitcoinMessageEventHandler;
-import org.poker.irc.messagehandler.DotabuffMessageEventHandler;
-import org.poker.irc.messagehandler.GoogleSearchMessageEventHandler;
-import org.poker.irc.messagehandler.RottenTomatoesMessageEventHandler;
-import org.poker.irc.messagehandler.UrlMessageEventHandler;
+import org.poker.irc.messagehandler.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,14 +30,13 @@ public class BotRunner {
     EventHandler eventHandler = this.getEventHandler(configuration);
     org.pircbotx.Configuration.Builder configurationBuilder = new org.pircbotx.Configuration.Builder()
         .setName(configuration.getNick())             // set the nick of the bot
-        // TODO add identserver
-        // .setIdentServerEnabled(true)
         .setFinger("stfu pete")
         .setRealName("pete is a donk")
         .setAutoNickChange(true)        // automatically change nick when the current one is in use
         .setCapEnabled(true)            // enable CAP features
         .addCapHandler(new TLSCapHandler(new UtilSSLSocketFactory().trustAllCertificates(), true))
         .addListener(eventHandler)
+        .setLogin(configuration.getIdent())
         .setServerHostname(configuration.getServerHostname());
     for (String channel : configuration.getChannels()) {
       configurationBuilder.addAutoJoinChannel(channel);
@@ -55,6 +51,8 @@ public class BotRunner {
     eventHandler.addMessageEventHandler(new DotabuffMessageEventHandler());
     eventHandler.addMessageEventHandler(new GoogleSearchMessageEventHandler(configuration));
     eventHandler.addMessageEventHandler(new BitcoinMessageEventHandler());
+    eventHandler.addMessageEventHandler(new UptimeMessageEventHandler());
+    eventHandler.addMessageEventHandler(new StreamsMessageEventHandler(configuration));
     return eventHandler;
   }
 }

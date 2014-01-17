@@ -24,7 +24,9 @@
     <xchange.version>1.10.0</xchange.version>
     <junit.version>(4,)</junit.version>
     <commons-cli.version>1.2</commons-cli.version>
-    <httpclient.version>4.2.4</httpclient.version>
+    <httpcomponents.version>4.3.1</httpcomponents.version>
+    <jodatime.version>2.3</jodatime.version>
+    <commons-io.version>2.4</commons-io.version>
 
     <!-- Java -->
     <java.version>1.7</java.version>
@@ -62,7 +64,17 @@
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>
-      <version>${httpclient.version}</version>
+      <version>${httpcomponents.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>${jodatime.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons-io.version}</version>
     </dependency>
     <dependency>
       <groupId>org.jsoup</groupId>
