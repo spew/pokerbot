@@ -103,6 +103,7 @@ public class BotRunner {
     eventHandler.addMessageEventHandler(new BitcoinMessageEventHandler());
     eventHandler.addMessageEventHandler(new UptimeMessageEventHandler());
     eventHandler.addMessageEventHandler(new StreamsMessageEventHandler(configuration));
+    eventHandler.addMessageEventHandler(new DogecoinMessageEventHandler());
     return eventHandler;
   }
 }
