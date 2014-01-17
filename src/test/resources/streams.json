@@ -1,0 +1,351 @@
+{
+  "_total": 183,
+  "_links": {
+    "self": "https://api.twitch.tv/kraken/search/streams?limit\u003d10\u0026offset\u003d0\u0026q\u003ddota2",
+    "next": "https://api.twitch.tv/kraken/search/streams?limit\u003d10\u0026offset\u003d10\u0026q\u003ddota2"
+  },
+  "streams": [
+    {
+      "name": "live_user_eternalenvyy",
+      "broadcaster": "obs",
+      "_id": 8244524976,
+      "game": "Dota 2",
+      "viewers": 4369,
+      "preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_eternalenvyy-320x200.jpg",
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/eternalenvyy"
+      },
+      "channel": {
+        "status": "EternaLEnVy tryhard DotA solo ranked MM (songs: all)",
+        "display_name": "EternaLEnVyy",
+        "game": "Dota 2",
+        "_id": 26954716,
+        "name": "eternalenvyy",
+        "created_at": "2011-12-22T00:16:24Z",
+        "updated_at": "2014-01-17T01:41:13Z",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/eternalenvyy-profile_image-6b20e441fd6342b1-300x300.png",
+        "background": "http://static-cdn.jtvnw.net/jtv_user_pictures/eternalenvyy-background_image-75d2082adeb125d2.jpeg",
+        "url": "http://www.twitch.tv/eternalenvyy",
+        "_links": {
+          "self": "https://api.twitch.tv/kraken/channels/eternalenvyy",
+          "follows": "https://api.twitch.tv/kraken/channels/eternalenvyy/follows",
+          "commercial": "https://api.twitch.tv/kraken/channels/eternalenvyy/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/eternalenvyy/stream_key",
+          "chat": "https://api.twitch.tv/kraken/chat/eternalenvyy",
+          "features": "https://api.twitch.tv/kraken/channels/eternalenvyy/features",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/eternalenvyy/subscriptions",
+          "editors": "https://api.twitch.tv/kraken/channels/eternalenvyy/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/eternalenvyy/videos"
+        },
+        "teams": []
+      }
+    },
+    {
+      "name": "live_user_versuta",
+      "broadcaster": "rebroadcast",
+      "_id": 8243027328,
+      "game": "Dota 2",
+      "viewers": 1181,
+      "preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_versuta-320x200.jpg",
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/versuta"
+      },
+      "channel": {
+        "mature": true,
+        "status": "REBROADCAST: Ranked MM winrate 85% 7300 mmr ULTRA MEGA PRO!!!",
+        "display_name": "VeRsuta",
+        "game": "Dota 2",
+        "_id": 21802540,
+        "name": "versuta",
+        "created_at": "2011-04-17T17:31:36Z",
+        "updated_at": "2014-01-16T22:36:44Z",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/versuta-profile_image-425ce49fede0b8c9-300x300.png",
+        "banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/versuta-channel_header_image-b750f011745f764f-640x125.jpeg",
+        "video_banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/versuta-channel_offline_image-2f2f645ae48ae8bd-640x360.jpeg",
+        "url": "http://www.twitch.tv/versuta",
+        "_links": {
+          "self": "https://api.twitch.tv/kraken/channels/versuta",
+          "follows": "https://api.twitch.tv/kraken/channels/versuta/follows",
+          "commercial": "https://api.twitch.tv/kraken/channels/versuta/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/versuta/stream_key",
+          "chat": "https://api.twitch.tv/kraken/chat/versuta",
+          "features": "https://api.twitch.tv/kraken/channels/versuta/features",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/versuta/subscriptions",
+          "editors": "https://api.twitch.tv/kraken/channels/versuta/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/versuta/videos"
+        },
+        "teams": [
+          {
+            "_id": 661,
+            "name": "weplay",
+            "info": "WePlay.TV - new e-sports project, created to hold different tournaments for gamers.\n",
+            "display_name": "WePlay.TV",
+            "created_at": "2013-04-16T15:39:05Z",
+            "updated_at": "2013-07-17T09:26:45Z",
+            "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-weplay-team_logo_image-a3731ab01aef8716-300x300.png",
+            "background": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-weplay-background_image-d152aa883de67980.jpeg",
+            "_links": {
+              "self": "https://api.twitch.tv/kraken/teams/weplay"
+            }
+          },
+          {
+            "_id": 201,
+            "name": "navi",
+            "info": "\u003cdiv style\u003d\"margin:20px auto 0 auto;width:590px;height:680px;padding:25px 15px 5px 15px;color:#d6d6d6;font:bold 11px/15px Arial;background:url(http://navi-gaming.com/images/twitch/bg_navi_team.jpg) no-repeat;\"\u003e\n\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://navi-gaming.com\" target\u003d\"_blank\"\u003e\n\t\t\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/navi_logo.png\" alt\u003d\"Navi logo\" title\u003d\"Navi logo\" align\u003d\"left\" style\u003d\"margin-right:10px;\" /\u003e\u003c/a\u003e\n\t\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/team_bio_text.png\" alt\u003d\"Team bio\" title\u003d\"Team bio\" /\u003e\u003chr style\u003d\"border-style:solid;margin:0 0 10px 0;border-top:1px solid #444;border-bottom:1px solid #222;border-left:none;border-right:none;\" /\u003e\u003cdiv style\u003d\"float:left;width:420px;\"\u003e\n\t\tNatus Vincere (lat. Born to Win) is a world\u0027s leading video gaming club. We conquered all major championships on the planet.  We are born to conquer. \nNa\u0027Vi was created in December, 2010 and can boast numerous e-Sports world records such as being number #1 team in the All-Time Money Ranking and having two most successful Counter-Strike and Dota 2 teams in the world. Natus Vincere always strives to be the best in any field of e-Sports activity including tournament performances, video production, social media marketing and live streaming. \n\t\u003c/div\u003e\n\t\u003cdiv style\u003d\"clear:both;\"\u003e\u003c/div\u003e\n\t\n\t\u003chr style\u003d\"clear:left;border-style:solid;margin:20px 0 20px 0;border-top:1px solid #444;border-bottom:1px solid #222;border-left:none;border-right:none;\" /\u003e\u003cdiv style\u003d\"text-align:center;\"\u003e\n\t\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://navi-gaming.com\" target\u003d\"_blank\"\u003e\n\t\t\t\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/banner_navi.png\" alt\u003d\"navi\" title\u003d\"navi\" /\u003e\u003c/a\u003e\n\t\u003c/div\u003e\n\n\t\n\t\n\t\n\t\n\t\u003chr style\u003d\"clear:left;border-style:solid;margin:15px 0 0 0;border-top:1px solid #444;border-bottom:1px solid #222;border-left:none;border-right:none;\" /\u003e\u003cdiv style\u003d\"text-align:center;\"\u003e\n\t\t\t\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/find_us_text.png\" alt\u003d\"find us\" title\u003d\"find us\" style\u003d\"margin:10px auto;\" /\u003e\u003c/div\u003e\n\t\u003chr style\u003d\"border-style:solid;margin:0;border-top:1px solid #444;border-bottom:1px solid #222;border-left:none;border-right:none;\" /\u003e\u003cdiv style\u003d\"margin:15px 0 15px 0;text-align:center;\"\u003e\n\t\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://facebook.com/natusvincere\" target\u003d\"_blank\"\u003e\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/icon_fb.png\" alt\u003d\"facebook\" style\u003d\"margin:0 5px;\" /\u003e\u003c/a\u003e\n\t\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://vk.com/natus.vincere\" target\u003d\"_blank\"\u003e\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/icon_vk.png\" alt\u003d\"vkontakte\" style\u003d\"margin:0 5px;\" /\u003e\u003c/a\u003e\n\t\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://twitter.com/natusvincere\" target\u003d\"_blank\"\u003e\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/icon_twitter.png\" alt\u003d\"twitter\" style\u003d\"margin:0 5px;\" /\u003e\u003c/a\u003e\n\t\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://www.youtube.com/NatusVincereTV\" target\u003d\"_blank\"\u003e\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/icon_youtube.png\" alt\u003d\"youtube\" style\u003d\"margin:0 5px;\" /\u003e\u003c/a\u003e\n\t\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://steamcommunity.com/groups/Natus-Vincere\" target\u003d\"_blank\"\u003e\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/icon_steam.png\" alt\u003d\"steam\" style\u003d\"margin:0 5px;\" /\u003e\u003c/a\u003e\n\t\u003c/div\u003e\n\t\n\t\n\t\u003chr style\u003d\"border-style:solid;margin:0 0 10px 0;border-top:1px solid #444;border-bottom:1px solid #222;border-left:none;border-right:none;\" /\u003e\u003cdiv style\u003d\"text-align:center;\"\u003e\n\t\t\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/powered_by_text.png\" alt\u003d\"powered by\" title\u003d\"powered by\" /\u003e\u003c/div\u003e\n\t\n\t\u003cdiv style\u003d\"margin:10px 0 0 0;text-align:center;\"\u003e\n\t\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://steelseries.com\" target\u003d\"_blank\"\u003e\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/steelseries_logo.png\" alt\u003d\"steelseries\" style\u003d\"margin:0 5px;vertical-align:top;\" /\u003e\u003c/a\u003e\n\t\t\u003ca rel\u003d\"nofollow\" href\u003d\"http://kingston.com\" target\u003d\"_blank\"\u003e\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/kinston_logo.png\" alt\u003d\"kingston\" style\u003d\"margin:0 5px;vertical-align:top;\" /\u003e\u003c/a\u003e\n        \u003ca rel\u003d\"nofollow\" href\u003d\"http://tesorotec.com\" target\u003d\"_blank\"\u003e\u003cimg src\u003d\"http://navi-gaming.com/images/twitch/tesoro_logo2.png\" alt\u003d\"Tesoro\" style\u003d\"margin:0 5px;vertical-align:top;\" /\u003e\u003c/a\u003e\n\t\u003c/div\u003e\n\u003c/div\u003e\n\n\n\n",
+            "display_name": "Natus Vincere",
+            "created_at": "2012-02-21T10:43:20Z",
+            "updated_at": "2013-10-02T14:39:01Z",
+            "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-navi-team_logo_image-061d13490aaccda9-300x300.jpeg",
+            "banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-navi-banner_image-9f5c000ac5ea8688-640x125.jpeg",
+            "background": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-navi-background_image-224dd988382a30de.jpeg",
+            "_links": {
+              "self": "https://api.twitch.tv/kraken/teams/navi"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "live_user_dubastv",
+      "broadcaster": "xsplit",
+      "_id": 8242713776,
+      "game": "Dota 2",
+      "viewers": 967,
+      "preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_dubastv-320x200.jpg",
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/dubastv"
+      },
+      "channel": {
+        "status": "dubas dota2 vse dela!",
+        "display_name": "dubasTV",
+        "game": "Dota 2",
+        "_id": 40104881,
+        "name": "dubastv",
+        "created_at": "2013-02-07T09:53:54Z",
+        "updated_at": "2014-01-16T21:59:02Z",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/dubastv-profile_image-09276129b719a9c4-300x300.png",
+        "banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/dubastv-channel_header_image-4e4f2545d2d1ff21-640x125.png",
+        "video_banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/dubastv-channel_offline_image-5581948744221369-640x360.png",
+        "url": "http://www.twitch.tv/dubastv",
+        "_links": {
+          "self": "https://api.twitch.tv/kraken/channels/dubastv",
+          "follows": "https://api.twitch.tv/kraken/channels/dubastv/follows",
+          "commercial": "https://api.twitch.tv/kraken/channels/dubastv/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/dubastv/stream_key",
+          "chat": "https://api.twitch.tv/kraken/chat/dubastv",
+          "features": "https://api.twitch.tv/kraken/channels/dubastv/features",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/dubastv/subscriptions",
+          "editors": "https://api.twitch.tv/kraken/channels/dubastv/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/dubastv/videos"
+        },
+        "teams": [
+          {
+            "_id": 312,
+            "name": "empiretv",
+            "info": "Welcome to EmpireTV group, here you can find coverage of most popular online tournaments and pro First Person Streams from Team Empire players. Visit us @ www.empiretv.org\n",
+            "display_name": "EmpireTV",
+            "created_at": "2012-05-26T16:53:29Z",
+            "updated_at": "2013-05-24T00:17:57Z",
+            "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-empiretv-team_logo_image-8a8cd562c4a75629-300x300.jpeg",
+            "background": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-empiretv-background_image-24d49a2e38d2b5f2.jpeg",
+            "_links": {
+              "self": "https://api.twitch.tv/kraken/teams/empiretv"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "live_user_s2jinxy",
+      "broadcaster": "obs",
+      "_id": 8244796880,
+      "game": "Dota 2",
+      "viewers": 64,
+      "preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_s2jinxy-320x200.jpg",
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/s2jinxy"
+      },
+      "channel": {
+        "mature": false,
+        "status": "DotA 2 with Jinxy",
+        "display_name": "S2Jinxy",
+        "game": "Dota 2",
+        "_id": 39985962,
+        "name": "s2jinxy",
+        "created_at": "2013-02-03T04:21:14Z",
+        "updated_at": "2014-01-17T02:13:41Z",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/s2jinxy-profile_image-933bba6b1db53021-300x300.png",
+        "video_banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/s2jinxy-channel_offline_image-d5c7c14df22045a0-640x360.png",
+        "url": "http://www.twitch.tv/s2jinxy",
+        "_links": {
+          "self": "https://api.twitch.tv/kraken/channels/s2jinxy",
+          "follows": "https://api.twitch.tv/kraken/channels/s2jinxy/follows",
+          "commercial": "https://api.twitch.tv/kraken/channels/s2jinxy/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/s2jinxy/stream_key",
+          "chat": "https://api.twitch.tv/kraken/chat/s2jinxy",
+          "features": "https://api.twitch.tv/kraken/channels/s2jinxy/features",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/s2jinxy/subscriptions",
+          "editors": "https://api.twitch.tv/kraken/channels/s2jinxy/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/s2jinxy/videos"
+        },
+        "teams": [
+          {
+            "_id": 686,
+            "name": "ladiesoflt3",
+            "info": "♥ The Less Than 3 professional gaming and cosplay team is comprised of females who share a passion for gaming and cosplay that extends beyond the couch and into the competitive gaming arena and cosplay convention scene.\n",
+            "display_name": "Ladies of LT3",
+            "created_at": "2013-05-30T00:41:47Z",
+            "updated_at": "2013-05-31T00:54:45Z",
+            "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-ladiesoflt3-team_logo_image-ec5a116696ee3a05-300x300.png",
+            "banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/team-ladiesoflt3-banner_image-6b7f09b99686228c-640x125.jpeg",
+            "_links": {
+              "self": "https://api.twitch.tv/kraken/teams/ladiesoflt3"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "live_user_britton477",
+      "broadcaster": "obs",
+      "_id": 8245670528,
+      "game": "Dota2",
+      "viewers": 6,
+      "preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_britton477-320x200.jpg",
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/britton477"
+      },
+      "channel": {
+        "mature": false,
+        "status": "Pinoy  rage 1v1",
+        "display_name": "Britton477",
+        "game": "Dota2",
+        "_id": 55041211,
+        "name": "britton477",
+        "created_at": "2014-01-15T17:22:44Z",
+        "updated_at": "2014-01-17T04:09:03Z",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/britton477-profile_image-e7ee85bebf27027a-300x300.jpeg",
+        "url": "http://www.twitch.tv/britton477",
+        "_links": {
+          "self": "https://api.twitch.tv/kraken/channels/britton477",
+          "follows": "https://api.twitch.tv/kraken/channels/britton477/follows",
+          "commercial": "https://api.twitch.tv/kraken/channels/britton477/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/britton477/stream_key",
+          "chat": "https://api.twitch.tv/kraken/chat/britton477",
+          "features": "https://api.twitch.tv/kraken/channels/britton477/features",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/britton477/subscriptions",
+          "editors": "https://api.twitch.tv/kraken/channels/britton477/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/britton477/videos"
+        },
+        "teams": []
+      }
+    },
+    {
+      "name": "live_user_deadhatchi08",
+      "broadcaster": "obs",
+      "_id": 8245146816,
+      "game": "Dota 2",
+      "viewers": 3,
+      "preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_deadhatchi08-320x200.jpg",
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/deadhatchi08"
+      },
+      "channel": {
+        "mature": true,
+        "status": "Ranked MM Dota2 4800",
+        "display_name": "Deadhatchi08",
+        "game": "Dota 2",
+        "_id": 21694974,
+        "name": "deadhatchi08",
+        "created_at": "2011-04-13T08:14:09Z",
+        "updated_at": "2014-01-17T02:57:23Z",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/deadhatchi08-profile_image-aa831c2de79c6665-300x300.jpeg",
+        "background": "http://static-cdn.jtvnw.net/jtv_user_pictures/deadhatchi08-background_image-1a940c57f3752ddb.jpeg",
+        "url": "http://www.twitch.tv/deadhatchi08",
+        "_links": {
+          "self": "https://api.twitch.tv/kraken/channels/deadhatchi08",
+          "follows": "https://api.twitch.tv/kraken/channels/deadhatchi08/follows",
+          "commercial": "https://api.twitch.tv/kraken/channels/deadhatchi08/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/deadhatchi08/stream_key",
+          "chat": "https://api.twitch.tv/kraken/chat/deadhatchi08",
+          "features": "https://api.twitch.tv/kraken/channels/deadhatchi08/features",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/deadhatchi08/subscriptions",
+          "editors": "https://api.twitch.tv/kraken/channels/deadhatchi08/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/deadhatchi08/videos"
+        },
+        "teams": []
+      }
+    },
+    {
+      "name": "live_user_p0int_biank",
+      "broadcaster": "xsplit",
+      "_id": 8244818944,
+      "game": "Hearthstone: Heroes of Warcraft",
+      "viewers": 2,
+      "preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_p0int_biank-320x200.jpg",
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/p0int_biank"
+      },
+      "channel": {
+        "status": "[US] Point.Blank back to streaming mainly Dota2 and Hearthstone after 6 month break. ",
+        "display_name": "P0int_BIank",
+        "game": "Hearthstone: Heroes of Warcraft",
+        "_id": 37698955,
+        "name": "p0int_biank",
+        "created_at": "2012-11-14T22:17:21Z",
+        "updated_at": "2014-01-17T02:16:14Z",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/p0int_biank-profile_image-43fda8dcfa3c9a8a-300x300.jpeg",
+        "banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/p0int_biank-channel_header_image-3685923004b3c3e0-640x125.jpeg",
+        "video_banner": "http://static-cdn.jtvnw.net/jtv_user_pictures/p0int_biank-channel_offline_image-e5065c9ecad5966e-640x360.png",
+        "url": "http://www.twitch.tv/p0int_biank",
+        "_links": {
+          "self": "https://api.twitch.tv/kraken/channels/p0int_biank",
+          "follows": "https://api.twitch.tv/kraken/channels/p0int_biank/follows",
+          "commercial": "https://api.twitch.tv/kraken/channels/p0int_biank/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/p0int_biank/stream_key",
+          "chat": "https://api.twitch.tv/kraken/chat/p0int_biank",
+          "features": "https://api.twitch.tv/kraken/channels/p0int_biank/features",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/p0int_biank/subscriptions",
+          "editors": "https://api.twitch.tv/kraken/channels/p0int_biank/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/p0int_biank/videos"
+        },
+        "teams": []
+      }
+    },
+    {
+      "name": "live_user_lixow",
+      "broadcaster": "obs",
+      "_id": 8244949040,
+      "game": "Dota 2",
+      "viewers": 0,
+      "preview": "http://static-cdn.jtvnw.net/previews-ttv/live_user_lixow-320x200.jpg",
+      "_links": {
+        "self": "https://api.twitch.tv/kraken/streams/lixow"
+      },
+      "channel": {
+        "mature": true,
+        "status": "DOTA2 With JJ",
+        "display_name": "Lixow",
+        "game": "Dota 2",
+        "_id": 28484624,
+        "name": "lixow",
+        "created_at": "2012-02-25T02:09:37Z",
+        "updated_at": "2014-01-17T02:32:16Z",
+        "logo": "http://static-cdn.jtvnw.net/jtv_user_pictures/lixow-profile_image-5d2c4767016bf098-300x300.jpeg",
+        "url": "http://www.twitch.tv/lixow",
+        "_links": {
+          "self": "https://api.twitch.tv/kraken/channels/lixow",
+          "follows": "https://api.twitch.tv/kraken/channels/lixow/follows",
+          "commercial": "https://api.twitch.tv/kraken/channels/lixow/commercial",
+          "stream_key": "https://api.twitch.tv/kraken/channels/lixow/stream_key",
+          "chat": "https://api.twitch.tv/kraken/chat/lixow",
+          "features": "https://api.twitch.tv/kraken/channels/lixow/features",
+          "subscriptions": "https://api.twitch.tv/kraken/channels/lixow/subscriptions",
+          "editors": "https://api.twitch.tv/kraken/channels/lixow/editors",
+          "videos": "https://api.twitch.tv/kraken/channels/lixow/videos"
+        },
+        "teams": []
+      }
+    }
+  ]
+}

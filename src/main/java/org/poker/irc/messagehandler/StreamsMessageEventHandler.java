@@ -2,6 +2,8 @@ package org.poker.irc.messagehandler;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -11,12 +13,18 @@ import org.apache.http.impl.client.HttpClients;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.Configuration;
 import org.poker.irc.MessageEventHandler;
+import org.poker.irc.twitch.StreamsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 
 public class StreamsMessageEventHandler implements MessageEventHandler {
+  private enum Game {
+    Dota,
+    LeagueOfLegends
+  }
   private static final Logger LOG = LoggerFactory.getLogger(StreamsMessageEventHandler.class);
   private final Configuration configuration;
 
@@ -36,22 +44,57 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
 
   @Override
   public void onMessage(MessageEvent event) {
-    Gson gson = new GsonBuilder().create();
-    String json;
-    HttpGet httpGet = new HttpGet("https://api.twitch.tv/kraken/search/streams?q=dota2");
+    Game game;
+    String message = event.getMessage();
+    int index = message.indexOf(' ');
+    if (index < 0) {
+      game = Game.Dota;
+    } else {
+      String gameName = message.substring(index + 1).trim().toLowerCase();
+      if (gameName.startsWith("l")) {
+        game = Game.LeagueOfLegends;
+      } else if (gameName.startsWith("d")) {
+        game = Game.Dota;
+      } else {
+        event.getChannel().send().message("Unknown game: " + gameName);
+        return;
+      }
+    }
+
+    String gameName;
+    switch (game) {
+      case Dota:
+        gameName = "Dota+2";
+        break;
+      case LeagueOfLegends:
+        gameName = "League+of+Legends";
+        break;
+      default:
+        throw new NotImplementedException();
+    }
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    StreamsResponse streamsResponse;
+    HttpGet httpGet = new HttpGet("https://api.twitch.tv/kraken/streams?limit=5&game=" + gameName);
     httpGet.addHeader("Client-ID", this.configuration.getTwitchClientId());
     httpGet.addHeader("Accept", "application/vnd.twitchtv.v2+json");
     try (CloseableHttpClient httpClient = HttpClients.createDefault();
          CloseableHttpResponse response = httpClient.execute(httpGet)) {
       HttpEntity httpEntity = response.getEntity();
-      try (InputStream inputStream = httpEntity.getContent()) {
-        String myString = IOUtils.toString(inputStream, "UTF-8");
-        LOG.info(myString);
-
-        // InputStreamReader json = gson.fromJson(reader, String.class);
+      try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
+        streamsResponse = gson.fromJson(reader, StreamsResponse.class);
       }
     } catch (IOException e) {
       throw new RuntimeException(e);
+    }
+    for (StreamsResponse.Stream stream : streamsResponse.getStreams()) {
+      StringBuilder sb = new StringBuilder();
+      sb.append(stream.getChannel().getDisplay_name());
+      sb.append(" | ");
+      sb.append(stream.getViewers());
+      sb.append(" viewers | ");
+      sb.append(stream.getChannel().getUrl());
+      sb.append("/popout");
+      event.getChannel().send().message(sb.toString());
     }
   }
 }
