@@ -66,7 +66,6 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
   }
 
   private void appendMoney(BigMoney bigMoney, StringBuilder sb) {
-    sb.append(bigMoney.getCurrencyUnit().getSymbol());
     sb.append(NumberFormat.getCurrencyInstance().format(bigMoney.getAmount()));
   }
 }
