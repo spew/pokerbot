@@ -61,7 +61,7 @@ public class UrlMessageEventHandler implements MessageEventHandler {
       } catch (TwitterException e) {
         throw new RuntimeException(e);
       }
-      event.getChannel().send().message(status.getUser().getName() + ": " + status.getText());
+      event.getChannel().send().message("@" + status.getUser().getName() + ": " + status.getText());
     } else {
       Document document;
       try {
