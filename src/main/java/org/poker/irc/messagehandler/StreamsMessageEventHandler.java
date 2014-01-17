@@ -23,7 +23,8 @@ import java.io.*;
 public class StreamsMessageEventHandler implements MessageEventHandler {
   private enum Game {
     Dota,
-    LeagueOfLegends
+    LeagueOfLegends,
+    Quake
   }
   private static final Logger LOG = LoggerFactory.getLogger(StreamsMessageEventHandler.class);
   private final Configuration configuration;
@@ -55,11 +56,17 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
         game = Game.LeagueOfLegends;
       } else if (gameName.startsWith("d")) {
         game = Game.Dota;
+      } else if (gameName.startsWith("q")) {
+        game = Game.Quake;
+      } else if (gameName.equals("poker")) {
+        event.getChannel().send().message("Poker? I don't support dead games");
+        return;
       } else {
         event.getChannel().send().message("Unknown game: " + gameName);
         return;
       }
     }
+    int limit = 5;
     String gameName;
     switch (game) {
       case Dota:
@@ -68,12 +75,16 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
       case LeagueOfLegends:
         gameName = "League+of+Legends";
         break;
+      case Quake:
+        gameName = "Quake%20Live";
+        limit = 1;
+        break;
       default:
         throw new NotImplementedException();
     }
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     StreamsResponse streamsResponse;
-    HttpGet httpGet = new HttpGet("https://api.twitch.tv/kraken/streams?limit=3&game=" + gameName);
+    HttpGet httpGet = new HttpGet("https://api.twitch.tv/kraken/streams?limit=" + limit + "&game=" + gameName);
     httpGet.addHeader("Client-ID", this.configuration.getTwitchClientId());
     httpGet.addHeader("Accept", "application/vnd.twitchtv.v2+json");
     try (CloseableHttpClient httpClient = HttpClients.createDefault();
