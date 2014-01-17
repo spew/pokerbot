@@ -68,7 +68,7 @@ public class BotRunner {
         }
 
         for (Channel channel : bot.getUserBot().getChannels()) {
-          channel.send().message("lol scheduled task");
+          //channel.send().message("lol scheduled task");
         }
       }
     };
@@ -96,7 +96,7 @@ public class BotRunner {
 
   private EventHandler getEventHandler(Configuration configuration) {
     EventHandler eventHandler = new EventHandler();
-    eventHandler.addMessageEventHandler(new UrlMessageEventHandler());
+    eventHandler.addMessageEventHandler(new UrlMessageEventHandler(configuration));
     eventHandler.addMessageEventHandler(new RottenTomatoesMessageEventHandler());
     eventHandler.addMessageEventHandler(new DotabuffMessageEventHandler());
     eventHandler.addMessageEventHandler(new GoogleSearchMessageEventHandler(configuration));

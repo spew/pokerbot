@@ -17,10 +17,10 @@ public class TwitterTest {
   public void testTwitter() throws TwitterException {
     ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
         .setDebugEnabled(true)
-        .setOAuthConsumerKey("xPSflh20vuMYawYkW35mHw")
-        .setOAuthConsumerSecret("Rw1RlJI2xrIyzEHnwa9YQJ2ldUclUdyaeCVAcEks")
-        .setOAuthAccessToken("2294038668-k5anOgUPl1eVyZyYpvX2kDs12WKmajKalusUicN")
-        .setOAuthAccessTokenSecret("lZu3JDDEnyL0YeFneDl6TDHUsKiCkUx1BUqwzArjA8wMa");
+        .setOAuthConsumerKey("")
+        .setOAuthConsumerSecret("")
+        .setOAuthAccessToken("")
+        .setOAuthAccessTokenSecret("");
     TwitterFactory twitterFactory = new TwitterFactory(configurationBuilder.build());
     Twitter twitter = twitterFactory.getInstance();
     //Twitter twitter = new Twitter("https://api.twitter.com/1.1/");

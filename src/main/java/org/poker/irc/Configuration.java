@@ -27,7 +27,36 @@ public class Configuration {
   private String googleSearchApiKey;
   private String googleSearchCxKey;
   private String ident = nick;
-private String espnApiKey;
+  private String espnApiKey;
+  private String twitchClientId;
+  private TwitterCredentials twitterCredentials = new TwitterCredentials();
+
+  public static class TwitterCredentials {
+    private String consumerKey;
+    private String consumerSecret;
+    private String accessToken;
+    private String accessTokenSecret;
+
+    public String getAccessTokenSecret() {
+      return accessTokenSecret;
+    }
+
+    public String getConsumerKey() {
+      return consumerKey;
+    }
+
+    public String getConsumerSecret() {
+      return consumerSecret;
+    }
+
+    public String getAccessToken() {
+      return accessToken;
+    }
+  }
+
+  public TwitterCredentials getTwitterCredentials() {
+    return this.twitterCredentials;
+  }
 
   public String getEspnApiKey() {
     return espnApiKey;
@@ -36,8 +65,6 @@ private String espnApiKey;
   public String getTwitchClientId() {
     return twitchClientId;
   }
-
-  private String twitchClientId;
 
   public Configuration() {
 
@@ -50,6 +77,10 @@ private String espnApiKey;
     this.googleSearchCxKey = System.getenv().get("SEARCH_CX_KEY");
     this.twitchClientId = System.getenv().get("TWITCH_CLIENT_ID");
     this.espnApiKey = System.getenv("ESPN_API_KEY");
+    this.twitterCredentials.accessToken = System.getenv("TWITTER_OAUTH_ACCESS_TOKEN");
+    this.twitterCredentials.accessTokenSecret = System.getenv("TWITTER_OAUTH_ACCESS_TOKEN_SECRET");
+    this.twitterCredentials.consumerKey = System.getenv("TWITTER_OAUTH_CONSUMER_KEY");
+    this.twitterCredentials.consumerSecret = System.getenv("TWITTER_OAUTH_CONSUMER_SECRET");
     Options options = new Options();
     Option googleSearchApiKeyOption = OptionBuilder
         .withLongOpt("google-search-api-key")

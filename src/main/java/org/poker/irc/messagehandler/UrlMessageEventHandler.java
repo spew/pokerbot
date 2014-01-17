@@ -4,10 +4,10 @@ package org.poker.irc.messagehandler;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.pircbotx.hooks.events.MessageEvent;
-import org.poker.irc.MessageEventHandler;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
+import org.poker.irc.*;
+import org.poker.irc.Configuration;
+import twitter4j.*;
+import twitter4j.conf.*;
 
 import java.io.IOException;
 import java.util.regex.Matcher;
@@ -15,6 +15,12 @@ import java.util.regex.Pattern;
 
 public class UrlMessageEventHandler implements MessageEventHandler {
   Pattern twitterPattern = Pattern.compile("https?:\\/\\/(mobile\\.)?twitter\\.com\\/.*?\\/status\\/([0-9]+)");
+  private Configuration configuration;
+
+  public UrlMessageEventHandler(Configuration configuration) {
+    this.configuration = configuration;
+  }
+
   @Override
   public String[] getMessagePrefixes() {
     return new String[] { "http://", "https://", "www." };
@@ -39,28 +45,30 @@ public class UrlMessageEventHandler implements MessageEventHandler {
     if (!url.startsWith("http://") && !url.startsWith("https://")) {
       url = "http://" + url;
     }
-    Document document;
-    try {
-      document = Jsoup.connect(url).get();
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
     Matcher matcher = twitterPattern.matcher(url);
-    if (matcher.matches() && false) {
+    if (matcher.matches()) {
       String statusId = matcher.group(2);
-      /*Twitter twitter = new Twitter();
-      // TODO: rotate these keys since I checked them in
-      twitter.setOAuthConsumer("xPSflh20vuMYawYkW35mHw", "Rw1RlJI2xrIyzEHnwa9YQJ2ldUclUdyaeCVAcEks");
-
+      ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
+          .setOAuthAccessToken(this.configuration.getTwitterCredentials().getAccessToken())
+          .setOAuthAccessTokenSecret(this.configuration.getTwitterCredentials().getAccessTokenSecret())
+          .setOAuthConsumerSecret(this.configuration.getTwitterCredentials().getConsumerSecret())
+          .setOAuthConsumerKey(this.configuration.getTwitterCredentials().getConsumerKey());
+      TwitterFactory twitterFactory = new TwitterFactory(configurationBuilder.build());
+      Twitter twitter = twitterFactory.getInstance();
       Status status;
       try {
         status = twitter.showStatus(Long.parseLong(statusId));
       } catch (TwitterException e) {
-        event.getChannel().send().message("Twitter is broken :(");
         throw new RuntimeException(e);
       }
-      event.getChannel().send().message(status.getUser().getName() + ": " + status.getText()); */
+      event.getChannel().send().message(status.getUser().getName() + ": " + status.getText());
     } else {
+      Document document;
+      try {
+        document = Jsoup.connect(url).get();
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
       String title = document.title();
       event.getChannel().send().message(title);
     }
