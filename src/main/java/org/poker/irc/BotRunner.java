@@ -80,8 +80,8 @@ public class BotRunner {
     EventHandler eventHandler = this.getEventHandler(configuration);
     org.pircbotx.Configuration.Builder configurationBuilder = new org.pircbotx.Configuration.Builder()
         .setName(configuration.getNick())                       // set the nick of the bot
-        .setFinger("doge")
-        .setRealName("dogebot")
+        .setFinger("stfu pete")
+        .setRealName("pete is a donk")
         .setAutoNickChange(true)                                // automatically change nick when the current one is in use
         .setCapEnabled(true)                                    // enable CAP features
         .addCapHandler(new TLSCapHandler(new UtilSSLSocketFactory().trustAllCertificates(), true))
@@ -96,6 +96,13 @@ public class BotRunner {
 
   private EventHandler getEventHandler(Configuration configuration) {
     EventHandler eventHandler = new EventHandler();
+    eventHandler.addMessageEventHandler(new UrlMessageEventHandler());
+    eventHandler.addMessageEventHandler(new RottenTomatoesMessageEventHandler());
+    eventHandler.addMessageEventHandler(new DotabuffMessageEventHandler());
+    eventHandler.addMessageEventHandler(new GoogleSearchMessageEventHandler(configuration));
+    eventHandler.addMessageEventHandler(new BitcoinMessageEventHandler());
+    eventHandler.addMessageEventHandler(new UptimeMessageEventHandler());
+    eventHandler.addMessageEventHandler(new StreamsMessageEventHandler(configuration));
     eventHandler.addMessageEventHandler(new DogecoinMessageEventHandler());
     return eventHandler;
   }
