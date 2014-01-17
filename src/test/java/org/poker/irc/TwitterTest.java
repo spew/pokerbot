@@ -1,6 +1,6 @@
 package org.poker.irc;
 
-import org.junit.Test;
+import org.junit.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import twitter4j.*;
@@ -14,6 +14,7 @@ public class TwitterTest {
   private static final Logger logger = LoggerFactory.getLogger(TwitterTest.class);
 
   @Test
+  @Ignore
   public void testTwitter() throws TwitterException {
     ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
         .setDebugEnabled(true)

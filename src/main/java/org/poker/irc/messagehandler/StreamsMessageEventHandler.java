@@ -73,7 +73,7 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
     }
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     StreamsResponse streamsResponse;
-    HttpGet httpGet = new HttpGet("https://api.twitch.tv/kraken/streams?limit=5&game=" + gameName);
+    HttpGet httpGet = new HttpGet("https://api.twitch.tv/kraken/streams?limit=3&game=" + gameName);
     httpGet.addHeader("Client-ID", this.configuration.getTwitchClientId());
     httpGet.addHeader("Accept", "application/vnd.twitchtv.v2+json");
     try (CloseableHttpClient httpClient = HttpClients.createDefault();
