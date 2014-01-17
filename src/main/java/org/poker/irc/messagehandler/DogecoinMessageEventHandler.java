@@ -7,6 +7,7 @@ import org.joda.money.format.MoneyFormatterBuilder;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.poker.irc.BotUtils;
 import org.poker.irc.MessageEventHandler;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -68,14 +69,10 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
         sb.append(" | CoinEx: ");
         sb.append(satoshi.format(coinexPrice).toString());
         sb.append(" | 1000 DOGE = ");
-        this.appendMoney(thousandDogeUSD, sb);
+        BotUtils.appendMoney(thousandDogeUSD, sb);
         //sb.append(" | w.avg: ");
         //sb.append(ticker.get());
         event.getChannel().send().message(sb.toString());
-    }
-
-    private void appendMoney(BigMoney bigMoney, StringBuilder sb) {
-        sb.append(NumberFormat.getCurrencyInstance().format(bigMoney.getAmount()));
     }
 
 }

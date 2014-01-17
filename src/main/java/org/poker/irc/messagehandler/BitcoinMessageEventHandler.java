@@ -15,6 +15,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.poker.irc.BotUtils;
 import org.poker.irc.MessageEventHandler;
 import org.poker.irc.mtGox.TickerFactory;
 
@@ -46,11 +47,11 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
 
     StringBuilder sb = new StringBuilder();
     sb.append("BitCoin - last: ");
-    this.appendMoney(ticker.getLast(), sb);
+    BotUtils.appendMoney(ticker.getLast(), sb);
     sb.append(" | high: ");
-    this.appendMoney(ticker.getHigh(), sb);
+    BotUtils.appendMoney(ticker.getHigh(), sb);
     sb.append(" | low: ");
-    this.appendMoney(ticker.getLow(), sb);
+    BotUtils.appendMoney(ticker.getLow(), sb);
     sb.append(" | vol: ");
     sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));
     //sb.append(" | w.avg: ");
@@ -58,7 +59,4 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     event.getChannel().send().message(sb.toString());
   }
 
-  private void appendMoney(BigMoney bigMoney, StringBuilder sb) {
-    sb.append(NumberFormat.getCurrencyInstance().format(bigMoney.getAmount()));
-  }
 }
