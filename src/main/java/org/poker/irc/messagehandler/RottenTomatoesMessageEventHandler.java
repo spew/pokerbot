@@ -20,6 +20,11 @@ public class RottenTomatoesMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getDescription() {
+    return "!rt <movie name> or .rt <movie name>: returns the critics rating and audience rating for a film.";
+  }
+
+  @Override
   public void onMessage(MessageEvent event) {
     String message = event.getMessage();
     String movieName;

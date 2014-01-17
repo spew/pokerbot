@@ -2,6 +2,7 @@ package org.poker.irc;
 
 import com.google.api.client.util.Lists;
 import com.google.common.collect.Maps;
+import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.KickEvent;
@@ -70,12 +71,19 @@ public class EventHandler extends ListenerAdapter {
   @Override
   public void onMessage(final MessageEvent event) throws Exception {
     String message = event.getMessage();
-    for (Map.Entry<String, MessageEventHandler> entry : messageEventHandlerMap.entrySet()) {
-      if (message.startsWith(entry.getKey())) {
-        try {
-          entry.getValue().onMessage(event);
-        } catch (Throwable t) {
-          LOG.error("Error in handler", t);
+    User user = event.getUser();
+    if(message.equalsIgnoreCase(".help") || message.equalsIgnoreCase("!help")){
+      for(MessageEventHandler handler : messageEventHandlers){
+        user.send().message(handler.getDescription());
+      }
+    } else{
+      for (Map.Entry<String, MessageEventHandler> entry : messageEventHandlerMap.entrySet()) {
+        if (message.startsWith(entry.getKey())) {
+          try {
+            entry.getValue().onMessage(event);
+          } catch (Throwable t) {
+            LOG.error("Error in handler", t);
+          }
         }
       }
     }

@@ -23,6 +23,11 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getDescription() {
+    return "!dotabuff <name> or .dotabuff <name> : gives you the wins, losses and dotabuff url for that player.";
+  }
+
+  @Override
   public void onMessage(MessageEvent event) {
     String message = event.getMessage();
     if (message.startsWith("!dotabuff")) {

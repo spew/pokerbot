@@ -25,6 +25,11 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getDescription() {
+    return "!streams or .streams: returns a list of twitch streams.";
+  }
+
+  @Override
   public String[] getMessagePrefixes() {
     return new String[] { "!twitch", ".twitch", "!streams", ".streams" };
   }

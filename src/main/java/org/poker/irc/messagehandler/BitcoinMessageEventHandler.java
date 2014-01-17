@@ -28,6 +28,11 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
       .toFormatter();
 
   @Override
+  public String getDescription() {
+    return "!btc or .btc: gives you the latest info on BitCoin";
+  }
+
+  @Override
   public String[] getMessagePrefixes() {
     return new String[] { ".btc", "!btc" };
   }

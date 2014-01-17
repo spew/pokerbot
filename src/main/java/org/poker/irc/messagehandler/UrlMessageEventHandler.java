@@ -21,6 +21,11 @@ public class UrlMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getDescription() {
+    return "Parse link titles";
+  }
+
+  @Override
   public void onMessage(MessageEvent event) {
     String message = event.getMessage();
     String url;
