@@ -29,6 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class BotRunner {
+  private String latestHeadlineTitle = "";
   private static final Logger LOG = LoggerFactory.getLogger(BotRunner.class);
   public void run(Configuration configuration) throws InterruptedException {
     org.pircbotx.Configuration ircConfiguration = this.getIrcBotConfiguration(configuration);
@@ -58,22 +59,24 @@ public class BotRunner {
              CloseableHttpResponse response = httpClient.execute(httpGet)) {
           HttpEntity httpEntity = response.getEntity();
           try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
-            //JsonElement je = jp.parse(reader);
-            //JsonParser jp = new JsonParser();
-            //LOG.info(gson.toJson(je));
             headlinesResponse = gson.fromJson(reader, HeadlinesResponse.class);
+            Headline currentHeadline = headlinesResponse.getHeadlines().get(0);
+            String currentHeadlineTitle = currentHeadline.getHeadline();
+
+            if ( !(latestHeadlineTitle.equalsIgnoreCase(currentHeadlineTitle))){
+              latestHeadlineTitle = currentHeadlineTitle;
+              for (Channel channel : bot.getUserBot().getChannels()) {
+                channel.send().message("ESPN Ticker: " + latestHeadlineTitle);
+                channel.send().message(currentHeadline.getLinks().getWeb().getHref());
+              }
+            }
           }
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
-
-        for (Channel channel : bot.getUserBot().getChannels()) {
-          //channel.send().message("lol scheduled task");
-        }
       }
     };
-    scheduler.scheduleAtFixedRate(checkEspnNews,50,15, TimeUnit.SECONDS);
-
+    scheduler.scheduleAtFixedRate(checkEspnNews,1,60, TimeUnit.MINUTES);
   }
 
   private org.pircbotx.Configuration getIrcBotConfiguration(Configuration configuration) {
