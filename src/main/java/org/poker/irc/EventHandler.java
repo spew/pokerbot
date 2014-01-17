@@ -20,12 +20,14 @@ public class EventHandler extends ListenerAdapter {
   }
   private static final Logger LOG = LoggerFactory.getLogger(EventHandler.class);
   private Map<String, MessageEventHandler> messageEventHandlerMap = Maps.newHashMap();
+  private List<MessageEventHandler> messageEventHandlers = Lists.newArrayList();
   private Object lock = new Object();
   private List<RejoinChannelAttempt> rejoiningChannels = Lists.newArrayList();
   public void addMessageEventHandler(final MessageEventHandler messageEventHandler) {
     for (String prefix : messageEventHandler.getMessagePrefixes()) {
       this.messageEventHandlerMap.put(prefix, messageEventHandler);
     }
+    this.messageEventHandlers.add(messageEventHandler);
   }
 
   @Override
