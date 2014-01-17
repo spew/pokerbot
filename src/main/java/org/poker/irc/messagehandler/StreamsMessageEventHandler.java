@@ -34,7 +34,7 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String getDescription() {
-    return "!streams or .streams: returns a list of twitch streams.";
+    return "!streams <game> or .streams <game>: returns a list of twitch streams for { dota, lol }.";
   }
 
   @Override
@@ -60,7 +60,6 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
         return;
       }
     }
-
     String gameName;
     switch (game) {
       case Dota:
