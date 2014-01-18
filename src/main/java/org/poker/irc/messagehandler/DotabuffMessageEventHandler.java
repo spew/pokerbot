@@ -105,6 +105,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     this.nameToId.put("dank", "78932949");
   }
   //API is not giving back the 10 most recent or rather the 10 most recent arent the same as Dotabuff..
+  //TODO: Need to weed out the early abandoned matches which dotabuff excludes..
   private List<Match> getRecentMatches(String playerId){
     List<Match> recentMatches = new ArrayList<Match>();
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
