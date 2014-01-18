@@ -38,7 +38,8 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
   public void onMessage(MessageEvent event) {
     Ticker ticker = org.poker.irc.mtGox.TickerFactory.CreateBtcTicker();
     StringBuilder sb = new StringBuilder();
-    sb.append("BitCoin - last: ");
+    sb.append(ticker.getTradableIdentifier());
+    sb.append(" - last: ");
     BotUtils.appendMoney(ticker.getLast(), sb);
     sb.append(" | ask: ");
     BotUtils.appendMoney(ticker.getAsk(), sb);
