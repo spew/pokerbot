@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Player {
   @Expose
-  private Double account_id;
+  private Double  account_id;
   @Expose
   private Integer player_slot;
   @Expose
