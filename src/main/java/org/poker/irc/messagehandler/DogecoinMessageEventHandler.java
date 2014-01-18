@@ -1,6 +1,5 @@
 package org.poker.irc.messagehandler;
 
-import com.xeiam.xchange.dto.marketdata.Ticker;
 import org.joda.money.BigMoney;
 import org.joda.money.format.MoneyFormatter;
 import org.joda.money.format.MoneyFormatterBuilder;
@@ -11,9 +10,7 @@ import org.poker.irc.BotUtils;
 import org.poker.irc.MessageEventHandler;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 
 public class DogecoinMessageEventHandler implements MessageEventHandler {
 
@@ -38,7 +35,7 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
     String url = "http://www.coinwarz.com/cryptocurrency/coins/dogecoin";
     Document document;
 
-    com.xeiam.xchange.dto.marketdata.Ticker btcTicker = org.poker.irc.mtGox.TickerFactory.CreateBtcTicker();
+    com.xeiam.xchange.dto.marketdata.Ticker btcTicker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
 
     BigMoney thousandDogeUSD;
     BigDecimal cryptsyPrice;

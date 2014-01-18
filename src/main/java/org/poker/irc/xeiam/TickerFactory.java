@@ -1,4 +1,4 @@
-package org.poker.irc.mtGox;
+package org.poker.irc.xeiam;
 
 import com.xeiam.xchange.Exchange;
 import com.xeiam.xchange.ExchangeFactory;
@@ -10,10 +10,10 @@ import java.io.IOException;
 
 public class TickerFactory {
   public static Ticker CreateBtcTicker() {
-    // Use the factory to get the version 2 MtGox exchange API using default settings
-    Exchange mtGox = ExchangeFactory.INSTANCE.createExchange("com.xeiam.xchange.bitcoinaverage.BitcoinAverageExchange");
+
+    Exchange btcAverage = ExchangeFactory.INSTANCE.createExchange("com.xeiam.xchange.bitcoinaverage.BitcoinAverageExchange");
     // Interested in the public polling market data feed (no authentication)
-    PollingMarketDataService marketDataService = mtGox.getPollingMarketDataService();
+    PollingMarketDataService marketDataService = btcAverage.getPollingMarketDataService();
     // Get the latest ticker data showing BTC to USD
     Ticker ticker;
     try {
