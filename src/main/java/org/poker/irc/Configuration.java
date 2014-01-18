@@ -12,6 +12,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.commons.validator.routines.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +30,7 @@ public class Configuration {
   private String ident = nick;
   private String espnApiKey;
   private String twitchClientId;
+  private int espnPollIntervalMinutes = 10;
   private TwitterCredentials twitterCredentials = new TwitterCredentials();
 
   public static class TwitterCredentials {
@@ -129,6 +131,13 @@ public class Configuration {
         .withDescription("The hostname of the IRC server to connect to")
         .create("s");
     options.addOption(serverHostNameOption);
+    Option espnPollIntervalOption = OptionBuilder
+        .withLongOpt("espn-poll-interval")
+        .hasArg()
+        .withArgName("interval")
+        .withDescription("The interval by which to poll to the ESPN API")
+        .create("ei");
+    options.addOption(espnPollIntervalOption);
     CommandLineParser parser = new BasicParser();
     CommandLine commandLine;
     try {
@@ -170,6 +179,14 @@ public class Configuration {
     if (commandLine.hasOption(serverHostNameOption.getOpt())) {
       this.serverHostname = commandLine.getOptionValue(serverHostNameOption.getValue());
     }
+    if (commandLine.hasOption(espnPollIntervalOption.getOpt())) {
+      this.espnPollIntervalMinutes =
+          IntegerValidator.getInstance().validate(commandLine.getOptionValue(espnPollIntervalOption.getOpt()));
+    }
+  }
+
+  public int getEspnPollIntervalMinutes() {
+    return this.espnPollIntervalMinutes;
   }
 
   public String getGoogleSearchCxKey() {
