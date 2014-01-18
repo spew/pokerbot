@@ -127,11 +127,15 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     return recentMatches;
   }
 
-  private List<Result> getRecentResults(Map<String,String> matchesWithPlayerSlot){
+  private List<Result> getRecentResults(Map<String,String> matchesWithPlayerSlot, List<Match> recentMatches){
     List<Result> results = new ArrayList<>();
     Result currentResult;
-    for(Map.Entry<String,String> entry : matchesWithPlayerSlot.entrySet()){
-      currentResult = checkMatchResult(entry.getKey(),entry.getValue());
+    String playerSlot;
+    String matchId;
+    for(Match match: recentMatches){
+      matchId = match.getMatch_id().toString();
+      playerSlot = matchesWithPlayerSlot.get(matchId);
+      currentResult = checkMatchResult(matchId,playerSlot);
       results.add(currentResult);
     }
     return results;
@@ -144,7 +148,6 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     for(Match match : matches){
       players = match.getPlayers();
       playerSlot = this.getPlayerSlot(players,playerId);
-      //BUG: since this is a hashmap the order of matches isnt preserved
       matchesWithPlayerSlot.put(match.getMatch_id().toString(), playerSlot);
     }
     return matchesWithPlayerSlot;
@@ -203,7 +206,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     int streak = 0;
     List<Match> recentMatches = this.getRecentMatches(playerId);
     Map<String,String> matchesWithPlayerSlot = this.getMatchesWithPlayerSlot(recentMatches,playerId);
-    List<Result> recentResults = getRecentResults(matchesWithPlayerSlot);
+    List<Result> recentResults = getRecentResults(matchesWithPlayerSlot,recentMatches);
     Result prev = recentResults.get(0);
     for(Result result : recentResults){
       if(result.equals(prev)){
