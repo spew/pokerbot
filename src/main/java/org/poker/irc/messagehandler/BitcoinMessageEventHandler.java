@@ -24,38 +24,27 @@ import java.math.RoundingMode;
 import java.text.*;
 
 public class BitcoinMessageEventHandler implements MessageEventHandler {
-
-  private MoneyFormatter moneyFormatter = new MoneyFormatterBuilder()
-      .appendCurrencySymbolLocalized()
-      .appendAmount()
-      .toFormatter();
-
   @Override
   public String getDescription() {
-    return "!btc or .btc: gives you the latest info on BitCoin";
+    return "!btc, !bitcoin, .btc, or .bitcoin: gives you the latest info on BitCoin";
   }
 
   @Override
   public String[] getMessagePrefixes() {
-    return new String[] { ".btc", "!btc" };
+    return new String[] { ".btc", "!btc", ".bicoin", "!bitcoin" };
   }
 
   @Override
   public void onMessage(MessageEvent event) {
-
     Ticker ticker = org.poker.irc.mtGox.TickerFactory.CreateBtcTicker();
-
     StringBuilder sb = new StringBuilder();
     sb.append("BitCoin - last: ");
     BotUtils.appendMoney(ticker.getLast(), sb);
-    sb.append(" | high: ");
-    BotUtils.appendMoney(ticker.getHigh(), sb);
-    sb.append(" | low: ");
-    BotUtils.appendMoney(ticker.getLow(), sb);
+    sb.append(" | ask: ");
+    BotUtils.appendMoney(ticker.getAsk(), sb);
+    String test = ticker.getTradableIdentifier();
     sb.append(" | vol: ");
     sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));
-    //sb.append(" | w.avg: ");
-    //sb.append(ticker.get());
     event.getChannel().send().message(sb.toString());
   }
 

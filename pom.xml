@@ -21,7 +21,7 @@
     <jsoup.version>1.7.3</jsoup.version>
     <pircbotx.version>2.0.1</pircbotx.version>
     <twitter4j.version>3.0.5</twitter4j.version>
-    <xchange.version>1.10.0</xchange.version>
+    <xchange.version>2.0.0-SNAPSHOT</xchange.version>
     <junit.version>(4,)</junit.version>
     <commons-cli.version>1.2</commons-cli.version>
     <httpcomponents.version>4.3.1</httpcomponents.version>
@@ -42,6 +42,11 @@
     <repository>
       <id>central</id>
       <url>http://repo1.maven.org/maven2/</url>
+    </repository>
+    <repository>
+      <id>sonatype-oss-snapshot</id>
+      <snapshots/>
+      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
     </repository>
     <repository>
       <id>project.local</id>
@@ -126,6 +131,11 @@
     <dependency>
       <groupId>com.xeiam.xchange</groupId>
       <artifactId>xchange-mtgox</artifactId>
+      <version>${xchange.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.xeiam.xchange</groupId>
+      <artifactId>xchange-bitcoinaverage</artifactId>
       <version>${xchange.version}</version>
     </dependency>
     <dependency>
