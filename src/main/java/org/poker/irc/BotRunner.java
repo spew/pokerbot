@@ -51,24 +51,37 @@ public class BotRunner {
     Runnable checkEspnNews = new Runnable() {
       @Override
       public void run() {
+        LOG.info("Checking for latest ESPN news");
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         HeadlinesResponse headlinesResponse;
         HttpGet httpGet = new HttpGet("https://api.espn.com/v1/sports/news/headlines/top?apikey=" + ESPN_API_KEY);
         httpGet.addHeader("Accept", "application/json");
+        LOG.info("Fetching latest ESPN headlines");
         try (CloseableHttpClient httpClient = HttpClients.createDefault();
              CloseableHttpResponse response = httpClient.execute(httpGet)) {
           HttpEntity httpEntity = response.getEntity();
           try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
+            LOG.info("Converting ESPN response from json to pojo");
             headlinesResponse = gson.fromJson(reader, HeadlinesResponse.class);
           }
         } catch (IOException e) {
           throw new RuntimeException(e);
         }
+        LOG.info("Received ESPN response");
+        if (headlinesResponse.getHeadlines().size() == 0) {
+          LOG.info("No headlines received");
+          return;
+        }
         Headline currentHeadline = headlinesResponse.getHeadlines().get(0);
+        LOG.info("Current top headline is '{}'", currentHeadline.getHeadline());
         String currentHeadlineTitle = currentHeadline.getHeadline();
         if (latestHeadlineTitle == null) {
+          LOG.info("No previous headline, ignoring top headline");
           latestHeadlineTitle = currentHeadlineTitle;
-        } else if (!(latestHeadlineTitle.equalsIgnoreCase(currentHeadlineTitle))) {
+        } else if ((latestHeadlineTitle.equalsIgnoreCase(currentHeadlineTitle))) {
+          LOG.info ("Previous headline matches the current headline, ignoring...");
+        } else {
+          LOG.info("Printing headline to channels");
           latestHeadlineTitle = currentHeadlineTitle;
           for (Channel channel : bot.getUserBot().getChannels()) {
             channel.send().message("ESPN: " + latestHeadlineTitle);
@@ -77,7 +90,7 @@ public class BotRunner {
         }
       }
     };
-    scheduler.scheduleAtFixedRate(checkEspnNews,1,5, TimeUnit.MINUTES);
+    scheduler.scheduleAtFixedRate(checkEspnNews, 0, configuration.getEspnPollIntervalMinutes(), TimeUnit.MINUTES);
   }
 
   private org.pircbotx.Configuration getIrcBotConfiguration(Configuration configuration) {
