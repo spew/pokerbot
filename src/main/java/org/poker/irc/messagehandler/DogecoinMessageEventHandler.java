@@ -67,7 +67,7 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
         dogeAmount = new BigDecimal("0");
       }
 
-      if(dogeAmount.intValue() > 0) {
+      if(dogeAmount.doubleValue() > 0.0) {
         sb.append(dogeAmount.toString());
         sb.append(" DOGE = ");
         BotUtils.appendMoney(btcTicker.getLast().multipliedBy(cryptsyPrice).multipliedBy(dogeAmount), sb);
