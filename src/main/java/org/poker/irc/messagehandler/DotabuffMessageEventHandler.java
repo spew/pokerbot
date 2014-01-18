@@ -144,6 +144,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     for(Match match : matches){
       players = match.getPlayers();
       playerSlot = this.getPlayerSlot(players,playerId);
+      //BUG: since this is a hashmap the order of matches isnt preserved
       matchesWithPlayerSlot.put(match.getMatch_id().toString(), playerSlot);
     }
     return matchesWithPlayerSlot;
