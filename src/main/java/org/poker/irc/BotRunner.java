@@ -60,21 +60,20 @@ public class BotRunner {
           HttpEntity httpEntity = response.getEntity();
           try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
             headlinesResponse = gson.fromJson(reader, HeadlinesResponse.class);
-            Headline currentHeadline = headlinesResponse.getHeadlines().get(0);
-            String currentHeadlineTitle = currentHeadline.getHeadline();
-
-            if (latestHeadlineTitle == null) {
-              latestHeadlineTitle = currentHeadlineTitle;
-            } else if (!(latestHeadlineTitle.equalsIgnoreCase(currentHeadlineTitle))) {
-              latestHeadlineTitle = currentHeadlineTitle;
-              for (Channel channel : bot.getUserBot().getChannels()) {
-                channel.send().message("ESPN: " + latestHeadlineTitle);
-                channel.send().message(currentHeadline.getLinks().getWeb().getHref());
-              }
-            }
           }
         } catch (IOException e) {
           throw new RuntimeException(e);
+        }
+        Headline currentHeadline = headlinesResponse.getHeadlines().get(0);
+        String currentHeadlineTitle = currentHeadline.getHeadline();
+        if (latestHeadlineTitle == null) {
+          latestHeadlineTitle = currentHeadlineTitle;
+        } else if (!(latestHeadlineTitle.equalsIgnoreCase(currentHeadlineTitle))) {
+          latestHeadlineTitle = currentHeadlineTitle;
+          for (Channel channel : bot.getUserBot().getChannels()) {
+            channel.send().message("ESPN: " + latestHeadlineTitle);
+            channel.send().message(currentHeadline.getLinks().getWeb().getHref());
+          }
         }
       }
     };
