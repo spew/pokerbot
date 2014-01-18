@@ -24,7 +24,8 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
   private enum Game {
     Dota,
     LeagueOfLegends,
-    Quake
+    Quake,
+    MagicTheGathering
   }
   private static final Logger LOG = LoggerFactory.getLogger(StreamsMessageEventHandler.class);
   private final Configuration configuration;
@@ -58,6 +59,8 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
         game = Game.Dota;
       } else if (gameName.startsWith("q")) {
         game = Game.Quake;
+      } else if (gameName.startsWith("mtg") || gameName.startsWith("magic")) {
+        game = Game.MagicTheGathering;
       } else if (gameName.equals("poker")) {
         event.getChannel().send().message("Poker? I don't support dead games");
         return;
@@ -74,6 +77,9 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
         break;
       case LeagueOfLegends:
         gameName = "League+of+Legends";
+        break;
+      case MagicTheGathering:
+        gameName = "Magic%3A%20The%20Gathering";
         break;
       case Quake:
         gameName = "Quake%20Live";
