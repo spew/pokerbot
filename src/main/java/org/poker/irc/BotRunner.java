@@ -90,7 +90,7 @@ public class BotRunner {
         }
       }
     };
-    scheduler.scheduleAtFixedRate(checkEspnNews, 0, 2, TimeUnit.MINUTES);
+    scheduler.scheduleAtFixedRate(checkEspnNews, 0, configuration.getEspnPollIntervalMinutes(), TimeUnit.MINUTES);
   }
 
   private org.pircbotx.Configuration getIrcBotConfiguration(Configuration configuration) {
