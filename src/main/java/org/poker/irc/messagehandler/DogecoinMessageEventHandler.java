@@ -61,7 +61,7 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
 
       BigDecimal dogeAmount;
       if(commandParts.length == 2) {
-        dogeAmount = new BigDecimal(commandParts[1]);
+        dogeAmount = new BigDecimal(commandParts[1].replace(",", ""));
       }
       else {
         dogeAmount = new BigDecimal("0");
