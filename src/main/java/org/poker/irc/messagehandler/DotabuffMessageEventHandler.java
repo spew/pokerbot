@@ -99,10 +99,16 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     this.nameToId.put("spew", "10648475");
     this.nameToId.put("deathdealer69", "10648475");
     this.nameToId.put("steven", "28326143");
+    this.nameToId.put("bunk", "28326143");
     this.nameToId.put("clock", "125412282");
     this.nameToId.put("cl0ck", "125412282");
     this.nameToId.put("muiy", "78932949");
     this.nameToId.put("dank", "78932949");
+    this.nameToId.put("viju", "34117856");
+    this.nameToId.put("vijal", "34117856");
+    this.nameToId.put("sysm", "29508928");
+    this.nameToId.put("rtz", "86745912");
+    this.nameToId.put("arteezy", "86745912");
   }
   //API is not giving back the 10 most recent or rather the 10 most recent arent the same as Dotabuff..
   //TODO: Need to weed out the early abandoned matches which dotabuff excludes..
