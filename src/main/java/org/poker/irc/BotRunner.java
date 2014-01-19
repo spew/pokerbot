@@ -29,7 +29,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 public class BotRunner {
-  private String latestHeadlineTitle = null;
+  private Headline latestHeadline = null;
   private static final Logger LOG = LoggerFactory.getLogger(BotRunner.class);
   public void run(Configuration configuration) throws InterruptedException {
     org.pircbotx.Configuration ircConfiguration = this.getIrcBotConfiguration(configuration);
@@ -60,17 +60,16 @@ public class BotRunner {
         }
         Headline currentHeadline = headlinesResponse.getHeadlines().get(0);
         LOG.info("Current top headline is '{}'", currentHeadline.getHeadline());
-        String currentHeadlineTitle = currentHeadline.getHeadline();
-        if (latestHeadlineTitle == null) {
+        if (latestHeadline == null) {
           LOG.info("No previous headline, ignoring top headline");
-          latestHeadlineTitle = currentHeadlineTitle;
-        } else if ((latestHeadlineTitle.equalsIgnoreCase(currentHeadlineTitle))) {
+          latestHeadline = currentHeadline;
+        } else if ((latestHeadline.getId().equals(currentHeadline.getId()))) {
           LOG.info ("Previous headline matches the current headline, ignoring...");
         } else {
           LOG.info("Printing headline to channels");
-          latestHeadlineTitle = currentHeadlineTitle;
+          latestHeadline = currentHeadline;
           for (Channel channel : bot.getUserBot().getChannels()) {
-            channel.send().message("ESPN: " + latestHeadlineTitle);
+            channel.send().message("ESPN: " + currentHeadline.getHeadline());
             channel.send().message(currentHeadline.getLinks().getWeb().getHref());
           }
         }
