@@ -4,13 +4,13 @@ import com.google.gson.annotations.*;
 
 public class MatchDetailResponse {
   @Expose
-  private Result result;
+  private MatchDetails result;
 
-  public Result getResult() {
+  public MatchDetails getResult() {
     return result;
   }
 
-  public void setResult(Result result) {
+  public void setResult(MatchDetails result) {
     this.result = result;
   }
 }

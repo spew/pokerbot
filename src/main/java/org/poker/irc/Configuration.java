@@ -30,6 +30,7 @@ public class Configuration {
   private String ident = nick;
   private String espnApiKey;
   private String twitchClientId;
+  private String steamApiKey;
   private int espnPollIntervalMinutes = 10;
   private TwitterCredentials twitterCredentials = new TwitterCredentials();
 
@@ -83,6 +84,7 @@ public class Configuration {
     this.twitterCredentials.accessTokenSecret = System.getenv("TWITTER_OAUTH_ACCESS_TOKEN_SECRET");
     this.twitterCredentials.consumerKey = System.getenv("TWITTER_OAUTH_CONSUMER_KEY");
     this.twitterCredentials.consumerSecret = System.getenv("TWITTER_OAUTH_CONSUMER_SECRET");
+    this.steamApiKey = System.getenv("STEAM_API_KEY");
     Options options = new Options();
     Option googleSearchApiKeyOption = OptionBuilder
         .withLongOpt("google-search-api-key")
@@ -212,4 +214,6 @@ public class Configuration {
   public String getIdent() {
     return ident;
   }
+
+  public String getSteamApiKey() { return this.steamApiKey; }
 }

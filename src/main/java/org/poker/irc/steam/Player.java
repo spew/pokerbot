@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Player {
   @Expose
-  private Double  account_id;
+  private long  account_id;
   @Expose
   private Integer player_slot;
   @Expose
@@ -54,11 +54,11 @@ public class Player {
   @Expose
   private List<Ability_upgrade> ability_upgrades = new ArrayList<Ability_upgrade>();
 
-  public Double getAccount_id() {
+  public long getAccount_id() {
     return account_id;
   }
 
-  public void setAccount_id(Double account_id) {
+  public void setAccount_id(long account_id) {
     this.account_id = account_id;
   }
 
