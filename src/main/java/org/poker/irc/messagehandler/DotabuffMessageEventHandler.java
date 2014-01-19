@@ -3,6 +3,10 @@ package org.poker.irc.messagehandler;
 import com.google.api.client.util.*;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Queues;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.ListeningExecutorService;
+import com.google.common.util.concurrent.MoreExecutors;
 import com.google.gson.*;
 import org.apache.http.*;
 import org.apache.http.client.methods.*;
@@ -15,18 +19,26 @@ import org.poker.irc.Configuration;
 import org.poker.irc.MessageEventHandler;
 import org.poker.irc.steam.*;
 import org.slf4j.*;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 public class DotabuffMessageEventHandler implements MessageEventHandler {
   private static final Logger LOG = LoggerFactory.getLogger(DotabuffMessageEventHandler.class);
+  ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
   private Map<String, Integer> nameToId = Maps.newHashMap();
   private Dota dota;
   private enum MatchResult {
-    WIN,
-    LOSS
+    WIN("winning"), LOSS("losing");
+    private String outputValue;
+    private MatchResult(String outputValue) {
+      this.outputValue = outputValue;
+    }
   }
   private MatchResult streakType;
 
@@ -60,7 +72,6 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     message = message.toLowerCase();
     if (this.nameToId.containsKey(message)) {
       Integer playerId = this.nameToId.get(message);
-      Integer currentStreak = getCurrentStreak(playerId);
       String url = "http://dotabuff.com/players/" + playerId;
       Document document;
       try {
@@ -68,27 +79,100 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
+      int currentStreak = 0;
+      Stopwatch stopwatch = Stopwatch.createStarted();
+      List<MatchResult> recentResults = getRecentResults(playerId, 10);
+      stopwatch.stop();
+      LOG.info("Stopwatch: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+      MatchResult prev = recentResults.get(0);
+      for (MatchResult result : recentResults) {
+        if (result.equals(prev)) {
+          currentStreak++;
+        } else{
+          break;
+        }
+        prev = result;
+      }
+      MatchResult streakType = recentResults.get(0);
       Element wonSpan = document.select("span.won").first();
       String gamesWon = wonSpan.text();
       Element lostSpan = document.select("span.lost").first();
       String gamesLost = lostSpan.text();
       event.getChannel().send().message(url);
-      StringBuilder stringBuilder = new StringBuilder();
-      stringBuilder.append("wins: ");
-      stringBuilder.append(gamesWon);
-      stringBuilder.append(" | ");
-      stringBuilder.append("losses: ");
-      stringBuilder.append(gamesLost);
-      stringBuilder.append(" |  Streak: ");
-      stringBuilder.append(currentStreak.toString());
-      stringBuilder.append(" Game ");
-      stringBuilder.append(streakType.toString());
-      stringBuilder.append(" streak.");
-      event.getChannel().send().message(stringBuilder.toString());
-      LOG.warn(currentStreak.toString() + streakType.toString());
+      StringBuilder sb = new StringBuilder();
+      sb.append("wins: ");
+      sb.append(gamesWon);
+      sb.append(" | ");
+      sb.append("losses: ");
+      sb.append(gamesLost);
+      sb.append(" | ");
+      sb.append(currentStreak);
+      sb.append(" game ");
+      sb.append(streakType.outputValue);
+      sb.append(" streak");
+      event.getChannel().send().message(sb.toString());
     } else {
       event.getChannel().send().message("Unknown player name: " + message);
     }
+  }
+
+  private List<MatchResult> getRecentResults(long playerId, int maxResults) {
+    List<Match> recentMatches = this.dota.getMatches(playerId, 2 * maxResults);
+    Queue<ListenableFuture<MatchDetails>> futures = Queues.newArrayDeque();
+    List<MatchResult> matchResults = Lists.newArrayList();
+    int curIdx;
+    for (curIdx = 0 ; curIdx < recentMatches.size() && curIdx < maxResults; curIdx++) {
+      final Match match = recentMatches.get(curIdx);
+      futures.add(this.submitGetMatchDetailsRequest(match));
+    }
+    while (futures.size() > 0) {
+      ListenableFuture<MatchDetails> f = futures.remove();
+      MatchDetails matchDetails;
+      try {
+        matchDetails = f.get();
+      } catch (InterruptedException | ExecutionException e) {
+        throw new RuntimeException(e);
+      }
+      if (this.isMatchValid(matchDetails)) {
+        MatchResult matchResult = this.checkMatchResult(matchDetails, playerId);
+        matchResults.add(matchResult);
+      } else {
+        if (curIdx < recentMatches.size()) {
+          final Match match = recentMatches.get(curIdx);
+          futures.add(this.submitGetMatchDetailsRequest(match));
+          curIdx++;
+        }
+      }
+    }
+    return matchResults;
+  }
+
+  private ListenableFuture<MatchDetails> submitGetMatchDetailsRequest(final Match match) {
+    ListenableFuture<MatchDetails> listenableFuture = this.executorService.submit(new Callable<MatchDetails>() {
+      @Override
+      public MatchDetails call() throws Exception {
+        return DotabuffMessageEventHandler.this.dota.getMatchDetails(match.getMatch_id());
+      }
+    });
+    return listenableFuture;
+  }
+
+  private boolean isMatchValid(MatchDetails matchDetails) {
+    return true;
+  }
+
+  private MatchResult checkMatchResult(MatchDetails matchDetails, long playerId) {
+    boolean radiantWin = matchDetails.getRadiant_win();
+    for (Player player : matchDetails.getPlayers()) {
+      if (player.getAccount_id() == playerId) {
+        if (player.getPlayer_slot() < 128) {
+          return radiantWin ? MatchResult.WIN : MatchResult.LOSS;
+        } else {
+          return radiantWin ? MatchResult.LOSS : MatchResult.WIN;
+        }
+      }
+    }
+    throw new RuntimeException("Player id not found: " + playerId);
   }
 
   private void populateDefaultPlayers() {
@@ -112,53 +196,5 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     this.nameToId.put("sysm", 29508928);
     this.nameToId.put("rtz", 86745912);
     this.nameToId.put("arteezy", 86745912);
-  }
-
-  private List<MatchResult> getRecentResults(long playerId, List<Match> recentMatches) {
-    List<MatchResult> results = Lists.newArrayList();
-    for (Match match: recentMatches) {
-      int matchId = match.getMatch_id();
-      MatchResult currentResult = checkMatchResult(matchId, playerId);
-      results.add(currentResult);
-    }
-    return results;
-  }
-
-  private MatchResult checkMatchResult(long matchId, long playerId) {
-    List<Player> players = new ArrayList<>();
-    Stopwatch stopwatch = Stopwatch.createStarted();
-    MatchDetails result = this.dota.getMatchDetails(matchId);
-    stopwatch.stop();
-    LOG.info("getMatchDetails length: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-    boolean radiantWin = result.getRadiant_win();
-    players =  result.getPlayers();
-    for (Player player : players) {
-      if (player.getAccount_id() == playerId) {
-        if (player.getPlayer_slot() < 128) {
-          return radiantWin ? MatchResult.WIN : MatchResult.LOSS;
-        } else {
-          return radiantWin ? MatchResult.LOSS : MatchResult.WIN;
-        }
-      }
-    }
-    throw new RuntimeException("Player id not found: " + playerId);
-  }
-
-  private int getCurrentStreak(long playerId) {
-    int streak = 0;
-    List<Match> recentMatches = this.dota.getMatches(playerId, 10);
-    //Map<String, String> matchesWithPlayerSlot = this.getMatchesWithPlayerSlot(recentMatches, playerId);
-    List<MatchResult> recentResults = getRecentResults(playerId,recentMatches);
-    MatchResult prev = recentResults.get(0);
-    for (MatchResult result : recentResults) {
-      if (result.equals(prev)) {
-        streak++;
-      } else{
-        break;
-      }
-      prev = result;
-    }
-    this.streakType = recentResults.get(0);
-    return streak ;
   }
 }
