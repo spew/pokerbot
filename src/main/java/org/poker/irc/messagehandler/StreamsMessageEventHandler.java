@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.List;
 
 public class StreamsMessageEventHandler implements MessageEventHandler {
   private enum Game {
@@ -38,7 +40,7 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String getDescription() {
-    return "!streams <game> or .streams <game>: returns a list of twitch streams for { dota, lol }.";
+    return "!streams <game> or .streams <game>: send to channel top twitch streams for { dota, lol, quake, magic }.";
   }
 
   @Override
@@ -54,6 +56,7 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
     if (index < 0) {
       game = Game.Dota;
     } else {
+      // TODO: switch to regex for this stuff
       String gameName = message.substring(index + 1).trim().toLowerCase();
       if (gameName.startsWith("l")) {
         game = Game.LeagueOfLegends;
@@ -61,7 +64,7 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
         game = Game.Dota;
       } else if (gameName.startsWith("q")) {
         game = Game.Quake;
-      } else if (gameName.startsWith("mtg") || gameName.startsWith("magic")) {
+      } else if (gameName.startsWith("mtg") || gameName.startsWith("magic") || gameName.startsWith("m:tg")) {
         game = Game.MagicTheGathering;
       } else if (gameName.equals("poker")) {
         event.getChannel().send().message("Poker? I don't support dead games");

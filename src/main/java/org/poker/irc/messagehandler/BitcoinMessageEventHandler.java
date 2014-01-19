@@ -10,7 +10,7 @@ import java.text.*;
 public class BitcoinMessageEventHandler implements MessageEventHandler {
   @Override
   public String getDescription() {
-    return "!btc, !bitcoin, .btc, or .bitcoin: gives you the latest info on BitCoin";
+    return "!btc, .btc, !bitcoin, or .bitcoin: send to channel the latest bitcoin financial information from https://bitcoinaverage.com/";
   }
 
   @Override

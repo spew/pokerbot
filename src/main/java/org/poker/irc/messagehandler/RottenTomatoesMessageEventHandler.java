@@ -22,7 +22,7 @@ public class RottenTomatoesMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String getDescription() {
-    return "!rt <movie name> or .rt <movie name>: returns the critics rating and audience rating for a film.";
+    return "!rt <title> or .rt <title>: send to channel rotten tomatoes critic rating, audience rating, and URL for <title>";
   }
 
   @Override
