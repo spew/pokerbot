@@ -37,12 +37,18 @@ public class HttpUtils {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     T result;
     HttpGet httpGet = new HttpGet(url);
+    boolean hasAccept = false;
     if (headers != null) {
       for (Pair<String, String> pair : headers) {
         httpGet.addHeader(pair.getValue0(), pair.getValue1());
+        if (pair.getValue0().equals("Accept")) {
+          hasAccept = true;
+        }
       }
     }
-    httpGet.addHeader("Accept", "application/json");
+    if (!hasAccept) {
+      httpGet.addHeader("Accept", "application/json");
+    }
     try (CloseableHttpClient httpClient = HttpClients.createDefault();
          CloseableHttpResponse response = httpClient.execute(httpGet)) {
       HttpEntity httpEntity = response.getEntity();
