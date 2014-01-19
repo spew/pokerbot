@@ -28,7 +28,7 @@ public class UrlMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String getDescription() {
-    return "Parse link titles";
+    return "send to channel title of any URLs detected";
   }
 
   @Override

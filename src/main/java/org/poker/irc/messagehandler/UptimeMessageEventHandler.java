@@ -17,7 +17,7 @@ public class UptimeMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String getDescription() {
-    return "!uptime or .uptime: shows how long the bot has been active.";
+    return "!uptime or .uptime: send to channel process lifetime";
   }
 
   @Override

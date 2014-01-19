@@ -46,13 +46,12 @@ public class BotRunner {
   }
 
   private void scheduleEspnChecker(final PircBotX bot, final Configuration configuration) {
-    final String ESPN_API_KEY = configuration.getEspnApiKey();
     final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     Runnable checkEspnNews = new Runnable() {
       @Override
       public void run() {
         LOG.info("Checking for latest ESPN news");
-        String url = "https://api.espn.com/v1/sports/news/headlines/top?apikey=" + ESPN_API_KEY;
+        String url = "https://api.espn.com/v1/sports/news/headlines/top?apikey=" + configuration.getEspnApiKey();
         LOG.info("Fetching latest ESPN headlines");
         HeadlinesResponse headlinesResponse = HttpUtils.getJson(url, HeadlinesResponse.class, null);
         if (headlinesResponse.getHeadlines().size() == 0) {

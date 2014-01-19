@@ -54,7 +54,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String getDescription() {
-    return "!dotabuff <name> or .dotabuff <name> : gives you the wins, losses and dotabuff url for that player.";
+    return "!dotabuff <player> or .dotabuff <player> : send to channel the wins, losses, current streak, and dotabuff URL for <player>";
   }
 
   @Override

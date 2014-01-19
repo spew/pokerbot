@@ -21,7 +21,7 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String getDescription() {
-    return "!doge or .doge: gives you the latest info on DogeCoin";
+    return "!doge or .doge: send to channel latest doge financial information";
   }
 
   @Override
@@ -64,7 +64,7 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
         dogeAmount = new BigDecimal("0");
       }
 
-      if(dogeAmount.doubleValue() > 0.0) {
+      if (dogeAmount.doubleValue() > 0.0) {
         sb.append(dogeAmount.toString());
         sb.append(" DOGE = ");
         BotUtils.appendMoney(btcTicker.getLast().multipliedBy(cryptsyPrice).multipliedBy(dogeAmount), sb);

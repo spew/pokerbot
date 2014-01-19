@@ -38,7 +38,7 @@ public class GoogleSearchMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String getDescription() {
-    return "!google or .google <search term> : returns the top result for a google search on that term.";
+    return "!google <query> or .google <query> : send to channel the top google search result for <query>";
   }
 
   @Override
