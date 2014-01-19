@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.javatuples.Pair;
 import org.poker.irc.Configuration;
 import org.poker.irc.HttpUtils;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -39,5 +40,13 @@ public class Dota {
         "match_id=" + matchId + "&key=" + this.configuration.getSteamApiKey();
     MatchDetailResponse matchDetailResponse = HttpUtils.getJson(url, MatchDetailResponse.class);
     return matchDetailResponse.getResult();
+  }
+
+  public List<MatchDetails> getMatchDetails(int sequenceId, int maxResults) {
+    String url = "https://api.steampowered.com/IDOTA2Match_570/GetMatchHistoryBySequenceNum/V001/?" +
+        "&matches_requested=" + maxResults + "&key=" + configuration.getSteamApiKey() + "&sequenceId=" + sequenceId;
+    GetMatchHistoryBySequenceNumResponse matchHistoryBySequenceNumResponse =
+        HttpUtils.getJson(url, GetMatchHistoryBySequenceNumResponse.class);
+    return matchHistoryBySequenceNumResponse.getResult().getMatches();
   }
 }

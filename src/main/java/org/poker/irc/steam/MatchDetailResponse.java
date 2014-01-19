@@ -9,8 +9,4 @@ public class MatchDetailResponse {
   public MatchDetails getResult() {
     return result;
   }
-
-  public void setResult(MatchDetails result) {
-    this.result = result;
-  }
 }

@@ -25,7 +25,7 @@ public class MatchDetails {
   @Expose
   private int start_time;
   @Expose
-  private int match_id;
+  private long match_id;
   @Expose
   private int match_seq_num;
   @Expose
@@ -120,16 +120,8 @@ public class MatchDetails {
     return start_time;
   }
 
-  public void setStart_time(int start_time) {
-    this.start_time = start_time;
-  }
-
-  public int getMatch_id() {
+  public long getMatch_id() {
     return match_id;
-  }
-
-  public void setMatch_id(int match_id) {
-    this.match_id = match_id;
   }
 
   public int getMatch_seq_num() {
