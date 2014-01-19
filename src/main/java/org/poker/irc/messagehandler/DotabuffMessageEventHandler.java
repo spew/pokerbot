@@ -1,15 +1,21 @@
 package org.poker.irc.messagehandler;
 
-import com.google.api.client.util.*;
+import com.google.common.base.Function;
 import com.google.common.base.Stopwatch;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Queues;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Period;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.ocpsoft.prettytime.PrettyTime;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.Configuration;
 import org.poker.irc.MessageEventHandler;
@@ -67,7 +73,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     }
     message = message.toLowerCase();
     if (this.nameToId.containsKey(message)) {
-      Integer playerId = this.nameToId.get(message);
+      final Integer playerId = this.nameToId.get(message);
       String url = "http://dotabuff.com/players/" + playerId;
       Document document;
       try {
@@ -77,32 +83,38 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
       }
       int currentStreak = 0;
       Stopwatch stopwatch = Stopwatch.createStarted();
-      List<MatchResult> recentResults = getRecentResults(playerId, 10);
+      List<MatchDetails> recentResults = getRecentResults(playerId, 10);
       stopwatch.stop();
-      LOG.info("Stopwatch: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
-      int wins = 0, losses = 0;
-      MatchResult prev = recentResults.get(0);
-      for (MatchResult result : recentResults) {
+      LOG.info("Time to fetch match details: {} ms", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+      int streakWins = 0, streakLosses = 0;
+      Iterable<MatchResult> matchResults = Iterables.transform(recentResults, new Function<MatchDetails, MatchResult>() {
+        @Override
+        public MatchResult apply(final MatchDetails matchDetails) {
+          return DotabuffMessageEventHandler.this.checkMatchResult(matchDetails, playerId);
+        }
+      });
+      MatchResult prev = Iterables.getFirst(matchResults, null);
+      for (MatchResult result : matchResults) {
         if (result.equals(prev)) {
           currentStreak++;
         } else {
           break;
         }
       }
-      for (MatchResult result : recentResults) {
+      for (MatchResult result : matchResults) {
         switch (result) {
           case WIN:
-            wins++;
+            streakWins++;
             break;
           case LOSS:
-            losses++;
+            streakLosses++;
             break;
           default:
             throw new NotImplementedException();
         }
         prev = result;
       }
-      MatchResult streakType = recentResults.get(0);
+      MatchResult streakType = Iterables.getFirst(matchResults, null);
       Element wonSpan = document.select("span.won").first();
       String gamesWon = wonSpan.text();
       Element lostSpan = document.select("span.lost").first();
@@ -119,19 +131,25 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
       sb.append(" ");
       sb.append(currentStreak);
       sb.append(" | last ten: ");
-      sb.append(wins);
+      sb.append(streakWins);
       sb.append("-");
-      sb.append(losses);
+      sb.append(streakLosses);
+      sb.append(" | last played: ");
+      MatchDetails firstMatch = Iterables.getFirst(recentResults, null);
+      DateTime dateTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeZone.UTC).plusSeconds(firstMatch.getStart_time());
+      Period period = new Period(dateTime, DateTime.now(DateTimeZone.UTC));
+      PrettyTime prettyTime = new PrettyTime(new Date(period.toStandardDuration().getStandardSeconds() * 1000));
+      sb.append(prettyTime.format(new Date(0)));
       event.getChannel().send().message(sb.toString());
     } else {
       event.getChannel().send().message("Unknown player name: " + message);
     }
   }
 
-  private List<MatchResult> getRecentResults(long playerId, int maxResults) {
+  private List<MatchDetails> getRecentResults(long playerId, int maxResults) {
     List<Match> recentMatches = this.dota.getMatches(playerId, 2 * maxResults);
     Queue<ListenableFuture<MatchDetails>> futures = Queues.newArrayDeque();
-    List<MatchResult> matchResults = Lists.newArrayList();
+    List<MatchDetails> results = Lists.newArrayList();
     int curIdx;
     for (curIdx = 0 ; curIdx < recentMatches.size() && curIdx < maxResults; curIdx++) {
       final Match match = recentMatches.get(curIdx);
@@ -146,8 +164,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
         throw new RuntimeException(e);
       }
       if (this.isMatchValid(matchDetails)) {
-        MatchResult matchResult = this.checkMatchResult(matchDetails, playerId);
-        matchResults.add(matchResult);
+        results.add(matchDetails);
       } else {
         if (curIdx < recentMatches.size()) {
           final Match match = recentMatches.get(curIdx);
@@ -156,7 +173,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
         }
       }
     }
-    return matchResults;
+    return results;
   }
 
   private ListenableFuture<MatchDetails> submitGetMatchDetailsRequest(final Match match) {
@@ -170,6 +187,15 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
   }
 
   private boolean isMatchValid(MatchDetails matchDetails) {
+    for (Player player : matchDetails.getPlayers()) {
+      /* NULL - player is a bot.
+          2 - player abandoned game.
+          1 - player left game after the game has become safe to leave.
+          0 - Player stayed for the entire match.*/
+      if (player.getLeaver_status() == null || player.getLeaver_status() == 2) {
+        return false;
+      }
+    }
     return true;
   }
 
