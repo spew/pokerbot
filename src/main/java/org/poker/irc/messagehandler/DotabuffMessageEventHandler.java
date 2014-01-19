@@ -34,7 +34,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
   private Map<String, Integer> nameToId = Maps.newHashMap();
   private Dota dota;
   private enum MatchResult {
-    WIN("winning"), LOSS("losing");
+    WIN("won"), LOSS("lost");
     private String outputValue;
     private MatchResult(String outputValue) {
       this.outputValue = outputValue;
@@ -84,12 +84,25 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
       List<MatchResult> recentResults = getRecentResults(playerId, 10);
       stopwatch.stop();
       LOG.info("Stopwatch: {}", stopwatch.elapsed(TimeUnit.MILLISECONDS));
+      int wins = 0, losses = 0;
       MatchResult prev = recentResults.get(0);
       for (MatchResult result : recentResults) {
         if (result.equals(prev)) {
           currentStreak++;
-        } else{
+        } else {
           break;
+        }
+      }
+      for (MatchResult result : recentResults) {
+        switch (result) {
+          case WIN:
+            wins++;
+            break;
+          case LOSS:
+            losses++;
+            break;
+          default:
+            throw new NotImplementedException();
         }
         prev = result;
       }
@@ -105,11 +118,14 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
       sb.append(" | ");
       sb.append("losses: ");
       sb.append(gamesLost);
-      sb.append(" | ");
-      sb.append(currentStreak);
-      sb.append(" game ");
+      sb.append(" | streak: ");
       sb.append(streakType.outputValue);
-      sb.append(" streak");
+      sb.append(" ");
+      sb.append(currentStreak);
+      sb.append(" | last ten: ");
+      sb.append(wins);
+      sb.append("-");
+      sb.append(losses);
       event.getChannel().send().message(sb.toString());
     } else {
       event.getChannel().send().message("Unknown player name: " + message);
