@@ -24,7 +24,7 @@ public class Configuration {
   private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
   private String serverHostname = "irc.enterthegame.com";
   private List<String> channels = Arrays.asList(new String[] { "#test" });
-  private String nick = "testbot";
+  private String nick = "tbsbot";
   private String googleSearchApiKey;
   private String googleSearchCxKey;
   private String ident = nick;
