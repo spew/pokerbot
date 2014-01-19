@@ -10,8 +10,10 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.javatuples.Pair;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.Configuration;
+import org.poker.irc.HttpUtils;
 import org.poker.irc.MessageEventHandler;
 import org.poker.irc.twitch.StreamsResponse;
 import org.slf4j.Logger;
@@ -88,20 +90,9 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
       default:
         throw new NotImplementedException();
     }
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    StreamsResponse streamsResponse;
-    HttpGet httpGet = new HttpGet("https://api.twitch.tv/kraken/streams?limit=" + limit + "&game=" + gameName);
-    httpGet.addHeader("Client-ID", this.configuration.getTwitchClientId());
-    httpGet.addHeader("Accept", "application/vnd.twitchtv.v2+json");
-    try (CloseableHttpClient httpClient = HttpClients.createDefault();
-         CloseableHttpResponse response = httpClient.execute(httpGet)) {
-      HttpEntity httpEntity = response.getEntity();
-      try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
-        streamsResponse = gson.fromJson(reader, StreamsResponse.class);
-      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
+    String url = "https://api.twitch.tv/kraken/streams?limit=" + limit + "&game=" + gameName;
+    StreamsResponse streamsResponse = HttpUtils.getJson(url, StreamsResponse.class,
+        new Pair<String, String>("Client-ID", this.configuration.getTwitchClientId()));
     for (StreamsResponse.Stream stream : streamsResponse.getStreams()) {
       StringBuilder sb = new StringBuilder();
       sb.append(stream.getChannel().getDisplay_name());
