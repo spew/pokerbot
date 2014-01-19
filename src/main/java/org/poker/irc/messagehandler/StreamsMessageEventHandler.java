@@ -92,7 +92,8 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
     }
     String url = "https://api.twitch.tv/kraken/streams?limit=" + limit + "&game=" + gameName;
     StreamsResponse streamsResponse = HttpUtils.getJson(url, StreamsResponse.class,
-        new Pair<String, String>("Client-ID", this.configuration.getTwitchClientId()));
+        new Pair<String, String>("Client-ID", this.configuration.getTwitchClientId()),
+        new Pair<String, String>("Accept", "application/vnd.twitchtv.v2+json"));
     for (StreamsResponse.Stream stream : streamsResponse.getStreams()) {
       StringBuilder sb = new StringBuilder();
       sb.append(stream.getChannel().getDisplay_name());
