@@ -30,7 +30,7 @@ public class CryptoCoinMessageEventHandler implements MessageEventHandler{
     String symbol = null;
     BigDecimal amount;
     String channelResponse = null;
-    if (message.startsWith("!coin")){
+    if (message.startsWith("!coin") || message.startsWith(".coin")){
       String[] commandParts = message.split(" ");
       switch(commandParts.length){
         case 1:
