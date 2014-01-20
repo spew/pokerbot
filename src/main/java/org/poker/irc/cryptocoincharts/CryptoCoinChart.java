@@ -1,17 +1,12 @@
 package org.poker.irc.cryptocoincharts;
 
-import com.google.gson.*;
-import com.xeiam.xchange.dto.marketdata.*;
-import org.apache.http.*;
-import org.apache.http.client.methods.*;
-import org.apache.http.impl.client.*;
-import org.poker.irc.*;
-import sun.reflect.generics.reflectiveObjects.*;
-
-import java.io.*;
-import java.math.*;
-import java.text.*;
-import java.util.*;
+import com.xeiam.xchange.dto.marketdata.Ticker;
+import org.javatuples.Pair;
+import org.poker.irc.BotUtils;
+import org.poker.irc.HttpUtils;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import java.math.BigDecimal;
+import java.text.NumberFormat;
 
 /**
  * Created by Tom on 1/19/14.
@@ -50,31 +45,17 @@ public class CryptoCoinChart {
   }
 
   public static CryptoCoinChartResponse FindCoin(String symbol){
-    CryptoCoinChartResponse coin = null;
     CryptoCoinChartResponse foundCoin = null;
+    String url = "http://www.cryptocoincharts.info/v2/api/listCoins";
+    CryptoCoinChartResponse[] responses = HttpUtils.getJson(url, CryptoCoinChartResponse[].class,
+        new Pair<>("Accept", "application/json"));
 
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    HttpGet httpGet = new HttpGet("http://www.cryptocoincharts.info/v2/api/listCoins");
-    httpGet.addHeader("Accept", "application/json");
-    try (CloseableHttpClient httpClient = HttpClients.createDefault();
-         CloseableHttpResponse response = httpClient.execute(httpGet)) {
-      HttpEntity httpEntity = response.getEntity();
-      try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
-        List<CryptoCoinChartResponse> cryptoCoinChartResponses;
-        cryptoCoinChartResponses = Arrays.asList(gson.fromJson(reader, CryptoCoinChartResponse[].class));
-        Iterator it = cryptoCoinChartResponses.iterator();
-        while(it.hasNext()){
-          coin = (CryptoCoinChartResponse)it.next();
-          if(coin.getId().equals(symbol.toLowerCase())){
-            foundCoin = coin;
-            break;
-          }
-        }
+    for(CryptoCoinChartResponse coin : responses){
+      if(coin.getId().equals(symbol.toLowerCase())){
+        foundCoin = coin;
+        break;
       }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
     }
-
     return foundCoin;
   }
 }
