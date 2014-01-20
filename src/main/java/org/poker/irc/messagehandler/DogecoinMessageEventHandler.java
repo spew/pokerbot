@@ -38,7 +38,7 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
     String channelResponse = null;
     BigDecimal amount;
 
-    if (message.startsWith("!doge")){
+    if (message.startsWith("!doge") || message.startsWith(".doge")){
       String[] commandParts = message.split(" ");
       switch(commandParts.length){
         case 1:
