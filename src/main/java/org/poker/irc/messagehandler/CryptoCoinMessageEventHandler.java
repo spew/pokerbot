@@ -1,19 +1,13 @@
 package org.poker.irc.messagehandler;
 
-import org.apache.commons.lang3.math.*;
-import org.pircbotx.hooks.events.*;
-import org.poker.irc.*;
-
-import java.math.*;
-import java.lang.*;
+import org.apache.commons.lang3.math.NumberUtils;
+import org.pircbotx.hooks.events.MessageEvent;
+import org.poker.irc.MessageEventHandler;
+import java.math.BigDecimal;
 
 import static org.poker.irc.cryptocoincharts.CryptoCoinChart.*;
 
-
-/**
- * Created by Tom on 1/19/14.
- */
-public class CryptoCoinMessageEventHandler implements MessageEventHandler{
+public class CryptoCoinMessageEventHandler implements MessageEventHandler {
   @Override
   public String[] getMessagePrefixes() {
     return new String[]  {"!coin" , ".coin"};

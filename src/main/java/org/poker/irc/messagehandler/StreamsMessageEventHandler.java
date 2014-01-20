@@ -1,15 +1,5 @@
 package org.poker.irc.messagehandler;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
 import org.javatuples.Pair;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.Configuration;
@@ -19,10 +9,6 @@ import org.poker.irc.twitch.StreamsResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
-import java.io.*;
-import java.util.Arrays;
-import java.util.List;
 
 public class StreamsMessageEventHandler implements MessageEventHandler {
   private enum Game {
