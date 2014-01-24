@@ -192,8 +192,13 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
           2 - player abandoned game.
           1 - player left game after the game has become safe to leave.
           0 - Player stayed for the entire match.*/
-      if (player.getLeaver_status() == null || player.getLeaver_status() == 2) {
+      if (player.getLeaver_status() == null) {
         return false;
+      }
+      if (player.getLeaver_status() == 2) {
+        if (matchDetails.getDuration() < 10 * 60) {
+          return false;
+        }
       }
     }
     return true;
