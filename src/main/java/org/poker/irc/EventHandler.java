@@ -1,5 +1,6 @@
 package org.poker.irc;
 
+import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.api.client.util.Lists;
 import com.google.common.collect.Maps;
 import org.pircbotx.User;
@@ -40,7 +41,12 @@ public class EventHandler extends ListenerAdapter {
 
   @Override
   public void onConnect(ConnectEvent event) {
-    event.getBot().sendRaw().rawLine(this.configuration.getPerform());
+    if (Strings.isNullOrEmpty(this.configuration.getPerform())) {
+      LOG.info("No perform command set.");
+    } else {
+      LOG.info("Sending perform command");
+      event.getBot().sendRaw().rawLine(this.configuration.getPerform());
+    }
   }
 
   @Override

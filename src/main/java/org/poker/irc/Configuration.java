@@ -88,7 +88,7 @@ public class Configuration {
     this.twitterCredentials.consumerKey = System.getenv("TWITTER_OAUTH_CONSUMER_KEY");
     this.twitterCredentials.consumerSecret = System.getenv("TWITTER_OAUTH_CONSUMER_SECRET");
     this.steamApiKey = System.getenv("STEAM_API_KEY");
-    this.perform = System.getenv("PERFORM_COMMAND");
+    this.perform = System.getenv("PERFORM");
     Options options = new Options();
     Option googleSearchApiKeyOption = OptionBuilder
         .withLongOpt("google-search-api-key")
