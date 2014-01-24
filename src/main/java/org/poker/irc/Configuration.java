@@ -179,7 +179,7 @@ public class Configuration {
       }
     }
     if (commandLine.hasOption(serverHostNameOption.getOpt())) {
-      this.serverHostname = commandLine.getOptionValue(serverHostNameOption.getValue());
+      this.serverHostname = commandLine.getOptionValue(serverHostNameOption.getOpt());
     }
     if (commandLine.hasOption(espnPollIntervalOption.getOpt())) {
       this.espnPollIntervalMinutes =
