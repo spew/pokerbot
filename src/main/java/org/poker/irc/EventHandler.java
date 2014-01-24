@@ -41,11 +41,13 @@ public class EventHandler extends ListenerAdapter {
 
   @Override
   public void onConnect(ConnectEvent event) {
-    if (Strings.isNullOrEmpty(this.configuration.getPerform())) {
+    if (this.configuration.getPerformActions().isEmpty()) {
       LOG.info("No perform command set.");
     } else {
       LOG.info("Sending perform command");
-      event.getBot().sendRaw().rawLine(this.configuration.getPerform());
+      for (String action : this.configuration.getPerformActions()) {
+        event.getBot().sendRaw().rawLine(action);
+      }
     }
   }
 

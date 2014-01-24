@@ -32,7 +32,7 @@ public class Configuration {
   private String twitchClientId;
   private String steamApiKey;
   private int espnPollIntervalMinutes = 10;
-  private String perform;
+  private List<String> performActions;
   private TwitterCredentials twitterCredentials = new TwitterCredentials();
 
   public static class TwitterCredentials {
@@ -74,7 +74,17 @@ public class Configuration {
     return twitchClientId;
   }
 
-  public String getPerform() { return this.perform; }
+  public List<String> getPerformActions() { return this.performActions; }
+
+  private List<String> parsePerformActions(CommandLine commandLine, Option performOption) {
+    if (commandLine.hasOption(performOption.getOpt())) {
+      List<String> actions = Arrays.asList(commandLine.getOptionValues(performOption.getOpt()));
+      return actions;
+    } else {
+      String raw = System.getenv("PERFORM");
+      return Arrays.asList(raw.split(","));
+    }
+  }
 
   public void initialize(String[] args) {
     String arguments = Joiner.on(' ').join(args);
@@ -88,7 +98,6 @@ public class Configuration {
     this.twitterCredentials.consumerKey = System.getenv("TWITTER_OAUTH_CONSUMER_KEY");
     this.twitterCredentials.consumerSecret = System.getenv("TWITTER_OAUTH_CONSUMER_SECRET");
     this.steamApiKey = System.getenv("STEAM_API_KEY");
-    this.perform = System.getenv("PERFORM");
     Options options = new Options();
     Option googleSearchApiKeyOption = OptionBuilder
         .withLongOpt("google-search-api-key")
@@ -124,9 +133,9 @@ public class Configuration {
         .create("i");
     options.addOption(identOption);
     Option performOption = OptionBuilder
-        .withLongOpt("perform")
-        .hasArg()
-        .withArgName("command")
+        .withLongOpt("perform-commands")
+        .hasArgs()
+        .withValueSeparator(',')
         .withDescription("A command that will be performed upon successful connection")
         .create("p");
     options.addOption(performOption);
@@ -189,9 +198,6 @@ public class Configuration {
         }
       }
     }
-    if (commandLine.hasOption(performOption.getOpt())) {
-      this.perform = commandLine.getOptionValue(performOption.getOpt());
-    }
     if (commandLine.hasOption(serverHostNameOption.getOpt())) {
       this.serverHostname = commandLine.getOptionValue(serverHostNameOption.getOpt());
     }
@@ -199,6 +205,7 @@ public class Configuration {
       this.espnPollIntervalMinutes =
           IntegerValidator.getInstance().validate(commandLine.getOptionValue(espnPollIntervalOption.getOpt()));
     }
+    this.performActions = this.parsePerformActions(commandLine, performOption);
   }
 
   public int getEspnPollIntervalMinutes() {
