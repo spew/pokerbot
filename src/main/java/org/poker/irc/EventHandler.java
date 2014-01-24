@@ -4,6 +4,7 @@ import com.google.api.client.util.Lists;
 import com.google.common.collect.Maps;
 import org.pircbotx.User;
 import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.ConnectEvent;
 import org.pircbotx.hooks.events.JoinEvent;
 import org.pircbotx.hooks.events.KickEvent;
 import org.pircbotx.hooks.events.MessageEvent;
@@ -24,11 +25,22 @@ public class EventHandler extends ListenerAdapter {
   private List<MessageEventHandler> messageEventHandlers = Lists.newArrayList();
   private Object lock = new Object();
   private List<RejoinChannelAttempt> rejoiningChannels = Lists.newArrayList();
+  private final Configuration configuration;
+
+  public EventHandler(Configuration configuration) {
+    this.configuration = configuration;
+  }
+
   public void addMessageEventHandler(final MessageEventHandler messageEventHandler) {
     for (String prefix : messageEventHandler.getMessagePrefixes()) {
       this.messageEventHandlerMap.put(prefix, messageEventHandler);
     }
     this.messageEventHandlers.add(messageEventHandler);
+  }
+
+  @Override
+  public void onConnect(ConnectEvent event) {
+    event.getBot().sendRaw().rawLine(this.configuration.getPerform());
   }
 
   @Override

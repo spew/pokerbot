@@ -22,9 +22,9 @@ import java.util.List;
 
 public class Configuration {
   private static final Logger LOG = LoggerFactory.getLogger(Configuration.class);
-  private String serverHostname = "irc.enterthegame.com";
-  private List<String> channels = Arrays.asList(new String[] { "#test" });
-  private String nick = "tbsbot";
+  private String serverHostname = "irc.gamesurge.net";
+  private List<String> channels = Arrays.asList(new String[] { "#pokerbot" });
+  private String nick = "testbot";
   private String googleSearchApiKey;
   private String googleSearchCxKey;
   private String ident = nick;
@@ -32,6 +32,7 @@ public class Configuration {
   private String twitchClientId;
   private String steamApiKey;
   private int espnPollIntervalMinutes = 10;
+  private String perform;
   private TwitterCredentials twitterCredentials = new TwitterCredentials();
 
   public static class TwitterCredentials {
@@ -57,6 +58,10 @@ public class Configuration {
     }
   }
 
+  public Configuration() {
+
+  }
+
   public TwitterCredentials getTwitterCredentials() {
     return this.twitterCredentials;
   }
@@ -69,9 +74,7 @@ public class Configuration {
     return twitchClientId;
   }
 
-  public Configuration() {
-
-  }
+  public String getPerform() { return this.perform; }
 
   public void initialize(String[] args) {
     String arguments = Joiner.on(' ').join(args);
@@ -85,6 +88,7 @@ public class Configuration {
     this.twitterCredentials.consumerKey = System.getenv("TWITTER_OAUTH_CONSUMER_KEY");
     this.twitterCredentials.consumerSecret = System.getenv("TWITTER_OAUTH_CONSUMER_SECRET");
     this.steamApiKey = System.getenv("STEAM_API_KEY");
+    this.perform = System.getenv("PERFORM_COMMAND");
     Options options = new Options();
     Option googleSearchApiKeyOption = OptionBuilder
         .withLongOpt("google-search-api-key")
@@ -119,6 +123,13 @@ public class Configuration {
         .withDescription("The <ident>@hostmask value to use on IRC")
         .create("i");
     options.addOption(identOption);
+    Option performOption = OptionBuilder
+        .withLongOpt("perform")
+        .hasArg()
+        .withArgName("command")
+        .withDescription("A command that will be performed upon successful connection")
+        .create("p");
+    options.addOption(performOption);
     Option channelsOption = OptionBuilder
         .withLongOpt("channels")
         .hasArgs()
@@ -177,6 +188,9 @@ public class Configuration {
           this.channels.add(channel);
         }
       }
+    }
+    if (commandLine.hasOption(performOption.getOpt())) {
+      this.perform = commandLine.getOptionValue(performOption.getOpt());
     }
     if (commandLine.hasOption(serverHostNameOption.getOpt())) {
       this.serverHostname = commandLine.getOptionValue(serverHostNameOption.getOpt());

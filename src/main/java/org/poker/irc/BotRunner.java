@@ -97,7 +97,7 @@ public class BotRunner {
   }
 
   private EventHandler getEventHandler(Configuration configuration) {
-    EventHandler eventHandler = new EventHandler();
+    EventHandler eventHandler = new EventHandler(configuration);
     eventHandler.addMessageEventHandler(new UrlMessageEventHandler(configuration));
     eventHandler.addMessageEventHandler(new RottenTomatoesMessageEventHandler());
     eventHandler.addMessageEventHandler(new DotabuffMessageEventHandler(configuration));
