@@ -82,6 +82,9 @@ public class Configuration {
       return actions;
     } else {
       String raw = System.getenv("PERFORM");
+      if (Strings.isNullOrEmpty(raw)) {
+        return Lists.newArrayList();
+      }
       return Arrays.asList(raw.split(","));
     }
   }
