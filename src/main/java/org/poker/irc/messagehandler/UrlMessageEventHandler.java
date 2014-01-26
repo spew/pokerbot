@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class UrlMessageEventHandler implements MessageEventHandler {
-  Pattern twitterPattern = Pattern.compile("https?:\\/\\/(mobile\\.)?twitter\\.com\\/.*?\\/status\\/([0-9]+)");
+  Pattern twitterPattern = Pattern.compile("https?:\\/\\/(mobile\\.)?twitter\\.com\\/.*?\\/status(es)?\\/(?<statusId>[0-9]+)(\\/photo.*)");
   private Configuration configuration;
 
   public UrlMessageEventHandler(Configuration configuration) {
@@ -47,7 +47,7 @@ public class UrlMessageEventHandler implements MessageEventHandler {
     }
     Matcher matcher = twitterPattern.matcher(url);
     if (matcher.matches()) {
-      String statusId = matcher.group(2);
+      String statusId = matcher.group("statusId");
       ConfigurationBuilder configurationBuilder = new ConfigurationBuilder()
           .setOAuthAccessToken(this.configuration.getTwitterCredentials().getAccessToken())
           .setOAuthAccessTokenSecret(this.configuration.getTwitterCredentials().getAccessTokenSecret())
