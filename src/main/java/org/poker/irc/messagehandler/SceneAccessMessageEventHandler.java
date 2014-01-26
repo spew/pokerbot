@@ -1,7 +1,6 @@
 package org.poker.irc.messagehandler;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
-import javafx.scene.Scene;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.Configuration;
 import org.poker.irc.MessageEventHandler;
