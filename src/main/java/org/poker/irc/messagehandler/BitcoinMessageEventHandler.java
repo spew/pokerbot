@@ -25,8 +25,8 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
   @Override
   public void onMessage(MessageEvent event) {
     GetSpotRateResponse getSpotRateResponse = HttpUtils.getJson("https://coinbase.com/api/v1/prices/spot_rate", GetSpotRateResponse.class);
-    /*Ticker ticker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
-    StringBuilder sb = new StringBuilder();
+    Ticker ticker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
+    /*StringBuilder sb = new StringBuilder();
     sb.append(ticker.getTradableIdentifier().toLowerCase());
     sb.append(" - last: ");
     BotUtils.appendMoney(ticker.getLast(), sb);
@@ -36,8 +36,10 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     sb.append(" | vol: ");
     sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));  */
     StringBuilder sb = new StringBuilder();
-    sb.append("BTC - ");
+    sb.append("BTC - last: ");
     BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, getSpotRateResponse.getAmount()), sb);
+    sb.append(" | vol: ");
+    sb.append(BotUtils.format(ticker.getVolume().doubleValue()));
     sb.append(" | https://coinbase.com/charts");
     event.getChannel().send().message(sb.toString());
   }
