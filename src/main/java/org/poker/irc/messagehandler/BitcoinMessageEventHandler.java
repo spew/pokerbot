@@ -1,6 +1,8 @@
 package org.poker.irc.messagehandler;
 
 import com.xeiam.xchange.dto.marketdata.Ticker;
+import org.joda.money.BigMoney;
+import org.joda.money.CurrencyUnit;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.BotUtils;
 import org.poker.irc.HttpUtils;
@@ -34,8 +36,8 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     sb.append(" | vol: ");
     sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));  */
     StringBuilder sb = new StringBuilder();
-    sb.append("btc - $");
-    sb.append(getSpotRateResponse.getAmount());
+    sb.append("BTC - ");
+    BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, getSpotRateResponse.getAmount()), sb);
     sb.append(" | https://coinbase.com/charts");
     event.getChannel().send().message(sb.toString());
   }
