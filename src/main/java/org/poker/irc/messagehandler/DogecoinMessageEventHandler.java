@@ -68,13 +68,14 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
     }
 
     BigDecimal dogeVolume = new BigDecimal(volume);
+    String prettyVolume = BotUtils.format(dogeVolume.doubleValue());
     BigDecimal btcVolume = dogePrice.multiply(dogeVolume);
 
     sb.append("DOGE/BTC: ");
     sb.append(response.getVwap());
     sb.append(" | vol: ");
-    sb.append(NumberFormat.getNumberInstance().format(btcVolume));
-    sb.append(" BTC | 1000 DOGE = ");
+    sb.append(prettyVolume);
+    sb.append(" | 1000 DOGE = ");
     //Ticker btcTicker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
     GetSpotRateResponse getSpotRateResponse = HttpUtils.getJson("https://coinbase.com/api/v1/prices/spot_rate",
         GetSpotRateResponse.class);
