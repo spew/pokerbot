@@ -3,7 +3,9 @@ package org.poker.irc.messagehandler;
 import com.xeiam.xchange.dto.marketdata.Ticker;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.BotUtils;
+import org.poker.irc.HttpUtils;
 import org.poker.irc.MessageEventHandler;
+import org.poker.irc.coinbase.GetSpotRateResponse;
 
 import java.text.*;
 
@@ -20,16 +22,21 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
 
   @Override
   public void onMessage(MessageEvent event) {
-    Ticker ticker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
+    GetSpotRateResponse getSpotRateResponse = HttpUtils.getJson("https://coinbase.com/api/v1/prices/spot_rate", GetSpotRateResponse.class);
+    /*Ticker ticker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
     StringBuilder sb = new StringBuilder();
-    sb.append(ticker.getTradableIdentifier());
+    sb.append(ticker.getTradableIdentifier().toLowerCase());
     sb.append(" - last: ");
     BotUtils.appendMoney(ticker.getLast(), sb);
     sb.append(" | ask: ");
     BotUtils.appendMoney(ticker.getAsk(), sb);
     String test = ticker.getTradableIdentifier();
     sb.append(" | vol: ");
-    sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));
+    sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));  */
+    StringBuilder sb = new StringBuilder();
+    sb.append("btc - $");
+    sb.append(getSpotRateResponse.getAmount());
+    sb.append(" | https://coinbase.com/charts");
     event.getChannel().send().message(sb.toString());
   }
 
