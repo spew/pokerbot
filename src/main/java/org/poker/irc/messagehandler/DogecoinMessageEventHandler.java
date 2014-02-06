@@ -3,10 +3,13 @@ package org.poker.irc.messagehandler;
 import com.xeiam.xchange.dto.marketdata.Ticker;
 import org.apache.commons.lang3.math.*;
 import org.javatuples.Pair;
+import org.joda.money.BigMoney;
+import org.joda.money.CurrencyUnit;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.BotUtils;
 import org.poker.irc.HttpUtils;
 import org.poker.irc.MessageEventHandler;
+import org.poker.irc.coinbase.GetSpotRateResponse;
 import org.poker.irc.dogecoinaverage.DogecoinAverageResponse;
 import org.poker.irc.dogecoinaverage.Market;
 
@@ -72,8 +75,11 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
     sb.append(" | vol: ");
     sb.append(NumberFormat.getNumberInstance().format(btcVolume));
     sb.append(" BTC | 1000 DOGE = ");
-    Ticker btcTicker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
-    BotUtils.appendMoney(btcTicker.getLast().multipliedBy(dogePrice).multipliedBy(1000), sb);
+    //Ticker btcTicker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
+    GetSpotRateResponse getSpotRateResponse = HttpUtils.getJson("https://coinbase.com/api/v1/prices/spot_rate",
+        GetSpotRateResponse.class);
+    BigMoney last = BigMoney.of(CurrencyUnit.USD, getSpotRateResponse.getAmount());
+    BotUtils.appendMoney(last.multipliedBy(dogePrice).multipliedBy(1000), sb);
     return sb.toString();
   }
 
