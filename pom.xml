@@ -156,6 +156,11 @@
       <version>${xchange.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.xeiam.xchange</groupId>
+      <artifactId>xchange-bitstamp</artifactId>
+      <version>${xchange.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.google.http-client</groupId>
       <artifactId>google-http-client-jackson</artifactId>
       <version>1.15.0-rc</version>

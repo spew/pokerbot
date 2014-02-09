@@ -26,21 +26,16 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
   public void onMessage(MessageEvent event) {
     GetSpotRateResponse getSpotRateResponse = HttpUtils.getJson("https://coinbase.com/api/v1/prices/spot_rate", GetSpotRateResponse.class);
     Ticker ticker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
-    /*StringBuilder sb = new StringBuilder();
-    sb.append(ticker.getTradableIdentifier().toLowerCase());
-    sb.append(" - last: ");
-    BotUtils.appendMoney(ticker.getLast(), sb);
-    sb.append(" | ask: ");
-    BotUtils.appendMoney(ticker.getAsk(), sb);
-    String test = ticker.getTradableIdentifier();
-    sb.append(" | vol: ");
-    sb.append(NumberFormat.getIntegerInstance().format(ticker.getVolume()));  */
+    Ticker bitstampTicker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker("com.xeiam.xchange.bitstamp.BitstampExchange");
     StringBuilder sb = new StringBuilder();
-    sb.append("BTC - last: ");
+    sb.append("BTC - coinbase: ");
     BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, getSpotRateResponse.getAmount()), sb);
+    sb.append(" | bitstamp: ");
+    BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, bitstampTicker.getLast().getAmount()), sb);
+    sb.append(" | avg: ");
+    BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, ticker.getLast().getAmount()), sb);
     sb.append(" | vol: ");
     sb.append(BotUtils.format(ticker.getVolume().doubleValue()));
-    sb.append(" | https://coinbase.com/charts");
     event.getChannel().send().message(sb.toString());
   }
 

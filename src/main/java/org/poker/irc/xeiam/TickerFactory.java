@@ -10,8 +10,11 @@ import java.io.IOException;
 
 public class TickerFactory {
   public static Ticker CreateBtcTicker() {
+    return TickerFactory.CreateBtcTicker("com.xeiam.xchange.bitcoinaverage.BitcoinAverageExchange");
+  }
 
-    Exchange btcAverage = ExchangeFactory.INSTANCE.createExchange("com.xeiam.xchange.bitcoinaverage.BitcoinAverageExchange");
+  public static Ticker CreateBtcTicker(String tickerClass) {
+    Exchange btcAverage = ExchangeFactory.INSTANCE.createExchange(tickerClass);
     // Interested in the public polling market data feed (no authentication)
     PollingMarketDataService marketDataService = btcAverage.getPollingMarketDataService();
     // Get the latest ticker data showing BTC to USD
