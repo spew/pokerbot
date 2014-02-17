@@ -5,13 +5,20 @@ import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.BotUtils;
+import org.poker.irc.Configuration;
 import org.poker.irc.HttpUtils;
 import org.poker.irc.MessageEventHandler;
 import org.poker.irc.coinbase.GetSpotRateResponse;
+import org.poker.irc.crypto.CryptoCurrencyMarketCaps;
 
 import java.text.*;
 
 public class BitcoinMessageEventHandler implements MessageEventHandler {
+  private final CryptoCurrencyMarketCaps marketCaps;
+  public BitcoinMessageEventHandler(Configuration configuration) {
+    this.marketCaps = new CryptoCurrencyMarketCaps(configuration);
+  }
+
   @Override
   public String getDescription() {
     return "!btc, .btc, !bitcoin, or .bitcoin: send to channel the latest bitcoin financial information from https://bitcoinaverage.com/";
@@ -36,6 +43,8 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, ticker.getLast().getAmount()), sb);
     sb.append(" | vol: ");
     sb.append(BotUtils.format(ticker.getVolume().doubleValue()));
+    sb.append(" | cap: ");
+    sb.append(BotUtils.format(this.marketCaps.getMarketCap("btc").doubleValue()));
     event.getChannel().send().message(sb.toString());
   }
 

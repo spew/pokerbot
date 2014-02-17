@@ -7,9 +7,11 @@ import org.joda.money.BigMoney;
 import org.joda.money.CurrencyUnit;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.BotUtils;
+import org.poker.irc.Configuration;
 import org.poker.irc.HttpUtils;
 import org.poker.irc.MessageEventHandler;
 import org.poker.irc.coinbase.GetSpotRateResponse;
+import org.poker.irc.crypto.CryptoCurrencyMarketCaps;
 import org.poker.irc.dogecoinaverage.DogecoinAverageResponse;
 import org.poker.irc.dogecoinaverage.Market;
 
@@ -17,6 +19,10 @@ import java.math.BigDecimal;
 import java.text.NumberFormat;
 
 public class DogecoinMessageEventHandler implements MessageEventHandler {
+  private final CryptoCurrencyMarketCaps marketCaps;
+  public DogecoinMessageEventHandler(Configuration configuration) {
+    this.marketCaps = new CryptoCurrencyMarketCaps(configuration);
+  }
 
   @Override
   public String getDescription() {
@@ -73,8 +79,14 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
 
     sb.append("DOGE/BTC: ");
     sb.append(response.getVwap());
+    /*sb.append("BTC/DOGE: ");
+    double ratio = Double.parseDouble(response.getVwap());
+    long longValue = new Double(1.0 / ratio).longValue();
+    sb.append(longValue);*/
     sb.append(" | vol: ");
     sb.append(prettyVolume);
+    sb.append(" | cap: ");
+    sb.append(BotUtils.format(this.marketCaps.getMarketCap("doge").doubleValue()));
     sb.append(" | 1000 DOGE = ");
     //Ticker btcTicker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
     GetSpotRateResponse getSpotRateResponse = HttpUtils.getJson("https://coinbase.com/api/v1/prices/spot_rate",

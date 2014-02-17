@@ -2,12 +2,20 @@ package org.poker.irc.messagehandler;
 
 import org.apache.commons.lang3.math.NumberUtils;
 import org.pircbotx.hooks.events.MessageEvent;
+import org.poker.irc.Configuration;
 import org.poker.irc.MessageEventHandler;
+import org.poker.irc.cryptocoincharts.CryptoCoinChart;
+
 import java.math.BigDecimal;
 
 import static org.poker.irc.cryptocoincharts.CryptoCoinChart.*;
 
 public class CryptoCoinMessageEventHandler implements MessageEventHandler {
+  private final CryptoCoinChart cryptoCoinChart;
+  public CryptoCoinMessageEventHandler(Configuration configuration) {
+    this.cryptoCoinChart = new CryptoCoinChart(configuration);
+  }
+
   @Override
   public String[] getMessagePrefixes() {
     return new String[]  {"!coin" , ".coin"};
@@ -29,12 +37,12 @@ public class CryptoCoinMessageEventHandler implements MessageEventHandler {
       switch(commandParts.length){
         case 1:
           // no coin specified, default to doge
-          channelResponse = GetCoinInfo("doge");
+          channelResponse = this.cryptoCoinChart.getCoinInfo("doge");
           break;
         case 2:
           // display specific coin info
           symbol = commandParts[1];
-          channelResponse = GetCoinInfo(symbol);
+          channelResponse = this.cryptoCoinChart.getCoinInfo(symbol);
           break;
         case 3:
           // display USD value for a given amount of a given coin
