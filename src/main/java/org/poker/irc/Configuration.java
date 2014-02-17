@@ -31,9 +31,19 @@ public class Configuration {
   private String espnApiKey;
   private String twitchClientId;
   private String steamApiKey;
+  private String sceneAccessUsername;
+  private String sceneAccessPassword;
   private int espnPollIntervalMinutes = 10;
+
+  public boolean isEspnEnabled() {
+    return espnEnabled;
+  }
+
+  private boolean espnEnabled = false;
   private List<String> performActions;
   private TwitterCredentials twitterCredentials = new TwitterCredentials();
+
+  private int cryptoMarketCapRefreshPeriod = 5;
 
   public static class TwitterCredentials {
     private String consumerKey;
@@ -62,6 +72,10 @@ public class Configuration {
 
   }
 
+  public int getCryptoMarketCapRefreshPeriod() {
+    return cryptoMarketCapRefreshPeriod;
+  }
+
   public TwitterCredentials getTwitterCredentials() {
     return this.twitterCredentials;
   }
@@ -75,6 +89,14 @@ public class Configuration {
   }
 
   public List<String> getPerformActions() { return this.performActions; }
+
+  public String getSceneAccessUsername() {
+    return this.sceneAccessUsername;
+  }
+
+  public String getSceneAccessPassword() {
+    return this.sceneAccessPassword;
+  }
 
   private List<String> parsePerformActions(CommandLine commandLine, Option performOption) {
     if (commandLine.hasOption(performOption.getOpt())) {

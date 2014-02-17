@@ -34,7 +34,9 @@ public class BotRunner {
   public void run(Configuration configuration) throws InterruptedException {
     org.pircbotx.Configuration ircConfiguration = this.getIrcBotConfiguration(configuration);
     final PircBotX bot = new PircBotX(ircConfiguration);
-    this.scheduleEspnChecker(bot, configuration);
+    if (configuration.isEspnEnabled()) {
+      this.scheduleEspnChecker(bot, configuration);
+    }
     while (true) {
       try {
         bot.startBot();
@@ -102,11 +104,11 @@ public class BotRunner {
     eventHandler.addMessageEventHandler(new RottenTomatoesMessageEventHandler());
     eventHandler.addMessageEventHandler(new DotabuffMessageEventHandler(configuration));
     eventHandler.addMessageEventHandler(new GoogleSearchMessageEventHandler(configuration));
-    eventHandler.addMessageEventHandler(new BitcoinMessageEventHandler());
+    eventHandler.addMessageEventHandler(new BitcoinMessageEventHandler(configuration));
     eventHandler.addMessageEventHandler(new UptimeMessageEventHandler());
     eventHandler.addMessageEventHandler(new StreamsMessageEventHandler(configuration));
-    eventHandler.addMessageEventHandler(new DogecoinMessageEventHandler());
-    eventHandler.addMessageEventHandler(new CryptoCoinMessageEventHandler());
+    eventHandler.addMessageEventHandler(new DogecoinMessageEventHandler(configuration));
+    eventHandler.addMessageEventHandler(new CryptoCoinMessageEventHandler(configuration));
     eventHandler.addMessageEventHandler(new SceneAccessMessageEventHandler(configuration));
     return eventHandler;
   }
