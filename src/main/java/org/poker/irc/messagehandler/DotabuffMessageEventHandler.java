@@ -1,5 +1,7 @@
 package org.poker.irc.messagehandler;
 
+import com.google.api.client.repackaged.com.google.common.base.Strings;
+import com.google.api.client.util.Sets;
 import com.google.common.base.Function;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Iterables;
@@ -51,7 +53,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
 
   @Override
   public String[] getMessagePrefixes() {
-    return new String[] { "!dota ", "!dotabuff ", ".dota ", ".dotabuff "};
+    return new String[] { "!dota", ".dota" };
   }
 
   @Override
@@ -142,8 +144,38 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
       sb.append(prettyTime.format(new Date(0)));
       event.getChannel().send().message(sb.toString());
     } else {
-      event.getChannel().send().message("Unknown player name: " + message);
+      if (Strings.isNullOrEmpty(message.trim())) {
+        Match latestMatch = this.findLastPlayed();
+        event.getChannel().send().message("Latest match: " + "http://dotabuff.com/matches/" + latestMatch.getMatch_id());
+      } else {
+        event.getChannel().send().message("Unknown player name: " + message);
+      }
     }
+  }
+
+  private Match findLastPlayed() {
+    Set<Integer> playerIds = Sets.newHashSet();
+    playerIds.addAll(this.nameToId.values());
+    Match latestMatch = null;
+    for (Integer id : playerIds) {
+      List<Match> matches = this.dota.getMatches(id, 1);
+      Match match = Iterables.getFirst(matches, null);
+      if (match == null) {
+        continue;
+      }
+      if (latestMatch == null) {
+        latestMatch = match;
+      }
+      if (latestMatch.getStart_time() < match.getStart_time()) {
+        latestMatch = match;
+      }
+    }
+    try {
+      Thread.sleep(250);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+    return latestMatch;
   }
 
   private List<MatchDetails> getRecentResults(long playerId, int maxResults) {
