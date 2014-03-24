@@ -34,8 +34,11 @@ public class CryptoCoinChart {
     BigDecimal btcPrice = new BigDecimal(Double.parseDouble(coin.getPrice_btc()));
     BigDecimal volume = btcVolume.divide(btcPrice, MathContext.DECIMAL128);
     sb.append(BotUtils.format(volume.doubleValue()));
-    sb.append(" | cap: ");
-    sb.append(BotUtils.format(this.marketCaps.getMarketCap(symbol).doubleValue()));
+    BigDecimal coinCap = this.marketCaps.getMarketCap(symbol);
+    if (coinCap != null) {
+      sb.append(" | cap: ");
+      sb.append(BotUtils.format(coinCap.doubleValue()));
+    }
     sb.append(String.format(" | 1000 %s = ", symbol.toUpperCase()));
     BotUtils.appendMoney(btcTicker.getLast().multiply(coinPrice).multiply(new BigDecimal(1000.0)), sb);
     return sb.toString();
