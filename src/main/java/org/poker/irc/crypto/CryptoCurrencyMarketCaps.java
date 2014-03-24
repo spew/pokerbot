@@ -55,7 +55,7 @@ public class CryptoCurrencyMarketCaps implements AutoCloseable {
       if (Strings.isNullOrEmpty(e.id())) {
         continue;
       }
-      Element marketCapTd = e.select("td[class=no-wrap market-cap]").first();
+      Element marketCapTd = e.select("td[class=no-wrap market-cap text-right]").first();
       DecimalFormatSymbols symbols = new DecimalFormatSymbols();
       symbols.setGroupingSeparator(',');
       symbols.setDecimalSeparator('.');

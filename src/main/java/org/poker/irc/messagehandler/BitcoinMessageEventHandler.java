@@ -11,6 +11,7 @@ import org.poker.irc.MessageEventHandler;
 import org.poker.irc.coinbase.GetSpotRateResponse;
 import org.poker.irc.crypto.CryptoCurrencyMarketCaps;
 
+import java.math.BigDecimal;
 import java.text.*;
 
 public class BitcoinMessageEventHandler implements MessageEventHandler {
@@ -43,8 +44,11 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, ticker.getLast().getAmount()), sb);
     sb.append(" | vol: ");
     sb.append(BotUtils.format(ticker.getVolume().doubleValue()));
-    sb.append(" | cap: ");
-    sb.append(BotUtils.format(this.marketCaps.getMarketCap("btc").doubleValue()));
+    BigDecimal btcCap = this.marketCaps.getMarketCap("btc");
+    if (btcCap != null) {
+      sb.append(" | cap: ");
+      sb.append(BotUtils.format(btcCap.doubleValue()));
+    }
     event.getChannel().send().message(sb.toString());
   }
 
