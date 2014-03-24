@@ -2,10 +2,14 @@ package org.poker.irc;
 
 import org.joda.money.BigMoney;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 
 public class BotUtils {
+  public static void appendMoney(BigDecimal value, StringBuilder sb) {
+    sb.append(NumberFormat.getCurrencyInstance().format(value.doubleValue()));
+  }
   public static void appendMoney(BigMoney bigMoney, StringBuilder sb) {
       sb.append(NumberFormat.getCurrencyInstance().format(bigMoney.getAmount()));
   }
