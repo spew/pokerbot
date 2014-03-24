@@ -105,7 +105,7 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
 
     sb.append(String.format("%s DOGE = ", amount.toString()));
     Ticker btcTicker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
-    BotUtils.appendMoney(btcTicker.getLast().multipliedBy(coinPrice).multipliedBy(amount), sb);
+    BotUtils.appendMoney(btcTicker.getLast().multiply(coinPrice).multiply(amount), sb);
     return sb.toString();
   }
 }

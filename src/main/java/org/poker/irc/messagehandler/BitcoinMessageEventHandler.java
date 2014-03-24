@@ -39,9 +39,9 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
     sb.append("BTC - coinbase: ");
     BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, getSpotRateResponse.getAmount()), sb);
     sb.append(" | bitstamp: ");
-    BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, bitstampTicker.getLast().getAmount()), sb);
+    BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, bitstampTicker.getLast()), sb);
     sb.append(" | avg: ");
-    BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, ticker.getLast().getAmount()), sb);
+    BotUtils.appendMoney(BigMoney.of(CurrencyUnit.USD, ticker.getLast()), sb);
     sb.append(" | vol: ");
     sb.append(BotUtils.format(ticker.getVolume().doubleValue()));
     BigDecimal btcCap = this.marketCaps.getMarketCap("btc");

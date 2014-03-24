@@ -37,7 +37,7 @@ public class CryptoCoinChart {
     sb.append(" | cap: ");
     sb.append(BotUtils.format(this.marketCaps.getMarketCap(symbol).doubleValue()));
     sb.append(String.format(" | 1000 %s = ", symbol.toUpperCase()));
-    BotUtils.appendMoney(btcTicker.getLast().multipliedBy(coinPrice).multipliedBy(1000), sb);
+    BotUtils.appendMoney(btcTicker.getLast().multiply(coinPrice).multiply(new BigDecimal(1000.0)), sb);
     return sb.toString();
   }
 
@@ -47,7 +47,7 @@ public class CryptoCoinChart {
     BigDecimal coinPrice = new BigDecimal(coin.getPrice_btc());
     sb.append(String.format("%s %s = ", amount.toString(), symbol.toUpperCase()));
     Ticker btcTicker = org.poker.irc.xeiam.TickerFactory.CreateBtcTicker();
-    BotUtils.appendMoney(btcTicker.getLast().multipliedBy(coinPrice).multipliedBy(amount), sb);
+    BotUtils.appendMoney(btcTicker.getLast().multiply(coinPrice).multiply(amount), sb);
     return sb.toString();
   }
 
