@@ -73,6 +73,6 @@ public class SceneAccessMessageEventHandler implements MessageEventHandler {
       }
     };
 
-    this.scheduler.scheduleAtFixedRate(runnable, 0, this.configuration.getSceneAccessPollIntervalMinutes(), TimeUnit.MINUTES);
+    //this.scheduler.scheduleAtFixedRate(runnable, 0, this.configuration.getSceneAccessPollIntervalMinutes(), TimeUnit.MINUTES);
   }
 }
