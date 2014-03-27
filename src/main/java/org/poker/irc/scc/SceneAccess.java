@@ -1,5 +1,6 @@
 package org.poker.irc.scc;
 
+import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.api.client.util.Lists;
 import com.google.api.client.util.Maps;
 import org.jsoup.Connection;
@@ -81,6 +82,9 @@ public class SceneAccess {
         throw new RuntimeException(e);
       }
       final Element titleElement = detailsDocument.select("span.fls").first();
+      if (Strings.isNullOrEmpty(titleElement.text()) || Strings.isNullOrEmpty(aDetails.attr("href"))) {
+        continue;
+      }
       Torrent t = new Torrent() {
         {
           setTitle(titleElement.text());
