@@ -123,6 +123,8 @@ public class Configuration {
     this.twitterCredentials.consumerKey = System.getenv("TWITTER_OAUTH_CONSUMER_KEY");
     this.twitterCredentials.consumerSecret = System.getenv("TWITTER_OAUTH_CONSUMER_SECRET");
     this.steamApiKey = System.getenv("STEAM_API_KEY");
+    this.sceneAccessUsername = System.getenv("SCC_USERNAME");
+    this.sceneAccessPassword = System.getenv("SCC_PASSWORD");
     Options options = new Options();
     Option googleSearchApiKeyOption = OptionBuilder
         .withLongOpt("google-search-api-key")
@@ -232,6 +234,8 @@ public class Configuration {
     }
     this.performActions = this.parsePerformActions(commandLine, performOption);
   }
+
+  public int getSceneAccessPollIntervalMinutes() { return 10; }
 
   public int getEspnPollIntervalMinutes() {
     return this.espnPollIntervalMinutes;

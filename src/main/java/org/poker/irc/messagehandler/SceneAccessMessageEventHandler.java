@@ -1,10 +1,17 @@
 package org.poker.irc.messagehandler;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
+import com.google.common.collect.Sets;
+import org.pircbotx.Channel;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.Configuration;
 import org.poker.irc.MessageEventHandler;
+import org.poker.irc.scc.Credentials;
+import org.poker.irc.scc.SceneAccess;
+import org.poker.irc.scc.Torrent;
 
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -12,9 +19,14 @@ import java.util.concurrent.TimeUnit;
 public class SceneAccessMessageEventHandler implements MessageEventHandler {
   final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
   final Configuration configuration;
+  private SceneAccess sceneAccess;
+  private final String[] showNames = new String[] { "game of thrones" };
+  //private final Set<String> shows = Sets.immutableEnumSet(showNames);
 
   public SceneAccessMessageEventHandler(Configuration configuration) {
     this.configuration = configuration;
+    this.sceneAccess = new SceneAccess(new Credentials(configuration.getSceneAccessUsername(),
+        configuration.getSceneAccessPassword()));
   }
 
   @Override
@@ -40,17 +52,27 @@ public class SceneAccessMessageEventHandler implements MessageEventHandler {
       event.getChannel().send().message("Please supply a show name");
       return;
     }
-    event.getChannel().send().message("Unable to find show: " + showName);
+    List<Torrent> torrents = sceneAccess.findShow(showName);
+    if (torrents.size() > 0) {
+      this.sendTorrent(event.getChannel(), torrents.get(0));
+    } else {
+      event.getChannel().send().message("Unable to find show: " + showName);
+    }
+  }
+
+  private void sendTorrent(Channel channel, Torrent torrent) {
+    String url = this.sceneAccess.getUrl() + "/" + torrent.getUrl();
+    channel.send().message(torrent.getTitle() + " | 720p | " + url);
   }
 
   public void startAutomatedChecker() {
     Runnable runnable = new Runnable() {
       @Override
       public void run() {
-
+        //sceneAccess.
       }
     };
 
-    this.scheduler.scheduleAtFixedRate(runnable, 0, this.configuration.getEspnPollIntervalMinutes(), TimeUnit.MINUTES);
+    this.scheduler.scheduleAtFixedRate(runnable, 0, this.configuration.getSceneAccessPollIntervalMinutes(), TimeUnit.MINUTES);
   }
 }
