@@ -38,8 +38,8 @@ public class SceneAccess {
   private void login(Response response) {
     try {
       Response loginResponse = Jsoup.connect(response.url().toString())
-          .data("username", "rleidle")
-          .data("password", "donkeypete")
+          .data("username", credentials.getUsername())
+          .data("password", credentials.getPassword())
           .header("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8")
           .userAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/34.0.1847.45 Safari/537.36")
           .followRedirects(true)
