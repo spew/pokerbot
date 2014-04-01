@@ -10,12 +10,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 public class StreamsMessageEventHandler implements MessageEventHandler {
   private enum Game {
     Dota,
     LeagueOfLegends,
     Quake,
-    MagicTheGathering
+    MagicTheGathering,
+    Diablo3,
   }
   private static final Logger LOG = LoggerFactory.getLogger(StreamsMessageEventHandler.class);
   private final Configuration configuration;
@@ -46,8 +51,10 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
       String gameName = message.substring(index + 1).trim().toLowerCase();
       if (gameName.startsWith("l")) {
         game = Game.LeagueOfLegends;
-      } else if (gameName.startsWith("d")) {
+      } else if (gameName.startsWith("do")) {
         game = Game.Dota;
+      } else if (gameName.startsWith("di")) {
+        game = Game.Diablo3;
       } else if (gameName.startsWith("q")) {
         game = Game.Quake;
       } else if (gameName.startsWith("mtg") || gameName.startsWith("magic") || gameName.startsWith("m:tg")) {
@@ -75,6 +82,15 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
       case Quake:
         gameName = "Quake%20Live";
         limit = 1;
+        break;
+      case Diablo3:
+        //StandardCharsets.UTF_8.displayName()
+        try {
+          gameName = URLEncoder.encode("Diablo III: Reaper of Souls", "ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+          throw new RuntimeException(e);
+        }
+        limit = 3;
         break;
       default:
         throw new NotImplementedException();
