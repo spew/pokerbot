@@ -21,6 +21,7 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
     Quake,
     MagicTheGathering,
     Diablo3,
+    Rust,
   }
   private static final Logger LOG = LoggerFactory.getLogger(StreamsMessageEventHandler.class);
   private final Configuration configuration;
@@ -59,6 +60,8 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
         game = Game.Quake;
       } else if (gameName.startsWith("mtg") || gameName.startsWith("magic") || gameName.startsWith("m:tg")) {
         game = Game.MagicTheGathering;
+      } else if (gameName.startsWith("rust")) {
+        game = Game.Rust;
       } else if (gameName.equals("poker")) {
         event.getChannel().send().message("Poker? I don't support dead games");
         return;
@@ -82,6 +85,10 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
       case Quake:
         gameName = "Quake%20Live";
         limit = 1;
+        break;
+      case Rust:
+        gameName = "Rust";
+        limit = 2;
         break;
       case Diablo3:
         //StandardCharsets.UTF_8.displayName()
