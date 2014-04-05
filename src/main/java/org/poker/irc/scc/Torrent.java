@@ -1,8 +1,11 @@
 package org.poker.irc.scc;
 
+import org.joda.time.DateTime;
+
 public class Torrent {
-  public String title;
-  public String url;
+  private String title;
+  private String url;
+  private DateTime dateAdded;
 
   public String getTitle() {
     return this.title;
@@ -18,5 +21,13 @@ public class Torrent {
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  public DateTime getDateAdded() {
+    return dateAdded;
+  }
+
+  public void setDateAdded(DateTime dateAdded) {
+    this.dateAdded = dateAdded;
   }
 }

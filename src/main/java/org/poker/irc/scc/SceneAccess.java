@@ -3,6 +3,9 @@ package org.poker.irc.scc;
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.api.client.util.Lists;
 import com.google.api.client.util.Maps;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.jsoup.Connection;
 import org.jsoup.Connection.Method;
 import org.jsoup.Connection.Response;
@@ -85,10 +88,26 @@ public class SceneAccess {
       if (Strings.isNullOrEmpty(titleElement.text()) || Strings.isNullOrEmpty(aDetails.attr("href"))) {
         continue;
       }
+      final Element detailsTable = detailsDocument.select("table#details_table").first();
+      DateTime dateAdded = null;
+      for (Element tableRowElement : detailsTable.select("tr")) {
+        Element tdElement = tableRowElement.select("td.td_head").first();
+        if (tdElement == null) {
+          continue;
+        }
+        if (!tdElement.text().trim().toLowerCase().equals("added")) {
+          continue;
+        }
+        Element tdColumn = tableRowElement.select("td.td_col").first();
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss");
+        dateAdded = formatter.parseDateTime(tdColumn.text());
+      }
+      final DateTime dateCopy = dateAdded;
       Torrent t = new Torrent() {
         {
           setTitle(titleElement.text());
           setUrl(aDetails.attr("href"));
+          setDateAdded(dateCopy);
         }
       };
       torrents.add(t);
