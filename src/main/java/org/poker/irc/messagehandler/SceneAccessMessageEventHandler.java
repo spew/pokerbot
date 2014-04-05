@@ -2,6 +2,8 @@ package org.poker.irc.messagehandler;
 
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.common.collect.Sets;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.pircbotx.Channel;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.poker.irc.Configuration;
@@ -62,7 +64,9 @@ public class SceneAccessMessageEventHandler implements MessageEventHandler {
 
   private void sendTorrent(Channel channel, Torrent torrent) {
     String url = this.sceneAccess.getUrl() + "/" + torrent.getUrl();
-    channel.send().message(torrent.getTitle() + " | 720p | " + url);
+    String formattedDate = torrent.getDateAdded().toString("yyyy-MM-dd");
+    //String formattedDate = torrent.getDateAdded().toString("yyyy-MM-dd HH:mm");
+    channel.send().message(torrent.getTitle() + " | " + formattedDate + " | 720p | " + url);
   }
 
   public void startAutomatedChecker() {
