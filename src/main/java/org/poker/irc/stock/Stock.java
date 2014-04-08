@@ -5,17 +5,17 @@ import com.google.gson.annotations.SerializedName;
 public class Stock {
   @SerializedName("t")
   private String symbol;
-  @SerializedName("l")
+  @SerializedName("l_fix")
   private double curentPriceUsd;
-  @SerializedName("c")
+  @SerializedName("c_fix")
   private double currentDifferenceUsd;
-  @SerializedName("cp")
+  @SerializedName("cp_fix")
   private double currentDifferencePercentage;
-  @SerializedName("el")
+  @SerializedName("el_fix")
   private double extraHoursPriceUsd;
-  @SerializedName("ec")
+  @SerializedName("ec_fix")
   private double extraHoursPriceDifferenceUsd;
-  @SerializedName("ecp")
+  @SerializedName("ecp_fix")
   private double extraHoursCurrentPriceDifferencePercentage;
 
   public String getSymbol() {

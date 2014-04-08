@@ -25,9 +25,9 @@ public class StockMessageEventHandler implements MessageEventHandler {
     if (stock == null) {
       return;
     }
-    event.getChannel().send().message(stock.getSymbol() + ": $" + BotUtils.format2(stock.getCurentPriceUsd())
-        + " (" + this.getPercentage(stock.getCurrentDifferencePercentage()) + "%) | after hours: $"
-        + BotUtils.format2(stock.getExtraHoursPriceUsd()) + " (" + this.getPercentage(stock.getExtraHoursCurrentPriceDifferencePercentage()) + "%)");
+    event.getChannel().send().message(stock.getSymbol() + ": " + BotUtils.formatCurrency(stock.getCurentPriceUsd())
+        + " (" + this.getPercentage(stock.getCurrentDifferencePercentage()) + "%) | after hours: "
+        + BotUtils.formatCurrency(stock.getExtraHoursPriceUsd()) + " (" + this.getPercentage(stock.getExtraHoursCurrentPriceDifferencePercentage()) + "%)");
   }
 
   private String getPercentage(double percentage) {

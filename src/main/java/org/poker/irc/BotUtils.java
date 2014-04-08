@@ -30,4 +30,8 @@ public class BotUtils {
     DecimalFormat df = new DecimalFormat("#0.00");
     return df.format(value);
   }
+
+  public static String formatCurrency(double value) {
+    return NumberFormat.getCurrencyInstance().format(value);
+  }
 }
