@@ -25,4 +25,9 @@ public class BotUtils {
     } */
     return r;
   }
+
+  public static String format2(double value) {
+    DecimalFormat df = new DecimalFormat("#0.00");
+    return df.format(value);
+  }
 }
