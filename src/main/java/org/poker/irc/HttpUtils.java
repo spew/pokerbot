@@ -3,6 +3,7 @@ package org.poker.irc;
 import com.google.api.client.util.Lists;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.stream.JsonReader;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -52,7 +53,8 @@ public class HttpUtils {
     try (CloseableHttpClient httpClient = HttpClients.createDefault();
          CloseableHttpResponse response = httpClient.execute(httpGet)) {
       HttpEntity httpEntity = response.getEntity();
-      try (Reader reader = new InputStreamReader(httpEntity.getContent())) {
+      try (JsonReader reader = new JsonReader(new InputStreamReader(httpEntity.getContent()))) {
+        reader.setLenient(true);
         result = gson.fromJson(reader, classOfT);
       }
     } catch (IOException e) {
