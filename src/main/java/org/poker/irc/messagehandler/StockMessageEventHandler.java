@@ -25,13 +25,29 @@ public class StockMessageEventHandler implements MessageEventHandler {
     if (stock == null) {
       return;
     }
-    String channelMessage = stock.getSymbol() + ": " + BotUtils.formatCurrency(stock.getCurentPriceUsd())
-        + " (" + this.getPercentage(stock.getCurrentDifferencePercentage()) + "%)";
+    String channelMessage = stock.getSymbol() + ": " + this.formatResults(stock.getCurentPriceUsd(),
+        stock.getCurrentDifferenceUsd(), stock.getCurrentDifferencePercentage());
     if (stock.getExtraHoursPriceUsd() != 0) {
       channelMessage += "| after hours: "
-          + BotUtils.formatCurrency(stock.getExtraHoursPriceUsd()) + " (" + this.getPercentage(stock.getExtraHoursCurrentPriceDifferencePercentage()) + "%)";
+          + this.formatResults(stock.getExtraHoursPriceUsd(), stock.getExtraHoursPriceDifferenceUsd(),
+          stock.getExtraHoursCurrentPriceDifferencePercentage());
     }
     event.getChannel().send().message(channelMessage);
+  }
+
+  private String formatResults(double price, double difference, double differencePercentage) {
+    return BotUtils.formatCurrency(price) + " " + this.getDifference(difference)
+        + " (" + this.getPercentage(differencePercentage) + "%)";
+  }
+
+  private String getDifference(double difference) {
+    String value = BotUtils.formatCurrency(Math.abs(difference));
+    if (difference >= 0) {
+      value = "+" + value;
+    } else {
+      value = "-" + value;
+    }
+    return value;
   }
 
   private String getPercentage(double percentage) {
