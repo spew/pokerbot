@@ -23,7 +23,7 @@ public class BitcoinAddressMessageEventHandler implements MessageEventHandler {
     String message = event.getMessage();
     SingleAddress singleAddress = blockChainInfoClient.getSingleAddress(message);
     event.getChannel().send().message(blockChainInfoClient.getSingleAddressUrl(message));
-    String channelMessage = String.format("total %1$,.8f BTC | received %2$,.8f BTC | sent %3$,.8f BTC",
+    String channelMessage = String.format("total: %1$,.8f BTC | received: %2$,.8f BTC | sent: %3$,.8f BTC",
         singleAddress.getFinalBalanceBtc(),
         singleAddress.getReceivedCountBtc(),
         singleAddress.getSentCountBtc());
