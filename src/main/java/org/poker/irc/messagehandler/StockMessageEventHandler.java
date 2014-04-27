@@ -13,6 +13,11 @@ public class StockMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getMessageRegex() {
+    return null;
+  }
+
+  @Override
   public void onMessage(MessageEvent event) {
     String message = event.getMessage();
     String symbol = null;
@@ -25,7 +30,7 @@ public class StockMessageEventHandler implements MessageEventHandler {
     if (stock == null) {
       return;
     }
-    String channelMessage = stock.getSymbol() + ": " + this.formatResults(stock.getCurentPriceUsd(),
+    String channelMessage = stock.getSymbol() + ": " + this.formatResults(stock.getCurrentPriceUsd(),
         stock.getCurrentDifferenceUsd(), stock.getCurrentDifferencePercentage());
     if (stock.getExtraHoursPriceUsd() != 0) {
       channelMessage += "| after hours: "

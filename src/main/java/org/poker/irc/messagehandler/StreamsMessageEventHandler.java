@@ -31,6 +31,11 @@ public class StreamsMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getMessageRegex() {
+    return null;
+  }
+
+  @Override
   public String getDescription() {
     return "!streams <game> or .streams <game>: send to channel top twitch streams for { dota, lol, quake, magic }.";
   }

@@ -25,6 +25,11 @@ public class DogecoinMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getMessageRegex() {
+    return null;
+  }
+
+  @Override
   public String getDescription() {
     return "!doge or .doge: send to channel latest doge financial information";
   }

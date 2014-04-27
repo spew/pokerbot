@@ -6,7 +6,7 @@ public class Stock {
   @SerializedName("t")
   private String symbol;
   @SerializedName("l_fix")
-  private double curentPriceUsd;
+  private double currentPriceUsd;
   @SerializedName("c_fix")
   private double currentDifferenceUsd;
   @SerializedName("cp_fix")
@@ -22,8 +22,8 @@ public class Stock {
     return symbol;
   }
 
-  public double getCurentPriceUsd() {
-    return curentPriceUsd;
+  public double getCurrentPriceUsd() {
+    return currentPriceUsd;
   }
 
   public double getCurrentDifferenceUsd() {

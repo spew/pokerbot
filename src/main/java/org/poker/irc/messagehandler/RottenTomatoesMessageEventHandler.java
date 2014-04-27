@@ -16,6 +16,11 @@ public class RottenTomatoesMessageEventHandler implements MessageEventHandler {
   private static final Logger LOG = LoggerFactory.getLogger(RottenTomatoesMessageEventHandler.class);
 
   @Override
+  public String getMessageRegex() {
+    return null;
+  }
+
+  @Override
   public String[] getMessagePrefixes() {
     return new String[] {".rt", "!rt"};
   }
