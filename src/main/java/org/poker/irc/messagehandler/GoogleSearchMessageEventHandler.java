@@ -32,6 +32,11 @@ public class GoogleSearchMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getMessageRegex() {
+    return null;
+  }
+
+  @Override
   public String[] getMessagePrefixes() {
     return new String[]{".google", "!google"};
   }

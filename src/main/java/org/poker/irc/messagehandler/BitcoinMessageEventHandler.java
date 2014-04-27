@@ -21,6 +21,11 @@ public class BitcoinMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getMessageRegex() {
+    return null;
+  }
+
+  @Override
   public String getDescription() {
     return "!btc, .btc, !bitcoin, or .bitcoin: send to channel the latest bitcoin financial information from https://bitcoinaverage.com/";
   }

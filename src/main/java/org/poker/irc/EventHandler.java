@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EventHandler extends ListenerAdapter {
   private static class RejoinChannelAttempt {
@@ -23,6 +25,7 @@ public class EventHandler extends ListenerAdapter {
   }
   private static final Logger LOG = LoggerFactory.getLogger(EventHandler.class);
   private Map<String, MessageEventHandler> messageEventHandlerMap = Maps.newHashMap();
+  private Map<Pattern, MessageEventHandler> regexEventHandlerMap = Maps.newHashMap();
   private List<MessageEventHandler> messageEventHandlers = Lists.newArrayList();
   private Object lock = new Object();
   private List<RejoinChannelAttempt> rejoiningChannels = Lists.newArrayList();
@@ -33,10 +36,16 @@ public class EventHandler extends ListenerAdapter {
   }
 
   public void addMessageEventHandler(final MessageEventHandler messageEventHandler) {
-    for (String prefix : messageEventHandler.getMessagePrefixes()) {
-      this.messageEventHandlerMap.put(prefix, messageEventHandler);
+    if (messageEventHandler.getMessagePrefixes() != null) {
+      for (String prefix : messageEventHandler.getMessagePrefixes()) {
+        messageEventHandlerMap.put(prefix, messageEventHandler);
+      }
     }
-    this.messageEventHandlers.add(messageEventHandler);
+    if (messageEventHandler.getMessageRegex() != null) {
+      Pattern pattern = Pattern.compile(messageEventHandler.getMessageRegex());
+      regexEventHandlerMap.put(pattern, messageEventHandler);
+    }
+    messageEventHandlers.add(messageEventHandler);
   }
 
   @Override
@@ -102,7 +111,16 @@ public class EventHandler extends ListenerAdapter {
           try {
             entry.getValue().onMessage(event);
           } catch (Throwable t) {
-            //event.getUser().send().message("Error in handler " + entry.getKey());
+            LOG.error("Error in handler", t);
+          }
+        }
+      }
+      for (Map.Entry<Pattern, MessageEventHandler> entry : regexEventHandlerMap.entrySet()) {
+        Matcher matcher = entry.getKey().matcher(message);
+        if (matcher.matches()) {
+          try {
+            entry.getValue().onMessage(event);
+          } catch (Throwable t) {
             LOG.error("Error in handler", t);
           }
         }

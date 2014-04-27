@@ -17,6 +17,11 @@ public class CryptoCoinMessageEventHandler implements MessageEventHandler {
   }
 
   @Override
+  public String getMessageRegex() {
+    return null;
+  }
+
+  @Override
   public String[] getMessagePrefixes() {
     return new String[]  {"!coin" , ".coin"};
   }

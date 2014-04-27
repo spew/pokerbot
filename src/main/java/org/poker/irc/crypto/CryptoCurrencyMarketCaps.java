@@ -51,7 +51,7 @@ public class CryptoCurrencyMarketCaps implements AutoCloseable {
     }
     Elements elements = document.select("table#currencies").first().select("tr");
     Map<String, BigDecimal> cryptoToMarketCap = Maps.newHashMap();
-    for (Element e : elements) {
+    for (final Element e : elements) {
       if (Strings.isNullOrEmpty(e.id())) {
         continue;
       }
@@ -63,13 +63,19 @@ public class CryptoCurrencyMarketCaps implements AutoCloseable {
       DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
       decimalFormat.setParseBigDecimal(true);
       // parse the string
-      BigDecimal bigDecimal;
+      final BigDecimal bigDecimal;
       try {
         bigDecimal = (BigDecimal) decimalFormat.parse(marketCapTd.attr("data-usd"));
       } catch (ParseException ex) {
         throw new RuntimeException(ex);
       }
       cryptoToMarketCap.put(e.id().toLowerCase(), bigDecimal);
+      CoinInfo coinInfo = new CoinInfo() {
+        {
+          marketCap = bigDecimal;
+          symbol = e.id().toLowerCase();
+        }
+      };
     }
     this.setCryptoIdToMarketCap(cryptoToMarketCap);
   }

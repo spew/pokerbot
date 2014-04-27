@@ -10,6 +10,11 @@ import org.poker.irc.MessageEventHandler;
 public class UptimeMessageEventHandler implements MessageEventHandler {
   private static final DateTime startTime = new DateTime();
   @Override
+  public String getMessageRegex() {
+    return null;
+  }
+
+  @Override
   public String[] getMessagePrefixes() {
     return new String[] { ".uptime", "!uptime" };
   }
