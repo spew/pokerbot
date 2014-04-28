@@ -7,7 +7,8 @@ public class StockTicker {
     if (symbol.length() > 8) {
       return null;
     }
-    Stock stock = HttpUtils.getJson("http://finance.google.com/finance/infotype=infoquoteall&q=" + symbol, Stock.class);
+    //Stock stock = HttpUtils.getJson("http://finance.google.com/finance/infotype=infoquoteall&q=" + symbol, Stock.class);
+    Stock stock = HttpUtils.getJson("http://finance.google.com/finance/info?client=ig&q=" + symbol, Stock.class);
     return stock;
   }
 }
