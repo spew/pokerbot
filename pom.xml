@@ -17,7 +17,7 @@
     <google-guava.version>15.0</google-guava.version>
     <gson.version>2.2.4</gson.version>
     <slf4j-log4j12.version>1.7.5</slf4j-log4j12.version>
-    <log4j.version>(1.2,)</log4j.version>
+    <log4j.version>1.2.16</log4j.version>
     <jsoup.version>1.7.3</jsoup.version>
     <pircbotx.version>2.0.1</pircbotx.version>
     <twitter4j.version>3.0.5</twitter4j.version>
