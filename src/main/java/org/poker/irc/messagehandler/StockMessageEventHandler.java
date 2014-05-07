@@ -33,7 +33,7 @@ public class StockMessageEventHandler implements MessageEventHandler {
     String channelMessage = stock.getSymbol() + ": " + this.formatResults(stock.getCurrentPriceUsd(),
         stock.getCurrentDifferenceUsd(), stock.getCurrentDifferencePercentage());
     if (stock.getExtraHoursPriceUsd() != 0) {
-      channelMessage += "| after hours: "
+      channelMessage += " | after hours: "
           + this.formatResults(stock.getExtraHoursPriceUsd(), stock.getExtraHoursPriceDifferenceUsd(),
           stock.getExtraHoursCurrentPriceDifferencePercentage());
     }
