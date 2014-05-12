@@ -17,6 +17,7 @@ import org.pircbotx.cap.TLSCapHandler;
 import org.pircbotx.exception.IrcException;
 import org.poker.irc.espn.*;
 import org.poker.irc.messagehandler.*;
+import org.poker.irc.scc.SceneBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,12 +32,15 @@ import java.util.concurrent.TimeUnit;
 public class BotRunner {
   private Headline latestHeadline = null;
   private static final Logger LOG = LoggerFactory.getLogger(BotRunner.class);
+  private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
   public void run(Configuration configuration) throws InterruptedException {
     org.pircbotx.Configuration ircConfiguration = this.getIrcBotConfiguration(configuration);
     final PircBotX bot = new PircBotX(ircConfiguration);
     if (configuration.isEspnEnabled()) {
       this.scheduleEspnChecker(bot, configuration);
     }
+    SceneBot sceneBot = new SceneBot(bot, configuration);
+    sceneBot.start(scheduler, 10);
     while (true) {
       try {
         bot.startBot();
@@ -48,7 +52,6 @@ public class BotRunner {
   }
 
   private void scheduleEspnChecker(final PircBotX bot, final Configuration configuration) {
-    final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
     Runnable checkEspnNews = new Runnable() {
       @Override
       public void run() {

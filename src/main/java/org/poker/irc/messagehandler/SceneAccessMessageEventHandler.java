@@ -61,14 +61,14 @@ public class SceneAccessMessageEventHandler implements MessageEventHandler {
     }
     List<Torrent> torrents = sceneAccess.findShow(showName);
     if (torrents.size() > 0) {
-      this.sendTorrent(event.getChannel(), torrents.get(0));
+      this.sendTorrent(sceneAccess, event.getChannel(), torrents.get(0));
     } else {
       event.getChannel().send().message("Unable to find show: " + showName);
     }
   }
 
-  private void sendTorrent(Channel channel, Torrent torrent) {
-    String url = this.sceneAccess.getUrl() + "/" + torrent.getUrl();
+  public static void sendTorrent(SceneAccess sceneAccess, Channel channel, Torrent torrent) {
+    String url = sceneAccess.getUrl() + "/" + torrent.getUrl();
     String formattedDate = torrent.getDateAdded().toString("yyyy-MM-dd");
     //String formattedDate = torrent.getDateAdded().toString("yyyy-MM-dd HH:mm");
     channel.send().message(torrent.getTitle() + " | " + formattedDate + " | 720p | " + url);
