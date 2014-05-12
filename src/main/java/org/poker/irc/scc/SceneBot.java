@@ -54,8 +54,8 @@ public class SceneBot {
           }
           if (!torrents.isEmpty()) {
             Torrent torrent = torrents.get(0);
-            showToTimeMap.put(showName, now);
             if (torrent.getDateAdded().getDayOfMonth() >= now.getDayOfMonth()) {
+              showToTimeMap.put(showName, now);
               for (Channel channel : bot.getUserBot().getChannels()) {
                 SceneAccessMessageEventHandler.sendTorrent(sceneAccess, channel, torrent);
               }
