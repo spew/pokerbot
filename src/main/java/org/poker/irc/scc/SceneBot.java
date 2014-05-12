@@ -60,7 +60,7 @@ public class SceneBot {
                 SceneAccessMessageEventHandler.sendTorrent(sceneAccess, channel, torrent);
               }
             } else {
-              LOG.info("Torrent was too old for use: url={}, dateAdded={}", sceneAccess.getUrl() + torrent.getUrl(), torrent.getDateAdded());
+              LOG.info("Torrent was too old for use: url={}, dateAdded={}, now={}", sceneAccess.getUrl() + torrent.getUrl(), torrent.getDateAdded(), now);
             }
             sleep(2);
           }
@@ -75,7 +75,8 @@ public class SceneBot {
           ScheduledFuture scheduledFuture = scheduler.schedule(runnable, 0, TimeUnit.SECONDS);
           try {
             scheduledFuture.get();
-            sleep(getSleepTime());
+            int sleepTime = getSleepTime();
+            sleep(sleepTime);
           } catch (ExecutionException e) {
             LOG.warn("Problem running sceneaccess poller", e);
           } catch (InterruptedException e) {
@@ -89,13 +90,13 @@ public class SceneBot {
 
   private int getSleepTime() {
     DateTime now = DateTime.now();
-    switch (now.toLocalDateTime().getDayOfWeek()) {
-      case DateTimeConstants.SUNDAY:
+    switch (now.getDayOfWeek()) {
+      case DateTimeConstants.MONDAY:
         int hour = now.toLocalDateTime().getHourOfDay();
-        if (hour > 17) {
+        if (hour < 8) {
           return 60;
         } else {
-          return 15 * 60;
+          return 15 * 50;
         }
       default:
         return 2 * 60 * 60;
