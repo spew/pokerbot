@@ -8,7 +8,8 @@ public enum SceneShow {
   MAD_MEN("Mad Men", DateTimeConstants.MONDAY, 3),
   SILICON_VALLEY("Silicon Valley", DateTimeConstants.MONDAY, 3),
   GAME_OF_THRONES("Game of Thrones", DateTimeConstants.MONDAY, 2),
-  VEEP("Veep", DateTimeConstants.MONDAY, 3);
+  VEEP("Veep", DateTimeConstants.MONDAY, 3),
+  REAL_TIME("Real Time", DateTimeConstants.SATURDAY, 6);
 
   private String name;
   private int likelyReleaseDayOfWeek;
