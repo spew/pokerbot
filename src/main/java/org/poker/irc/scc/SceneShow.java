@@ -2,6 +2,7 @@ package org.poker.irc.scc;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 
 public enum SceneShow {
   THE_AMERICANS("The Americans", DateTimeConstants.THURSDAY, 3),
@@ -34,7 +35,7 @@ public enum SceneShow {
   }
 
   public int getWaitDurationSeconds() {
-    DateTime now = DateTime.now();
+    DateTime now = DateTime.now(DateTimeZone.UTC);
     int nowFullWeekHours = convertToFullWeekHours(now.getDayOfWeek(), now.getHourOfDay());
     int likelyFullWeekHours = convertToFullWeekHours(likelyReleaseDayOfWeek, likelyReleaseHourOfDay);
     int differenceInHours = computeDifference(nowFullWeekHours, likelyFullWeekHours);

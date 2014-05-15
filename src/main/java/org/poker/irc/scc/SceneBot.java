@@ -3,6 +3,7 @@ package org.poker.irc.scc;
 import com.google.common.collect.ImmutableSet;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeConstants;
+import org.joda.time.DateTimeZone;
 import org.joda.time.Interval;
 import org.joda.time.Period;
 import org.pircbotx.Channel;
@@ -43,7 +44,7 @@ public class SceneBot {
       public void run() {
         LOG.info("Starting sceneaccess polling manager...");
         while (true) {
-          final DateTime now = DateTime.now();
+          final DateTime now = DateTime.now(DateTimeZone.UTC);
           for (final SceneShow show : SceneShow.values()) {
             if (showToTimeMap.containsKey(show)) {
               if (showToTimeMap.get(show).toLocalDateTime().getDayOfWeek() == now.toLocalDateTime().getDayOfWeek()) {
@@ -72,7 +73,8 @@ public class SceneBot {
                 }
                 if (!torrents.isEmpty()) {
                   Torrent torrent = torrents.get(0);
-                  if (torrent.getDateAdded().getDayOfMonth() >= now.getDayOfMonth()) {
+                  if (torrent.getDateAdded().getDayOfMonth() == now.getDayOfMonth()
+                   && Math.abs(torrent.getDateAdded().getHourOfDay() - now.getHourOfDay()) < 3) {
                     showToTimeMap.put(show, now);
                     for (Channel channel : bot.getUserBot().getChannels()) {
                       SceneAccessMessageEventHandler.sendTorrent(sceneAccess, channel, torrent);
