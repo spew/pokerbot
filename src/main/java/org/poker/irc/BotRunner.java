@@ -40,7 +40,7 @@ public class BotRunner {
       this.scheduleEspnChecker(bot, configuration);
     }
     SceneBot sceneBot = new SceneBot(bot, configuration);
-    sceneBot.start(scheduler, 10);
+    sceneBot.start(scheduler, 15);
     while (true) {
       try {
         bot.startBot();
