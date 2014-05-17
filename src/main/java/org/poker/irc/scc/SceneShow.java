@@ -44,7 +44,7 @@ public enum SceneShow {
     } else if (differenceInHours < 5) {
       return 210;
     }
-    return 90 * 60;
+    return 15 * 60;
   }
 
   private int computeDifference(int hours1, int hours2) {
