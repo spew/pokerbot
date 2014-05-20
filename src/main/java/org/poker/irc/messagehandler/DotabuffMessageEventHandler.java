@@ -3,6 +3,7 @@ package org.poker.irc.messagehandler;
 import com.google.api.client.repackaged.com.google.common.base.Strings;
 import com.google.api.client.util.Sets;
 import com.google.common.base.Function;
+import com.google.common.base.Joiner;
 import com.google.common.base.Stopwatch;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -35,7 +36,7 @@ import java.util.concurrent.TimeUnit;
 public class DotabuffMessageEventHandler implements MessageEventHandler {
   private static final Logger LOG = LoggerFactory.getLogger(DotabuffMessageEventHandler.class);
   ListeningExecutorService executorService = MoreExecutors.listeningDecorator(Executors.newFixedThreadPool(10));
-  private Map<String, Integer> nameToId = Maps.newHashMap();
+  private Map<String, Long> nameToId = Maps.newHashMap();
   private Dota dota;
   private enum MatchResult {
     WIN("won"), LOSS("lost");
@@ -80,7 +81,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     }
     message = message.toLowerCase();
     if (this.nameToId.containsKey(message)) {
-      final Integer playerId = this.nameToId.get(message);
+      final Long playerId = this.nameToId.get(message);
       String url = "http://dotabuff.com/players/" + playerId;
       Document document;
       try {
@@ -151,7 +152,44 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
     } else {
       if (Strings.isNullOrEmpty(message.trim())) {
         Match latestMatch = this.findLastPlayed();
-        event.getChannel().send().message("Latest match: " + "http://dotabuff.com/matches/" + latestMatch.getMatch_id());
+        MatchDetails matchDetails = this.dota.getMatchDetails(latestMatch.getMatch_id());
+        Set<Long> playerIds = new HashSet<>();
+        playerIds.addAll(nameToId.values());
+        Set<Player> players = new HashSet<>();
+        Set<String> playerNames = new HashSet<>();
+        for (Player p : matchDetails.getPlayers()) {
+          if (playerIds.contains(new Long(p.getAccount_id()))) {
+            players.add(p);
+            String url = "http://dotabuff.com/players/" + p.getAccount_id();
+            Document document;
+            try {
+              document = Jsoup.connect(url).get();
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
+            Element playerNameElement = document.select("div.content-header-title h1").first();
+            playerNames.add(playerNameElement.text());
+          }
+        }
+        Player firstPlayer = Iterables.getFirst(players, null);
+        boolean onRadiant = firstPlayer.getPlayer_slot() < 128;
+        boolean win = onRadiant == matchDetails.getRadiant_win();
+        String playersMessage = players.size() > 1 ? "players" : "player";
+        String winString = win ? "WIN" : "LOSS";
+        String playersJoinString;
+        if (players.size() == 1) {
+          playersJoinString = Iterables.getOnlyElement(playerNames);
+        } else if (players.size() == 2) {
+          playersJoinString = Iterables.getFirst(playerNames, null) + " and " + Iterables.getLast(playerNames);
+        } else {
+          playersJoinString = Joiner.on(", ").join(playerNames);
+          int idx = playersJoinString.lastIndexOf(", ");
+          if (idx > 0) {
+            playersJoinString = playersJoinString.substring(0, idx) + ", and" + playersJoinString.substring(idx + ", ".length());
+          }
+        }
+        String channelMessage = String.format("%s with %s %s", winString, playersMessage, playersJoinString);
+        event.getChannel().send().message("Latest match: http://dotabuff.com/matches/" + latestMatch.getMatch_id() + " | " + channelMessage);
       } else {
         event.getChannel().send().message("Unknown player name: " + message);
       }
@@ -159,11 +197,11 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
   }
 
   private Match findLastPlayed() {
-    Set<Integer> playerIds = Sets.newHashSet();
+    Set<Long> playerIds = Sets.newHashSet();
     playerIds.addAll(this.nameToId.values());
     playerIds.remove(86745912);
     Match latestMatch = null;
-    for (Integer id : playerIds) {
+    for (Long id : playerIds) {
       List<Match> matches = this.dota.getMatches(id, 1);
       Match match = Iterables.getFirst(matches, null);
       if (match == null) {
@@ -257,25 +295,25 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
   }
 
   private void populateDefaultPlayers() {
-    this.nameToId.put("whitey", 38926297);
-    this.nameToId.put("pete", 38926297);
-    this.nameToId.put("bertkc", 80342375);
-    this.nameToId.put("brett", 80342375);
-    this.nameToId.put("bank", 80342375);
-    this.nameToId.put("mike", 28308237);
-    this.nameToId.put("fud", 10648475);
-    this.nameToId.put("spew", 10648475);
-    this.nameToId.put("deathdealer69", 10648475);
-    this.nameToId.put("steven", 28326143);
-    this.nameToId.put("bunk", 28326143);
-    this.nameToId.put("clock", 125412282);
-    this.nameToId.put("cl0ck", 125412282);
-    this.nameToId.put("muiy", 78932949);
-    this.nameToId.put("dank", 78932949);
-    this.nameToId.put("viju", 34117856);
-    this.nameToId.put("vijal", 34117856);
-    this.nameToId.put("sysm", 29508928);
-    this.nameToId.put("rtz", 86745912);
-    this.nameToId.put("arteezy", 86745912);
+    this.nameToId.put("whitey", 38926297L);
+    this.nameToId.put("pete", 38926297L);
+    this.nameToId.put("bertkc", 80342375L);
+    this.nameToId.put("brett", 80342375L);
+    this.nameToId.put("bank", 80342375L);
+    this.nameToId.put("mike", 28308237L);
+    this.nameToId.put("fud", 10648475L);
+    this.nameToId.put("spew", 10648475L);
+    this.nameToId.put("deathdealer69", 10648475L);
+    this.nameToId.put("steven", 28326143L);
+    this.nameToId.put("bunk", 28326143L);
+    this.nameToId.put("clock", 125412282L);
+    this.nameToId.put("cl0ck", 125412282L);
+    this.nameToId.put("muiy", 78932949L);
+    this.nameToId.put("dank", 78932949L);
+    this.nameToId.put("viju", 34117856L);
+    this.nameToId.put("vijal", 34117856L);
+    this.nameToId.put("sysm", 29508928L);
+    this.nameToId.put("rtz", 86745912L);
+    this.nameToId.put("arteezy", 86745912L);
   }
 }
