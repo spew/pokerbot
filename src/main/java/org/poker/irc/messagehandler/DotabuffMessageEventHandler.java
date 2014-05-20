@@ -188,7 +188,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
             playersJoinString = playersJoinString.substring(0, idx) + ", and" + playersJoinString.substring(idx + ", ".length());
           }
         }
-        String channelMessage = String.format("%s with %s %s", winString, playersMessage, playersJoinString);
+        String channelMessage = String.format("%s for %s %s", winString, playersMessage, playersJoinString);
         event.getChannel().send().message("Latest match: http://dotabuff.com/matches/" + latestMatch.getMatch_id() + " | " + channelMessage);
       } else {
         event.getChannel().send().message("Unknown player name: " + message);
