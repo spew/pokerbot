@@ -15,6 +15,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     startPollers()
     val ircBotConfig = this.getIrcBotConfiguration()
     val ircBot = new PircBotX(ircBotConfig)
+    logger.debug("connecting to '{}'", pc.serverHostname)
     ircBot.startBot()
   }
 
@@ -52,6 +53,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
       .setShutdownHookEnabled(true)
       .setServerHostname(pc.serverHostname)
     for (c <- pc.channels) {
+      logger.debug("adding autojoin channel {}", c)
       builder.addAutoJoinChannel(c)
     }
     builder.buildConfiguration()
