@@ -1,6 +1,11 @@
+import com.typesafe.sbt.SbtNativePackager._
+import NativePackagerKeys._
+
 name := "donkbot"
 
 version := "1.0"
+
+packageArchetype.java_application
 
 resolvers ++= Seq(
   DefaultMavenRepository,
