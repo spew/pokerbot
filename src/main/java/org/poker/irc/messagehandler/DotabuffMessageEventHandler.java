@@ -199,7 +199,7 @@ public class DotabuffMessageEventHandler implements MessageEventHandler {
   private Match findLastPlayed() {
     Set<Long> playerIds = Sets.newHashSet();
     playerIds.addAll(this.nameToId.values());
-    playerIds.remove(86745912);
+    playerIds.remove(86745912L);
     Match latestMatch = null;
     for (Long id : playerIds) {
       List<Match> matches = this.dota.getMatches(id, 1);
