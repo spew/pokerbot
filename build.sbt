@@ -25,6 +25,7 @@ libraryDependencies ++= Seq(
   "org.pircbotx" % "pircbotx" % "2.0.1",
   "org.jsoup" % "jsoup" % "1.7.3",
   "com.google.apis" % "google-api-services-customsearch" % "v1-rev33-1.17.0-rc",
+  "com.google.apis" % "google-api-services-youtube" % "v3-rev107-1.18.0-rc",
   "com.google.http-client" % "google-http-client-jackson" % "1.15.0-rc",
   "org.twitter4j" % "twitter4j-core" % "3.0.5",
   "org.ocpsoft.prettytime" % "prettytime" % "3.2.4.Final",

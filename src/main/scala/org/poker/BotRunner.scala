@@ -22,7 +22,9 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
 
   def startPollers() {
     coinMarketCaps.start()
-    sceneAccessPoller.start()
+    if (pc.sceneAccessPassword.isDefined && pc.sceneAccessUserName.isDefined) {
+      sceneAccessPoller.start()
+    }
   }
 
   def getListener(): Listener[PircBotX] = {
@@ -57,7 +59,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
       .setServerHostname(pc.serverHostname)
     for (c <- pc.channels) {
       logger.debug("adding autojoin channel: '{}'", c)
-      builder.addAutoJoinChannel(if (c.startsWith("#")) c else "#" + c)
+      builder.addAutoJoinChannel(c)
     }
     builder.buildConfiguration()
   }

@@ -11,7 +11,7 @@ case class ProgramConfiguration(
   finger: String = "stfu pete",
   realName: String = "pete is a donk",
   serverHostname: String = "irc.gamesurge.net",
-  channels: Seq[String] = List("#pokerbot"),
+  channels: Seq[String] = List(),
   steamApiKey: Option[String] = None,
   sceneAccessUserName: Option[String] = None,
   sceneAccessPassword: Option[String] = None,
@@ -28,7 +28,11 @@ object Program extends StrictLogging {
     val parser = this.createParser();
     try {
       parser.parse(args, loadDefaultConfiguration()) map { configuration =>
-        val botRunner = new BotRunner(configuration)
+        var finalConfiguration = configuration
+        if (configuration.channels.isEmpty) {
+          finalConfiguration = configuration.copy(channels = configuration.channels :+ "#pokerbot")
+        }
+        val botRunner = new BotRunner(finalConfiguration)
         botRunner.run()
       } getOrElse {
         logger.warn("Unable to properly parse arguments, exiting...")
@@ -68,7 +72,11 @@ object Program extends StrictLogging {
       head("pokerbot", "1.0")
       opt[String]('n', "nick") optional() action { (n, c) => c.copy(nick = n) } text("nick-name to be used in irc")
       opt[String]('s', "server-hostname") optional() action { (s, c) => c.copy(serverHostname = s) } text("hostname of irc server")
-      opt[String]("channels") unbounded() action { (ch, c) => c.copy(channels = c.channels :+ ch) } text("channels to join")
+      opt[String]("channels") maxOccurs(10) action {
+        (ch, c) => {
+          c.copy(channels = c.channels :+ (if (ch.startsWith("#")) ch else "#" + ch))
+        }
+      } text("channels to join")
       help("help") text("prints usage")
     }
     parser
