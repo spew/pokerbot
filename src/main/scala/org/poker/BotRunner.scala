@@ -57,7 +57,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
       .setServerHostname(pc.serverHostname)
     for (c <- pc.channels) {
       logger.debug("adding autojoin channel: '{}'", c)
-      builder.addAutoJoinChannel(c)
+      builder.addAutoJoinChannel(if (c.startsWith("#") c else "#" + c))
     }
     builder.buildConfiguration()
   }
