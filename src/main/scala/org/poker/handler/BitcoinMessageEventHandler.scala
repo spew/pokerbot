@@ -24,7 +24,7 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
   override val messageMatchRegex: Regex = "[!.](?i)((btc)|(bitcoin)) ?(?<query>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
-    val query = firstMatch.group(3)
+    val query = Option(firstMatch.group(3)).getOrElse("").trim
     val formatter = NumberFormat.getCurrencyInstance
     val coinbaseLast = formatter.format(coinbaseTicker.getLast.doubleValue())
     val bitstampLast = formatter.format(bitstampTicker.getLast.doubleValue())
@@ -36,10 +36,11 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
       val cap = (new BigDecimal(marketCap.get.bigDecimal) with HumanReadable).toStringHumanReadable()
       message += s" | cap: ${cap}"
     }
-    if (query == null || query.trim.isEmpty) {
+    if (query.isEmpty) {
       event.getChannel.send.message(message)
     } else {
-      event.getChannel.send().message(s"btc $query")
+      // tODO: send btc amount to channel instead of just 1 btc
+      event.getChannel.send.message(message)
     }
   }
 
