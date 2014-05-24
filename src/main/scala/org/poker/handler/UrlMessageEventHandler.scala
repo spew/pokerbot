@@ -28,7 +28,6 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val url = firstMatch.group(1)
-    val test = youTubeRegex.findFirstMatchIn(url).get
     url match {
       case twitterRegex(mobile, skip, statusId, photo) => {
         if (twitter.isDefined) {
