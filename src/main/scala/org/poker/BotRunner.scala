@@ -6,10 +6,11 @@ import org.poker.handler._
 import org.pircbotx.cap.TLSCapHandler
 import org.pircbotx.hooks.Listener
 import org.pircbotx.{UtilSSLSocketFactory, Configuration, PircBotX}
-import org.poker.poller.CoinMarketCaps
+import org.poker.poller.{SceneAccessPoller, CoinMarketCaps}
 
 class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
-  val coinMarketCaps = new CoinMarketCaps(pc);
+  val coinMarketCaps = new CoinMarketCaps(pc)
+  val sceneAccessPoller = new SceneAccessPoller(pc)
 
   def run(): Unit = {
     startPollers()
@@ -21,6 +22,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
 
   def startPollers() {
     coinMarketCaps.start()
+    sceneAccessPoller.start()
   }
 
   def getListener(): Listener[PircBotX] = {
@@ -36,6 +38,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     listener.addHandler(new RottenTomatoesMessageEventHandler(pc))
     listener.addHandler(new SceneAccessMessageEventHandler(pc))
     listener.addHandler(new DogecoinMessageEventHandler(pc, coinMarketCaps))
+    listener.addHandler(new CryptoCoinMessageEventHandler(pc, coinMarketCaps))
     listener
   }
 
@@ -53,8 +56,8 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
       .setShutdownHookEnabled(true)
       .setServerHostname(pc.serverHostname)
     for (c <- pc.channels) {
-      logger.debug("adding autojoin channel {}", c)
-      builder.addAutoJoinChannel(if (c.startsWith("#")) c else "#" + c)
+      logger.debug("adding autojoin channel: '{}'", c)
+      builder.addAutoJoinChannel(c)
     }
     builder.buildConfiguration()
   }

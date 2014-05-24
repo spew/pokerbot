@@ -10,11 +10,11 @@ import org.poker.ProgramConfiguration
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import scala.collection.mutable.HashMap
 
-class CoinMarketCaps(configuration: ProgramConfiguration) extends LazyLogging {
+class CoinMarketCaps(configuration: ProgramConfiguration) extends Poller with LazyLogging {
   val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
   private var cryptoIdToMarketCap: Map[String, BigDecimal] = Map()
 
-  def start(): Unit = {
+  override def start(): Unit = {
     val runnable: Runnable = new Runnable {
       def run {
         try {
@@ -27,7 +27,7 @@ class CoinMarketCaps(configuration: ProgramConfiguration) extends LazyLogging {
     scheduler.scheduleAtFixedRate(runnable, 0, configuration.cryptoMarketCapRefreshIntervalMinutes, TimeUnit.MINUTES)
   }
 
-  def stop(): Unit = {
+  override def stop(): Unit = {
     this.scheduler.shutdownNow
   }
 

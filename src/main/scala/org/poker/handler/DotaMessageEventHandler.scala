@@ -53,7 +53,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
     val win = (knownPlayers.head.player_slot < 128) == m.radiant_win
     val winMessage = if (win) "WIN" else "LOSS"
     val playerNames = knownPlayers.map(kp => this.getPlayerName(kp))
-    val relativeDate = this.getFormattedRelativeStartDate(m)
+    val relativeDate = this.getFormattedRelativeFinishTime(m)
     var message = s"latest: http://dotabuff.com/matches/${m.match_id} | ${relativeDate} | ${winMessage} for "
     if (playerNames.size > 1) {
       val andMessage = if (playerNames.size > 2) ", and " else " and "
@@ -95,14 +95,14 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
     }
     val streakWins = winOrNot.filter(b => b).size
     val streakLosses = winOrNot.filter(b => !b).size
-    val lastPlayed = this.getFormattedRelativeStartDate(matches(0))
+    val lastPlayed = this.getFormattedRelativeFinishTime(matches(0))
     val message = s"wins: ${gamesWon} | losses: ${gamesLost} | streak: ${streakType} ${streakCount} | last ten: ${streakWins}-${streakLosses} | last played: ${lastPlayed}"
     event.getChannel.send.message(url)
     event.getChannel.send.message(message)
   }
 
-  private def getFormattedRelativeStartDate(m: MatchDetails): String = {
-    val date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeZone.UTC).plusSeconds(m.start_time)
+  private def getFormattedRelativeFinishTime(m: MatchDetails): String = {
+    val date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeZone.UTC).plusSeconds(m.start_time + m.duration)
     formatRelativeDate(date)
   }
 

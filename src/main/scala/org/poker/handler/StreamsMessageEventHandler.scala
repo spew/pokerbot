@@ -42,6 +42,7 @@ class StreamsMessageEventHandler(configuration: ProgramConfiguration) extends Me
       if (streamsResponse.streams.isEmpty) {
         event.getChannel.send().message(s"sorry, game '${game.name}' is dead")
       } else {
+        event.getChannel.send.message(s"streams for '${game.name}'")
         for (stream <- streamsResponse.streams) {
           val message = s"${stream.channel.display_name} | ${stream.viewers} | ${stream.channel.url}/popout"
           event.getChannel.send.message(message)
