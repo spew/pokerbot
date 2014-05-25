@@ -20,7 +20,9 @@ case class ProgramConfiguration(
   twitterCredentials: Option[TwitterCredentials] = None,
   cryptoMarketCapRefreshIntervalMinutes: Int = 5,
   twitchClientId: Option[String] = None,
-  rottenTomatoesApiKey: Option[String] = None
+  rottenTomatoesApiKey: Option[String] = None,
+  instagramClientId: Option[String] = None,
+  instagramClientSecret: Option[String] = None
 )
 
 object Program extends StrictLogging {
@@ -53,6 +55,8 @@ object Program extends StrictLogging {
     c = c.copy(googleSearchCxKey = loadEnvVar("SEARCH_CX_KEY"))
     c = c.copy(twitchClientId = loadEnvVar("TWITCH_CLIENT_ID"))
     c = c.copy(rottenTomatoesApiKey = loadEnvVar("RT_API_KEY"))
+    c = c.copy(instagramClientId = loadEnvVar("INSTAGRAM_CLIENT_ID"))
+    c = c.copy(instagramClientSecret = loadEnvVar("INSTAGRAM_CLIENT_SECRET"))
     val twitterAccessToken = loadEnvVar("TWITTER_OAUTH_ACCESS_TOKEN")
     val twitterAccessTokenSecret = loadEnvVar("TWITTER_OAUTH_ACCESS_TOKEN_SECRET")
     val twitterConsumerKey = loadEnvVar("TWITTER_OAUTH_CONSUMER_KEY")

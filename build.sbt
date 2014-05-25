@@ -5,6 +5,8 @@ name := "donkbot"
 
 version := "1.0"
 
+scalaVersion := "2.10.4"
+
 packageArchetype.java_application
 
 resolvers ++= Seq(
@@ -28,11 +30,13 @@ libraryDependencies ++= Seq(
   "com.google.apis" % "google-api-services-youtube" % "v3-rev107-1.18.0-rc",
   "com.google.http-client" % "google-http-client-jackson" % "1.15.0-rc",
   "org.twitter4j" % "twitter4j-core" % "3.0.5",
+  "com.sachinhandiekar" % "jInstagram" % "1.0.7",
   "org.ocpsoft.prettytime" % "prettytime" % "3.2.4.Final",
   "com.xeiam.xchange" % "xchange-bitcoinaverage" % "2.0.1-SNAPSHOT",
   "com.xeiam.xchange" % "xchange-bitstamp" % "2.0.1-SNAPSHOT",
   "com.xeiam.xchange" % "xchange-coinbase" % "2.0.1-SNAPSHOT",
   "it" % "tomatoclient" % "0.0.1-SNAPSHOT",
   "org.joda" % "joda-money" % "0.9.1",
+  "com.typesafe.akka" %% "akka-actor" % "2.3.3",
   json4sNative
 )

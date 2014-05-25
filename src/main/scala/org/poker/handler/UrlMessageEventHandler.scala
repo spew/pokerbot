@@ -14,10 +14,14 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson.JacksonFactory
 import org.joda.time.{Period, Duration}
 import org.joda.time.format.{PeriodFormatterBuilder, PeriodFormatter}
+import org.jinstagram.auth.InstagramAuthService
+import org.jinstagram.auth.model.Verifier
+import org.jinstagram.{InstagramOembed, Instagram}
 
 class UrlMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val twitterRegex = "https?:\\/\\/(mobile\\.)?twitter\\.com\\/.*?\\/status(es)?\\/(?<statusId>[0-9]+)(\\/photo.*)?".r
   val youTubeRegex = "(?:http|https|)(?::\\/\\/|)(?:www.|)(?:youtu\\.be\\/|youtube\\.com(?:\\/embed\\/|\\/v\\/|\\/watch\\?v=|\\/ytscreeningroom\\?v=|\\/feeds\\/api\\/videos\\/|\\/user\\S*[^\\w\\-\\s]|\\S*[^\\w\\-\\s]))([\\w\\-]{11})[a-z0-9;:@#?&%=+\\/\\$_.-]*".r
+  val instagramRegex = "https?:\\/\\/instagram.com\\/p\\/([^\\/]+)\\/?$".r
   val youTubeClient = this.createYouTube()
 
   override val helpMessage: Option[String] = None
@@ -38,12 +42,22 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
         }
       } case youTubeRegex(videoId) => {
         sendYouTube(event, videoId)
+      } case instagramRegex(mediaId) => {
+        sendInstagram(event, url)
       } case _ => {
         val document = Jsoup.connect(url).get()
         val title = document.title
         event.getChannel.send.message(s"$title")
       }
     }
+  }
+
+  private def sendInstagram(event: MessageEvent[PircBotX], url: String): Unit = {
+    val instagramClient = new Instagram(configuration.instagramClientId.get)
+    val instagramOembed = new InstagramOembed()
+    val oembedInfo = instagramOembed.getOembedInformation(url)
+    val mediaInfo = instagramClient.getMediaInfo(oembedInfo.getMediaId)
+    event.getChannel.send.message(s"${mediaInfo.getData.getCaption.getText} - Instagram")
   }
 
   private def sendYouTube(event: MessageEvent[PircBotX], videoId: String): Unit = {

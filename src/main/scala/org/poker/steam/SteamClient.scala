@@ -1,11 +1,9 @@
 package org.poker.steam
 
 import org.json4s._
-import scala.concurrent.Await
 import org.json4s.native.JsonMethods._
 import com.stackmob.newman.Constants._
 import com.stackmob.newman.ApacheHttpClient
-import com.stackmob.newman.request.HttpRequest
 import java.net.URL
 import com.stackmob.newman.dsl._
 import scala.concurrent._
