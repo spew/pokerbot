@@ -10,12 +10,12 @@ import org.poker.poller.{SceneAccessPoller, CoinMarketCaps}
 
 class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
   val coinMarketCaps = new CoinMarketCaps(pc)
-  val sceneAccessPoller = new SceneAccessPoller(pc)
+  val ircBotConfig = this.getIrcBotConfiguration()
+  val ircBot = new PircBotX(ircBotConfig)
+  val sceneAccessPoller = new SceneAccessPoller(pc, ircBot)
 
   def run(): Unit = {
     startPollers()
-    val ircBotConfig = this.getIrcBotConfiguration()
-    val ircBot = new PircBotX(ircBotConfig)
     logger.debug("connecting to '{}'", pc.serverHostname)
     ircBot.startBot()
   }

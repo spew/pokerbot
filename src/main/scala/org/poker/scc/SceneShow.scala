@@ -21,19 +21,18 @@ class SceneShow(val name: String, val releaseDayOfWeek: Int, val releaseHourOfDa
   }
 
   private def computeDifference(hours1: Int, hours2: Int): Int = {
-    val maxValue = 7 * 24;
-    val minValue = 0;
+    val maxValue = 7 * 24
     if (hours1 + 24 >= maxValue && hours2 <= 24) {
-      return maxValue - hours1 + hours2;
+      return maxValue - hours1 + hours2
     }
     else if (hours2 + 24 >= maxValue && hours1 <= 24) {
-      return maxValue - hours2 + hours1;
+      return maxValue - hours2 + hours1
     }
-    return Math.abs(hours2 - hours1);
+    return Math.abs(hours2 - hours1)
   }
 
   private def convertToFullWeekHours(dayOfWeek: Int, hourOfDay: Int): Int = {
-    hourOfDay + dayOfWeek match {
+    hourOfDay + (dayOfWeek match {
       case DateTimeConstants.SUNDAY => 0
       case DateTimeConstants.MONDAY => 24 * 1
       case DateTimeConstants.TUESDAY => 24 * 2
@@ -42,7 +41,7 @@ class SceneShow(val name: String, val releaseDayOfWeek: Int, val releaseHourOfDa
       case DateTimeConstants.FRIDAY => 24 * 5
       case DateTimeConstants.SATURDAY => 24 * 6
       case _ => throw new Exception("Unknown day")
-    }
+    })
   }
 
 }

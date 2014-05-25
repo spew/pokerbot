@@ -4,7 +4,7 @@ import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.PircBotX
-import org.poker.scc.SceneAccessClient
+import org.poker.scc.{TorrentFormatter, SceneAccessClient}
 import org.poker.ProgramConfiguration
 
 class SceneAccessMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
@@ -32,9 +32,8 @@ class SceneAccessMessageEventHandler(configuration: ProgramConfiguration) extend
         event.getChannel.send.message(s"unable to find anything on the scene for '${title}'")
       } else {
         val torrent = torrents.head
-        val url = sceneAccessClient.url + "/" + torrent.url
-        val formattedDate = torrent.dateAdded.toString("yyyy-MM-dd")
-        event.getChannel.send.message(s"${torrent.title} | ${formattedDate} | 720p | ${url}")
+        val message = new TorrentFormatter().format(torrent, sceneAccessClient)
+        event.getChannel.send.message(message)
       }
     }
   }

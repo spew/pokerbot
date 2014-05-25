@@ -30,7 +30,7 @@ class SceneAccessClient(configuration: ProgramConfiguration) {
     cookies = loginResponse.cookies
   }
 
-  def findShow(showName: String): List[Torrent] = {
+  def findShow(showName: String): List[SceneTorrent] = {
     val searchResponse: Connection.Response = Jsoup.connect(url.toString + "/browse?search=" + showName + "&method=2&c27=27").cookies(cookies).method(Method.GET).execute
     if (!searchResponse.url.toString.toLowerCase.contains("browse?search")) {
       this.login(searchResponse)
@@ -39,7 +39,7 @@ class SceneAccessClient(configuration: ProgramConfiguration) {
     val document = searchResponse.parse
     val rowElements: Elements = document.select("tr.tt_row")
 
-    val torrents = mutable.MutableList[Torrent]()
+    val torrents = mutable.MutableList[SceneTorrent]()
     import scala.collection.JavaConversions._
     for (elem <- rowElements) {
       val aDetails: Element = elem.select("td.ttr_name").first.select("a").first
@@ -61,7 +61,7 @@ class SceneAccessClient(configuration: ProgramConfiguration) {
 
           }
         }
-        val t = new Torrent(titleElement.text, aDetails.attr("href"), dateAdded)
+        val t = new SceneTorrent(titleElement.text, aDetails.attr("href"), dateAdded)
         torrents += t
       }
     }
