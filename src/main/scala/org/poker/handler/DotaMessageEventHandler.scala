@@ -66,7 +66,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
 
   private def getPlayerName(p: Player): String = {
     if (!idToPlayerName.contains(p.account_id.get)) {
-      val url = s"http://dotabuff.com/players/${p.account_id}"
+      val url = s"http://dotabuff.com/players/${p.account_id.get}"
       val document = Jsoup.connect(url).get()
       val nameElement = document.select("div.content-header-title h1").first
       idToPlayerName += p.account_id.get -> nameElement.text
