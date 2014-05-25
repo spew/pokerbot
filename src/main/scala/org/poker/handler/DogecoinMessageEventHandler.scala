@@ -47,7 +47,7 @@ class DogecoinMessageEventHandler(configuration: ProgramConfiguration, coinMarke
     implicit lazy val formats = DefaultFormats
     implicit val httpClient = new ApacheHttpClient
     val httpRequest = GET(new URL(url))
-    val httpResponse = Await.result(httpRequest.apply, 2.second)
+    val httpResponse = Await.result(httpRequest.apply, 4.second)
     var body = httpResponse.bodyString(UTF8Charset)
     val numRegex = "(\"[+-]?[0-9]+[.]?[0-9]+\")".r
     body = numRegex.replaceAllIn(body, m => m.group(1).replace("\"", ""))
