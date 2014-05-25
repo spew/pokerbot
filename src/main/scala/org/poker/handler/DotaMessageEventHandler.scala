@@ -49,7 +49,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   private def sendLatestMatch(event: MessageEvent[PircBotX]): Unit = {
     val latestMatch = findLatestMatch()
     val m = steamClient.getDotaMatchDetails(latestMatch.match_id)
-    val knownPlayers = m.players.filter(p => idToPlayer.contains(p.account_id))
+    val knownPlayers = m.players.filter(p => idToPlayer.contains(p.account_id.get))
     val win = (knownPlayers.head.player_slot < 128) == m.radiant_win
     val winMessage = if (win) "WIN" else "LOSS"
     val playerNames = knownPlayers.map(kp => this.getPlayerName(kp))
@@ -65,13 +65,13 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   }
 
   private def getPlayerName(p: Player): String = {
-    if (!idToPlayerName.contains(p.account_id)) {
+    if (!idToPlayerName.contains(p.account_id.get)) {
       val url = s"http://dotabuff.com/players/${p.account_id}"
       val document = Jsoup.connect(url).get()
       val nameElement = document.select("div.content-header-title h1").first
-      idToPlayerName += p.account_id -> nameElement.text
+      idToPlayerName += p.account_id.get -> nameElement.text
     }
-    idToPlayerName.get(p.account_id).get
+    idToPlayerName.get(p.account_id.get).get
   }
 
   private def findLatestMatch(): org.poker.steam.dota.Match = {
@@ -86,7 +86,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
     val gamesWon = document.select("span.won").first.text.toInt
     val gamesLost = document.select("span.lost").first.text.toInt
     val matches = this.getRecentResults(id, 10).reverse
-    val winOrNot = matches.map(m => m.radiant_win == (m.players.filter(p => p.account_id == id)(0).player_slot < 128))
+    val winOrNot = matches.map(m => m.radiant_win == (m.players.filter(p => p.account_id.get == id)(0).player_slot < 128))
     val firstGameWin = winOrNot(0)
     val streakCount = winOrNot.takeWhile(r => r == winOrNot(0)).size;
     var streakType = "lost"
@@ -125,10 +125,14 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   }
 
   private def matchValid(m: MatchDetails): Boolean = {
-    if (m.duration < 10 * 60) {
-      !m.players.dropWhile(p => p.leaver_status.getOrElse(0) != 2).isEmpty
+    if (m.players.exists(p => !p.account_id.isDefined)) {
+      false
     } else {
-      true
+      if (m.duration < 10 * 60) {
+        !m.players.dropWhile(p => p.leaver_status.getOrElse(0) != 2).isEmpty
+      } else {
+        true
+      }
     }
   }
 
