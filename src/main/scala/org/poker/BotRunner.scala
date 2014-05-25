@@ -41,6 +41,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     listener.addHandler(new SceneAccessMessageEventHandler(pc))
     listener.addHandler(new DogecoinMessageEventHandler(pc, coinMarketCaps))
     listener.addHandler(new CryptoCoinMessageEventHandler(pc, coinMarketCaps))
+    listener.addHandler(new InfoMessageEventHandler)
     listener
   }
 
