@@ -83,8 +83,8 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   private def sendIndividualPlayerStats(event: MessageEvent[PircBotX], id: Long) {
     val url = s"http://dotabuff.com/players/${id}"
     val document = Jsoup.connect(url).get()
-    val gamesWon = document.select("span.won").first.text.toInt
-    val gamesLost = document.select("span.lost").first.text.toInt
+    val gamesWon = document.select("span.won").first.text.replace(",", "").toInt
+    val gamesLost = document.select("span.lost").first.text.replace(",", "").toInt
     val matches = this.getRecentResults(id, 10).reverse
     val winOrNot = matches.map(m => m.radiant_win == (m.players.filter(p => p.account_id.get == id)(0).player_slot < 128))
     val firstGameWin = winOrNot(0)
