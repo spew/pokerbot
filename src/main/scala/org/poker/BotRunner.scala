@@ -55,6 +55,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
       .setAutoReconnect(true)
       .addListener(listener)
       .setLogin(pc.nick)
+      .setAutoSplitMessage(true)
       .setShutdownHookEnabled(true)
       .setServerHostname(pc.serverHostname)
     for (c <- pc.channels) {

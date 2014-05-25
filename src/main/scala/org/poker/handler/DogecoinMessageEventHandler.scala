@@ -26,7 +26,6 @@ import org.joda.money.{CurrencyUnit, BigMoney}
 import org.poker.doge.DogecoinAverageResponse
 
 class DogecoinMessageEventHandler(configuration: ProgramConfiguration, coinMarketCaps: CoinMarketCaps) extends MessageEventHandler {
-  val coinbaseTicker = createTicker("com.xeiam.xchange.coinbase.CoinbaseExchange")
 
   override val helpMessage: Option[String] = Option("!doge <amount>: send to channel current doge pricing information for <amount>")
 
@@ -63,6 +62,7 @@ class DogecoinMessageEventHandler(configuration: ProgramConfiguration, coinMarke
       val prettyCap = (new BigDecimal(marketCap.get.bigDecimal) with HumanReadable).toStringHumanReadable()
       message += s" | cap: ${prettyCap}"
     }
+    val coinbaseTicker = createTicker("com.xeiam.xchange.coinbase.CoinbaseExchange")
     val coinbaseLast = coinbaseTicker.getLast()
     val lastPrice = BigMoney.of(CurrencyUnit.USD, coinbaseLast).multipliedBy(dogecoinResponse.vwap.bigDecimal).multipliedBy(amount)
     val formatter = NumberFormat.getCurrencyInstance

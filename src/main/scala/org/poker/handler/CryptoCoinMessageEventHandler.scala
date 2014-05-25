@@ -25,7 +25,6 @@ import org.joda.money.{CurrencyUnit, BigMoney}
 import org.poker.crypto.CryptoCoin
 
 class CryptoCoinMessageEventHandler(configuration: ProgramConfiguration, coinMarketCaps: CoinMarketCaps) extends MessageEventHandler {
-  val coinbaseTicker = createTicker("com.xeiam.xchange.coinbase.CoinbaseExchange")
 
   override val helpMessage: Option[String] = Option("!coin <symbol1> <symbol2>: send to channel current pricing information for <symbol1> compared to <symbol2>")
 
@@ -70,6 +69,7 @@ class CryptoCoinMessageEventHandler(configuration: ProgramConfiguration, coinMar
   }
 
   private def getUsdValue(coin: CryptoCoin, amount: Int): BigDecimal = {
+    val coinbaseTicker = createTicker("com.xeiam.xchange.coinbase.CoinbaseExchange")
     val coinbasePrice = coinbaseTicker.getLast
     val price = coinbasePrice.multiply(coin.price_btc.bigDecimal).multiply(BigDecimal(amount).bigDecimal)
     price

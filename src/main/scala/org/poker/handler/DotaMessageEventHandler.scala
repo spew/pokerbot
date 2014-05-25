@@ -54,7 +54,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
     val winMessage = if (win) "WIN" else "LOSS"
     val playerNames = knownPlayers.map(kp => this.getPlayerName(kp))
     val relativeDate = this.getFormattedRelativeFinishTime(m)
-    var message = s"latest: http://dotabuff.com/matches/${m.match_id} | ${relativeDate} | ${winMessage} for "
+    var message = s"http://dotabuff.com/matches/${m.match_id} | ${relativeDate} | ${winMessage} for "
     if (playerNames.size > 1) {
       val andMessage = if (playerNames.size > 2) ", and " else " and "
       message += " " + playerNames.dropRight(1).mkString(", ") + andMessage + playerNames.last
