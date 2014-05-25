@@ -22,7 +22,7 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = Option(firstMatch.group(4)).getOrElse("1000").trim
     try {
-      val amount = BigDecimal(query)
+      val amount = if (query.isEmpty) None else Option(BigDecimal(query))
       sendBtcMessage(event, amount)
     } catch {
       case n: NumberFormatException =>
@@ -30,7 +30,7 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
     }
   }
 
-  private def sendBtcMessage(event: MessageEvent[PircBotX], amount: BigDecimal): Unit = {
+  private def sendBtcMessage(event: MessageEvent[PircBotX], amount: Option[BigDecimal]): Unit = {
     val formatter = NumberFormat.getCurrencyInstance
     // have to create the tickers each time because they don't actually poll
     val averageTicker = createTicker("com.xeiam.xchange.bitcoinaverage.BitcoinAverageExchange")
@@ -46,9 +46,12 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
       val cap = (new BigDecimal(marketCap.get.bigDecimal) with HumanReadable).toStringHumanReadable()
       message += s" | cap: ${cap}"
     }
-    val amountBtc = amount * coinbaseTicker.getLast
-    val amountMessage = formatter.format(amountBtc)
-    event.getChannel.send.message(message + s" | ${amount} BTC = ${amountMessage}")
+    if (amount.isDefined) {
+      val amountBtc = amount.get * coinbaseTicker.getLast
+      val amountMessage = formatter.format(amountBtc)
+      message += s" | ${amount.get} BTC = ${amountMessage}"
+    }
+    event.getChannel.send.message(message)
   }
 
   private def createTicker(className: String): Ticker = {
