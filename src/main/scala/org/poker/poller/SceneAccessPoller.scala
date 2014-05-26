@@ -8,7 +8,7 @@ import scala.collection.concurrent.{TrieMap, Map}
 
 import com.github.nscala_time.time.Imports.DateTime
 import org.poker.scc.{TorrentFormatter, SceneTorrent, SceneAccessClient, SceneShow}
-import org.joda.time.{Period, DateTimeConstants}
+import org.joda.time.{DateTimeZone, Period, DateTimeConstants}
 import org.pircbotx.{Channel, PircBotX}
 
 
@@ -110,7 +110,8 @@ class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: Scene
           if (shouldPrint(torrent.dateAdded)) {
             sendNewShowMessage(torrent)
           } else {
-            logger.debug(s"not using torrent for '${show.name}', too old: ${torrent.dateAdded}")
+            val now = new DateTime(DateTimeZone.UTC)
+            logger.debug(s"not using torrent for '${show.name}', too old: ${torrent.dateAdded}, current time: ${now}")
           }
         }
       } else {
@@ -121,12 +122,12 @@ class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: Scene
 
   private def shouldPrint(dateAdded: DateTime): Boolean = {
     val duration = getDuration(dateAdded)
-    val interval = 3.hours
+    val interval = 2.hours
     duration < interval
   }
 
   private def getDuration(dateAdded: DateTime): FiniteDuration = {
-    val now = DateTime.now
+    val now = new DateTime(DateTimeZone.UTC)
     if (dateAdded.isBefore(now)) {
       val duration = new Period(dateAdded, now).toStandardDuration
       duration.toStandardSeconds.getSeconds.seconds

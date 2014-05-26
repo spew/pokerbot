@@ -55,7 +55,7 @@ class SceneAccessClient(configuration: ProgramConfiguration) {
           if (tdElement.isDefined) {
             if (tdElement.get.text.trim.toLowerCase() == "added") {
               val tdColumn: Element = tableRowElement.select("td.td_col").first
-              val formatter: DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+              val formatter: DateTimeFormatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss").withZoneUTC()
               dateAdded = formatter.parseDateTime(tdColumn.text)
             }
 
