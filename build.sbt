@@ -9,6 +9,9 @@ scalaVersion := "2.10.4"
 
 packageArchetype.java_application
 
+// https://github.com/sbt/sbt/issues/1010
+incOptions := incOptions.value.withNameHashing(true)
+
 resolvers ++= Seq(
   DefaultMavenRepository,
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
