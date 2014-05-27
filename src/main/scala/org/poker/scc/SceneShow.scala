@@ -1,13 +1,13 @@
 package org.poker.scc
 
-import org.joda.time.DateTimeConstants
+import org.joda.time.{DateTimeZone, DateTimeConstants}
 import com.github.nscala_time.time.Imports.DateTime
 import scala.concurrent.duration._
 
 class SceneShow(val name: String, val releaseDayOfWeek: Int, val releaseHourOfDay: Int) {
 
   def currentPollWait(): FiniteDuration = {
-    val now = DateTime.now
+    val now = new DateTime(DateTimeZone.UTC)
     val nowFullWeekHours = convertToFullWeekHours(now.getDayOfWeek, now.getHourOfDay)
     val likelyFullWeekHours = convertToFullWeekHours(releaseDayOfWeek, releaseHourOfDay)
     val diffHours = computeDifference(nowFullWeekHours, likelyFullWeekHours)

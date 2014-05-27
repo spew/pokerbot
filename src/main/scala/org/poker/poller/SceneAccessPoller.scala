@@ -63,11 +63,11 @@ class Manager(shows: Seq[SceneShow], ircBot: PircBotX, sceneAccessClient: SceneA
           if (dispatchTuple.get._2 != currentInterval) {
             dispatchTuple.get._1.cancel()
             scheduleShowActor(s, delay, currentInterval)
-            delay += 5
+            delay += 15
           }
         } else {
           scheduleShowActor(s, delay, currentInterval)
-          delay += 5
+          delay += 15
         }
       }
     }
