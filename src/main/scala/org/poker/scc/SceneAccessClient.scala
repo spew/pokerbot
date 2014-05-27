@@ -31,7 +31,11 @@ class SceneAccessClient(configuration: ProgramConfiguration) {
   }
 
   def findShow(showName: String): List[SceneTorrent] = {
-    val searchResponse: Connection.Response = Jsoup.connect(url.toString + "/browse?search=" + showName + "&method=2&c27=27").cookies(cookies).method(Method.GET).execute
+    val searchResponse: Connection.Response = Jsoup.connect(url.toString + "/browse?search=" + showName + "&method=2&c27=27")
+      .cookies(cookies)
+      .method(Method.GET)
+      .timeout(5000)
+      .execute
     if (!searchResponse.url.toString.toLowerCase.contains("browse?search")) {
       this.login(searchResponse)
       return this.findShow(showName)

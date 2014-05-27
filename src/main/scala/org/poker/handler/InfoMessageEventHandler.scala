@@ -9,8 +9,6 @@ import org.joda.time.format.{PeriodFormatterBuilder, PeriodFormatter}
 import java.lang.management.ManagementFactory
 
 class InfoMessageEventHandler extends MessageEventHandler {
-  val startTime = DateTime.now
-
   override val helpMessage: Option[String] = Option("!info: send information about the bot to channel")
 
   override val messageMatchRegex: Regex = "[.!](?i)info".r

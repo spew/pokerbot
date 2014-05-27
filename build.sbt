@@ -40,3 +40,5 @@ libraryDependencies ++= Seq(
   "com.typesafe.akka" %% "akka-actor" % "2.3.3",
   json4sNative
 )
+
+libraryDependencies += "org.scalatest" % "scalatest_2.10" % "2.0" % "test"

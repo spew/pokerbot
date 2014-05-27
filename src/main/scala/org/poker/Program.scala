@@ -22,13 +22,15 @@ case class ProgramConfiguration(
   twitchClientId: Option[String] = None,
   rottenTomatoesApiKey: Option[String] = None,
   instagramClientId: Option[String] = None,
-  instagramClientSecret: Option[String] = None
+  instagramClientSecret: Option[String] = None,
+  untappedClientId: Option[String] = None,
+  untappedClientSecret: Option[String] = None
 )
 
 object Program extends StrictLogging {
   def main(args: Array[String]) {
-    val parser = this.createParser();
     try {
+      val parser = this.createParser();
       parser.parse(args, loadDefaultConfiguration()) map { configuration =>
         var finalConfiguration = configuration
         if (configuration.channels.isEmpty) {
@@ -57,6 +59,8 @@ object Program extends StrictLogging {
     c = c.copy(rottenTomatoesApiKey = loadEnvVar("RT_API_KEY"))
     c = c.copy(instagramClientId = loadEnvVar("INSTAGRAM_CLIENT_ID"))
     c = c.copy(instagramClientSecret = loadEnvVar("INSTAGRAM_CLIENT_SECRET"))
+    c = c.copy(untappedClientId = loadEnvVar("UNTAPPED_CLIENT_ID"))
+    c = c.copy(untappedClientSecret = loadEnvVar("UNTAPPED_CLIENT_SECRET"))
     val twitterAccessToken = loadEnvVar("TWITTER_OAUTH_ACCESS_TOKEN")
     val twitterAccessTokenSecret = loadEnvVar("TWITTER_OAUTH_ACCESS_TOKEN_SECRET")
     val twitterConsumerKey = loadEnvVar("TWITTER_OAUTH_CONSUMER_KEY")
@@ -71,7 +75,7 @@ object Program extends StrictLogging {
     Option(if (sys.env.contains(varName)) sys.env(varName) else null)
   }
 
-  def createParser(): OptionParser[ProgramConfiguration] = {
+  private def createParser(): OptionParser[ProgramConfiguration] = {
     val parser = new OptionParser[ProgramConfiguration]("pokerbot") {
       head("pokerbot", "1.0")
       opt[String]('n', "nick") optional() action { (n, c) => c.copy(nick = n) } text("nick-name to be used in irc")
