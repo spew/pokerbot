@@ -34,7 +34,7 @@ class BeerMessageEventHandler(clientId: String, clientSecret: String) extends Me
       val beer = beerInfoResponse.response.beer
       val untappedUrl = s"https://untappd.com/b/${beer.beer_slug}/${beer.bid}"
       val rating = f"${beer.rating_score}%1.1f"
-      event.getChannel.send.message(s"${beer.beer_name} | ${rating}/5.0 | style: ${beer.beer_style} | abu: ${beer.beer_abv} | ibu: ${beer.beer_ibu} | ${untappedUrl}")
+      event.getChannel.send.message(s"${beer.beer_name} | ${rating}/5.0 | style: ${beer.beer_style} | abv: ${beer.beer_abv} | ibu: ${beer.beer_ibu} | ${untappedUrl}")
     }
   }
 }
