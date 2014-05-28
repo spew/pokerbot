@@ -4,7 +4,7 @@ class MatchHistoryResponse(result: MatchHistoryResponseResult) {
   val matches = result.matches
 }
 
-class MatchHistoryResponseResult(val status: Int, num_results: Int, total_results: Int, val matches: List[Match]) {
+class MatchHistoryResponseResult(val status: Int, num_results: Option[Int], total_results: Option[Int], val matches: List[Match]) {
 
 }
 
