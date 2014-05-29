@@ -8,6 +8,8 @@ import com.github.nscala_time.time.Imports._
 import org.poker.ProgramConfiguration
 import it.jtomato.JTomato
 import it.jtomato.gson.Movie
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 class RottenTomatoesMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val jTomato = new JTomato(configuration.rottenTomatoesApiKey.getOrElse(""))
@@ -21,7 +23,8 @@ class RottenTomatoesMessageEventHandler(configuration: ProgramConfiguration) ext
     val query = firstMatch.group(4)
     if (configuration.rottenTomatoesApiKey.isDefined) {
       val movies = new java.util.ArrayList[Movie]()
-      val total = jTomato.searchMovie(query, movies, 1)
+      val urlEncodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8.name())
+      val total = jTomato.searchMovie(urlEncodedQuery, movies, 1)
       if (total == 0) {
         event.getChannel.send.message(s"no titles found for '${query}'")
       } else {
