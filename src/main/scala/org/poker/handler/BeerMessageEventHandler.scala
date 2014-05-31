@@ -13,7 +13,7 @@ class BeerMessageEventHandler(clientId: String, clientSecret: String) extends Me
 
   override val helpMessage: Option[String] = Option("!beer: send untapped information about a beer to channel")
 
-  override val messageMatchRegex: Regex = "[!.](?i)beer? ?(?<query>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)beer? ?(?<query>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = firstMatch.group(1).trim

@@ -49,7 +49,7 @@ class CoinMarketCaps(configuration: ProgramConfiguration) extends Poller with La
     for (e <- elements.dropWhile(e => Option(e.id()).getOrElse("").isEmpty)) {
       val marketCapTd: Element = e.select("td[class=no-wrap market-cap text-right]").first
       val bigDecimal = BigDecimal(decimalFormat.parse(marketCapTd.attr("data-usd")).toString)
-      cryptoToMarketCap += e.id.toLowerCase -> bigDecimal
+      cryptoToMarketCap += e.id.replace("id-", "").toLowerCase -> bigDecimal
     }
     this.setCryptoIdToMarketCap(cryptoToMarketCap.toMap)
   }
