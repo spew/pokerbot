@@ -12,7 +12,7 @@ class UptimeMessageEventHandler extends MessageEventHandler {
 
   override val helpMessage: Option[String] = Option("!uptime: send bot uptime to channel")
 
-  override val messageMatchRegex: Regex = "[.!](?i)uptime".r
+  override val messageMatchRegex: Regex = "^[.!](?i)uptime".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val now = DateTime.now

@@ -103,7 +103,7 @@ class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: Scene
       }
       if (possibleTorrent.isDefined) {
         val torrent = possibleTorrent.get
-        if (lastDate.isDefined && lastDate.get.equals(torrent.dateAdded)) {
+        if (lastDate.isDefined && lastDate.get == torrent.dateAdded) {
           logger.debug(s"skipping result for '${show.name}' time is equal to the last time for show: ${torrent.dateAdded}'")
         } else {
           if (lastDate.isDefined && lastDate.get != torrent.dateAdded) {

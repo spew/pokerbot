@@ -11,7 +11,7 @@ import java.lang.management.ManagementFactory
 class InfoMessageEventHandler extends MessageEventHandler {
   override val helpMessage: Option[String] = Option("!info: send information about the bot to channel")
 
-  override val messageMatchRegex: Regex = "[.!](?i)info".r
+  override val messageMatchRegex: Regex = "^[.!](?i)info".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val runtime = Runtime.getRuntime

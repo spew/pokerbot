@@ -28,7 +28,7 @@ class CryptoCoinMessageEventHandler(configuration: ProgramConfiguration, coinMar
 
   override val helpMessage: Option[String] = Option("!coin <symbol1> <symbol2>: send to channel current pricing information for <symbol1> compared to <symbol2>")
 
-  override val messageMatchRegex: Regex = "[!.](?i)((coin)|(crypto)) ?(?<amount>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)((coin)|(crypto)) ?(?<amount>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = firstMatch.group(4)

@@ -16,7 +16,7 @@ class GoogleMessageEventHandler(configuration: ProgramConfiguration) extends Mes
 
   override val helpMessage: Option[String] = Option("!google <query>: send to channel the top google search result for <query>")
 
-  override val messageMatchRegex: Regex = "[!.](?i)google (?<query>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)google (?<query>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = firstMatch.group(1)

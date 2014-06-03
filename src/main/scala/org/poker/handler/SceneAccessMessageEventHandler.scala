@@ -12,7 +12,7 @@ class SceneAccessMessageEventHandler(configuration: ProgramConfiguration) extend
 
   override val helpMessage: Option[String] = Option("!scene <title>: send the latest uploaded to sceneaccess for <title>")
 
-  override val messageMatchRegex: Regex = "[!.](?i)((scc)|(scene)) ?(?<title>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)((scc)|(scene)) ?(?<title>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val title = firstMatch.group(4)

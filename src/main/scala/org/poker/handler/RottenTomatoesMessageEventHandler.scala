@@ -17,7 +17,7 @@ class RottenTomatoesMessageEventHandler(configuration: ProgramConfiguration) ext
 
   override val helpMessage: Option[String] = Option("!rt <title>: send to channel rotten tomatoes ratings for <title>")
 
-  override val messageMatchRegex: Regex = "[!.](?i)((rt)|(rtomato)) ?(?<title>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)((rt)|(rtomato)) ?(?<title>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = firstMatch.group(4)

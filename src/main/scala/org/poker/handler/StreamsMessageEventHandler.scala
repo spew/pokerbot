@@ -13,7 +13,7 @@ class StreamsMessageEventHandler(configuration: ProgramConfiguration) extends Me
 
   override val helpMessage: Option[String] = Option("!streams <query>: send to channel the top twitch search results for <query>")
 
-  override val messageMatchRegex: Regex = "[!.](?i)streams? ?(?<query>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)streams? ?(?<query>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     if (configuration.twitchClientId.isDefined) {

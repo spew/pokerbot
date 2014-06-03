@@ -17,7 +17,7 @@ import org.poker.poller.CoinMarketCaps
 class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarketCaps: CoinMarketCaps) extends MessageEventHandler {
   override val helpMessage: Option[String] = Option("!btc <query>: send to channel current pricing information for <amount> bitcoin")
 
-  override val messageMatchRegex: Regex = "[!.](?i)((btc)|(bitcoin)) ?(?<query>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)((btc)|(bitcoin)) ?(?<query>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = Option(firstMatch.group(4)).getOrElse("1000").trim

@@ -29,7 +29,7 @@ class DogecoinMessageEventHandler(configuration: ProgramConfiguration, coinMarke
 
   override val helpMessage: Option[String] = Option("!doge <amount>: send to channel current doge pricing information for <amount>")
 
-  override val messageMatchRegex: Regex = "[!.](?i)((doge)|(dogecoin)) ?(?<amount>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)((doge)|(dogecoin)) ?(?<amount>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = firstMatch.group(4)

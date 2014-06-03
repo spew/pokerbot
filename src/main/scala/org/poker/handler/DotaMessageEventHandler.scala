@@ -26,7 +26,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
 
   override val helpMessage: Option[String] = Option("!dota <player>: send to channel stats about <player>, if no <player> then send to channel the last game played")
 
-  override val messageMatchRegex: Regex = "[!.](?i)((dota)|(dotabuff)) ?(?<player>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)((dota)|(dotabuff)) ?(?<player>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     if (configuration.steamApiKey.isDefined) {

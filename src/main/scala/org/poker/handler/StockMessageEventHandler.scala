@@ -16,7 +16,7 @@ class StockMessageEventHandler extends MessageEventHandler {
 
   override val helpMessage: Option[String] = Option("!stock <symbol>: send current pricing information for symbol to channel")
 
-  override val messageMatchRegex: Regex = "[!.](?i)((stock)|(quote)) ?(?<symbol>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)((stock)|(quote)) ?(?<symbol>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val symbol = firstMatch.group(4)
