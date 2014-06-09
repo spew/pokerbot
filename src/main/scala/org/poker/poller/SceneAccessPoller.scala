@@ -107,7 +107,7 @@ class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: Scene
           logger.debug(s"skipping result for '${show.name}' time is equal to the last time for show: ${torrent.dateAdded}'")
         } else {
           if (lastDate.isDefined && lastDate.get != torrent.dateAdded) {
-            logger.info(s"updating last time for show ${show.name} from ${lastDate.get} to ${torrent.dateAdded}")
+            logger.info(s"updating last time for show ${show.name} from ${lastDate.get} to ${torrent.dateAdded}, previous was ${lastDate.get}")
           }
           lastDate = Some(torrent.dateAdded)
           if (shouldPrint(torrent.dateAdded)) {
