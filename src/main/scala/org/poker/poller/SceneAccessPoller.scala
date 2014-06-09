@@ -43,7 +43,7 @@ class SceneAccessPoller(configuration: ProgramConfiguration, ircBot: PircBotX) e
     val SiliconValley = new SceneShow("Silicon Valley", DateTimeConstants.MONDAY, 3)
     val GameOfThrones = new SceneShow("Game of Thrones", DateTimeConstants.MONDAY, 2)
     val Veep = new SceneShow("Veep", DateTimeConstants.MONDAY, 3)
-    Seq(RealTime, GameOfThrones, MadMen, SiliconValley, TheAmericans, Veep)
+    Seq(RealTime, GameOfThrones, SiliconValley, TheAmericans, Veep)
   }
 }
 
@@ -93,7 +93,7 @@ class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: Scene
     case "poll" => {
       logger.debug(s"waiting for scene-access client to check on latest version of '${show.name}'")
       val possibleTorrent = sceneAccessClient.synchronized {
-        logger.debug(s"looking for most recent version of '${show.name}'")
+        logger.debug(s"looking for most recent version of '${show.name}', lastDate=${lastDate}")
         val torrents = sceneAccessClient.findShow(show.name)
         if (torrents.isEmpty) {
           None
@@ -111,6 +111,7 @@ class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: Scene
           }
           lastDate = Some(torrent.dateAdded)
           if (shouldPrint(torrent.dateAdded)) {
+            logger.debug(s"printing new torrent for '${show.name}' with dateAdded: ${torrent.dateAdded}'")
             sendNewShowMessage(torrent)
           } else {
             val now = new DateTime(DateTimeZone.UTC)
