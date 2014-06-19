@@ -3,6 +3,7 @@ package org.poker.worldcup
 import org.poker.util.JsonClient
 import com.typesafe.scalalogging.slf4j.StrictLogging
 import java.util.Date
+import org.joda.time.DateTime
 
 /**
  * Created by mylons on 6/17/14.
@@ -10,12 +11,23 @@ import java.util.Date
 class WorldCupClient extends JsonClient with StrictLogging {
   val baseUrl = "http://live.mobileapp.fifa.com/api/wc/matches"
   val headers = Nil
+
   def current = baseJson.group.filter( x => x.b_Current == true )
+
+  def today = baseJson.group.filter( x => {
+   val date = new DateTime(x.c_MatchDayDate)
+   val today = DateTime.now()
+   (date.dayOfMonth().get == today.dayOfMonth().get) &&
+   (date.monthOfYear().get == today.monthOfYear().get)
+  })
+
+  def help = List()
 
   private def baseJson: GroupData = {
     val json = this.getJson("")
     (json \\ "data").extract[GroupData]
   }
+
 
 }
 
