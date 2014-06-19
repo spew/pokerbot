@@ -42,6 +42,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     listener.addHandler(new DogecoinMessageEventHandler(pc, coinMarketCaps))
     listener.addHandler(new CryptoCoinMessageEventHandler(pc, coinMarketCaps))
     listener.addHandler(new InfoMessageEventHandler)
+    listener.addHandler(new WorldCupMessageEventHandler)
     if (pc.untappedClientId.isDefined && pc.untappedClientSecret.isDefined) {
       listener.addHandler(new BeerMessageEventHandler(pc.untappedClientId.get, pc.untappedClientSecret.get))
     }
