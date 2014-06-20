@@ -30,6 +30,7 @@ class WorldCupMessageEventHandler extends MessageEventHandler with StrictLogging
       sendWorldCupInfoToChannel(event, query)
     }
   }
+
   private def matchString( matches: List[MatchData] ) = {
     val buf = new ListBuffer[String]
     for (mtch <- matches) {
