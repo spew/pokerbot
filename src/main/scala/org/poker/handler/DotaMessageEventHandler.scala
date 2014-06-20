@@ -69,7 +69,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
       val url = s"http://dotabuff.com/players/${p.account_id.get}"
       val document = Jsoup.connect(url).get()
       val nameElement = document.select("div.content-header-title h1").first
-      idToPlayerName += p.account_id.get -> nameElement.text
+      idToPlayerName += p.account_id.get -> nameElement.textNodes().get(0).text()
     }
     idToPlayerName.get(p.account_id.get).get
   }

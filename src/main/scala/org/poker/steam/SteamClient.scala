@@ -16,8 +16,9 @@ class SteamClient(apiKey: String) {
   implicit lazy val formats = DefaultFormats
   implicit val httpClient = new ApacheHttpClient
 
-  def getLatestDotaMatches(playerId: Long, maxResults: Int): List[Match] = {
-    val url = baseDotalURl + s"/GetMatchHistory/V001/?account_id=${playerId}&matches_requested=${maxResults}&key=${apiKey}"
+  def getLatestDotaMatches(playerId: Long, maxResults: Int, initialMatch: Option[Long] = None): List[Match] = {
+    val startAtMatch = if (initialMatch.isDefined) s"&start_at_match_id=${initialMatch.get}" else ""
+    val url = baseDotalURl + s"/GetMatchHistory/V001/?account_id=${playerId}&matches_requested=${maxResults}&key=${apiKey}" + startAtMatch
     val json = getJson(url)
     json.extract[MatchHistoryResponse].matches
   }
