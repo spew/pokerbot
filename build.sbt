@@ -40,7 +40,6 @@ libraryDependencies ++= Seq(
   "com.xeiam.xchange" % "xchange-coinbase" % "2.0.1-SNAPSHOT",
   "it" % "tomatoclient" % "0.0.1-SNAPSHOT",
   "org.joda" % "joda-money" % "0.9.1",
-  "joda-time" % "joda-time" % "2.3",
   "com.typesafe.akka" %% "akka-actor" % "2.3.3",
   json4sNative
 )
