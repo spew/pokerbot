@@ -2,7 +2,7 @@ package org.poker.poller
 
 import org.poker.ProgramConfiguration
 import com.typesafe.scalalogging.slf4j.LazyLogging
-import akka.actor.{ActorRef, Cancellable, Actor, Props}
+import akka.actor._
 import scala.concurrent.duration._
 import scala.collection.concurrent.{TrieMap, Map}
 
@@ -10,6 +10,9 @@ import com.github.nscala_time.time.Imports.DateTime
 import org.poker.scc.{TorrentFormatter, SceneTorrent, SceneAccessClient, SceneShow}
 import org.joda.time.{DateTimeZone, Period, DateTimeConstants}
 import org.pircbotx.{Channel, PircBotX}
+import scala.Some
+import org.poker.ProgramConfiguration
+import akka.actor.SupervisorStrategy.{Escalate, Restart, Resume}
 
 
 class SceneAccessPoller(configuration: ProgramConfiguration, ircBot: PircBotX) extends Poller with LazyLogging {
@@ -43,7 +46,8 @@ class SceneAccessPoller(configuration: ProgramConfiguration, ircBot: PircBotX) e
     val SiliconValley = new SceneShow("Silicon Valley", DateTimeConstants.MONDAY, 3)
     val GameOfThrones = new SceneShow("Game of Thrones", DateTimeConstants.MONDAY, 2)
     val Veep = new SceneShow("Veep", DateTimeConstants.MONDAY, 3)
-    Seq(RealTime, GameOfThrones, SiliconValley, TheAmericans, Veep)
+    // TODO add an enabled bit?
+    Seq(RealTime, Veep)
   }
 }
 
@@ -73,6 +77,14 @@ class Manager(shows: Seq[SceneShow], ircBot: PircBotX, sceneAccessClient: SceneA
     }
   }
 
+  override val supervisorStrategy = OneForOneStrategy() {
+    case e: Exception => {
+      logger.warn("exception in child actor", e)
+      Resume
+    }
+    case t => super.supervisorStrategy.decider.applyOrElse(t, (_: Any) => Escalate)
+  }
+
   private def scheduleShowActor(show: SceneShow, delay: Int, currentInterval: FiniteDuration): Unit = {
     logger.debug(s"scheduling '${show.name}' polling with interval ${currentInterval}")
     val actor = showToActor.get(show).get
@@ -82,7 +94,7 @@ class Manager(shows: Seq[SceneShow], ircBot: PircBotX, sceneAccessClient: SceneA
   }
 
   private def createActors(): scala.collection.immutable.Map[SceneShow, ActorRef] = {
-    shows.map(s => (s, system.actorOf(Props(classOf[SceneShowActor], s, ircBot, sceneAccessClient)))).toMap
+    shows.map(s => (s, context.actorOf(Props(classOf[SceneShowActor], s, ircBot, sceneAccessClient)))).toMap
   }
 }
 
