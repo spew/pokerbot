@@ -108,7 +108,9 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
 
   private def formatRelativeDate(date: DateTime): String = {
     val period = (date to new DateTime(DateTimeZone.UTC)).toPeriod()
-    val prettyTime = new PrettyTime(new java.util.Date(period.toStandardDuration.getStandardSeconds * 1000))
+    val duration = period.toDurationFrom(new DateTime())
+    val seconds = duration.toStandardSeconds.getSeconds.toLong
+    val prettyTime = new PrettyTime(new java.util.Date(seconds * 1000))
     prettyTime.format(new java.util.Date(0))
   }
 
