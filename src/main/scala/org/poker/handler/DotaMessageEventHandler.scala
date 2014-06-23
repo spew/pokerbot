@@ -86,19 +86,23 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
     val gamesWon = document.select("span.wins").first.text.replace(",", "").toInt
     val gamesLost = document.select("span.losses").first.text.replace(",", "").toInt
     val matches = this.getRecentResults(id, 10).reverse
-    val winOrNot = matches.map(m => m.radiant_win == (m.players.filter(p => p.account_id.get == id)(0).player_slot < 128))
-    val firstGameWin = winOrNot(0)
-    val streakCount = winOrNot.takeWhile(r => r == winOrNot(0)).size;
-    var streakType = "lost"
-    if (firstGameWin) {
-      streakType = "won"
-    }
-    val streakWins = winOrNot.filter(b => b).size
-    val streakLosses = winOrNot.filter(b => !b).size
-    val lastPlayed = this.getFormattedRelativeFinishTime(matches(0))
-    val message = s"wins: ${gamesWon} | losses: ${gamesLost} | streak: ${streakType} ${streakCount} | last ten: ${streakWins}-${streakLosses} | last played: ${lastPlayed}"
     event.getChannel.send.message(url)
-    event.getChannel.send.message(message)
+    if (matches.isEmpty) {
+      event.getChannel.send.message("can't fetch latest results: data is private")
+    } else {
+      val winOrNot = matches.map(m => m.radiant_win == (m.players.filter(p => p.account_id.get == id)(0).player_slot < 128))
+      val firstGameWin = winOrNot(0)
+      val streakCount = winOrNot.takeWhile(r => r == winOrNot(0)).size;
+      var streakType = "lost"
+      if (firstGameWin) {
+        streakType = "won"
+      }
+      val streakWins = winOrNot.filter(b => b).size
+      val streakLosses = winOrNot.filter(b => !b).size
+      val lastPlayed = this.getFormattedRelativeFinishTime(matches(0))
+      val message = s"wins: ${gamesWon} | losses: ${gamesLost} | streak: ${streakType} ${streakCount} | last ten: ${streakWins}-${streakLosses} | last played: ${lastPlayed}"
+      event.getChannel.send.message(message)
+    }
   }
 
   private def getFormattedRelativeFinishTime(m: MatchDetails): String = {
