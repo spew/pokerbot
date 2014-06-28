@@ -12,7 +12,7 @@ import com.stackmob.newman.Constants._
 import com.stackmob.newman.response.HttpResponseCode
 
 trait JsonClient {
-  implicit lazy val formats = DefaultFormats
+  implicit val formats = DefaultFormats ++ org.json4s.ext.JodaTimeSerializers.all
   implicit val httpClient = new ApacheHttpClient
   val baseUrl: String
   val headers: List[(String, String)]

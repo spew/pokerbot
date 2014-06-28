@@ -20,6 +20,7 @@ resolvers ++= Seq(
 )
 
 val json4sNative = "org.json4s" %% "json4s-native" % "3.2.9"
+val json4sExt = "org.json4s" %% "json4s-ext" % "3.2.9"
 
 libraryDependencies ++= Seq(
   "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
@@ -41,7 +42,8 @@ libraryDependencies ++= Seq(
   "it" % "tomatoclient" % "0.0.1-SNAPSHOT",
   "org.joda" % "joda-money" % "0.9.1",
   "com.typesafe.akka" %% "akka-actor" % "2.3.3",
-  json4sNative
+  json4sNative,
+  json4sExt
 )
 
 libraryDependencies += "org.scalatest" % "scalatest_2.10" % "2.0" % "test"
