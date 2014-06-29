@@ -76,7 +76,8 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
 
   private def findLatestMatch(): org.poker.steam.dota.Match = {
     val matches = channelPlayers.map(p => steamClient.getLatestDotaMatches(p.id, 1)).flatten
-    val sorted = matches.sortBy(m => m.start_time)
+    val filtered = matches.filter(m => m.players.filter(p => !p.account_id.isDefined).isEmpty)
+    val sorted = filtered.sortBy(m => m.start_time)
     sorted.last
   }
 
