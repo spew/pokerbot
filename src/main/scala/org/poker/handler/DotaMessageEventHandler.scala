@@ -49,7 +49,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   private def sendLatestMatch(event: MessageEvent[PircBotX]): Unit = {
     val latestMatch = findLatestMatch()
     val m = steamClient.getDotaMatchDetails(latestMatch.match_id)
-    val knownPlayers = m.players.filter(p => idToPlayer.contains(p.account_id.get))
+    val knownPlayers = m.players.filter(p => p.account_id.isDefined && idToPlayer.contains(p.account_id.get))
     val win = (knownPlayers.head.player_slot < 128) == m.radiant_win
     val winMessage = if (win) "WIN" else "LOSS"
     val playerNames = knownPlayers.map(kp => this.getPlayerName(kp))
@@ -76,8 +76,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
 
   private def findLatestMatch(): org.poker.steam.dota.Match = {
     val matches = channelPlayers.map(p => steamClient.getLatestDotaMatches(p.id, 1)).flatten
-    val filtered = matches.filter(m => m.players.filter(p => !p.account_id.isDefined).isEmpty)
-    val sorted = filtered.sortBy(m => m.start_time)
+    val sorted = matches.sortBy(m => m.start_time)
     sorted.last
   }
 
