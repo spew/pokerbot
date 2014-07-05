@@ -21,7 +21,7 @@ class WorldCupMessageEventHandler extends MessageEventHandler with StrictLogging
 
   override val helpMessage: Option[String] = Option("!wc: send wc information about world cup to channel")
 
-  override val messageMatchRegex: Regex = "^[!.](?i)wc? ?(?<query>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)wc ?(?<query>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: scala.util.matching.Regex.Match): Unit = {
     val query = firstMatch.group(1).trim
