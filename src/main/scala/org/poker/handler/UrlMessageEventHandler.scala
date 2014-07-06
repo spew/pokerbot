@@ -57,7 +57,8 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
     val instagramOembed = new InstagramOembed()
     val oembedInfo = instagramOembed.getOembedInformation(url)
     val mediaInfo = instagramClient.getMediaInfo(oembedInfo.getMediaId)
-    event.getChannel.send.message(s"${mediaInfo.getData.getCaption.getText} - Instagram")
+    val comments = if (mediaInfo.getData.getComments.getCount == 1) "comment" else "comments"
+    event.getChannel.send.message(s"${mediaInfo.getData.getCaption.getText} | ${mediaInfo.getData.getType} | ${mediaInfo.getData.getComments.getCount} ${comments}")
   }
 
   private def sendYouTube(event: MessageEvent[PircBotX], videoId: String): Unit = {
