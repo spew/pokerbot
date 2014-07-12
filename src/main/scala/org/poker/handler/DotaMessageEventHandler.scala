@@ -152,6 +152,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
       new KnownPlayer(78932949L, List("muiy", "dank"))::
       new KnownPlayer(34117856L, List("viju", "vijal"))::
       new KnownPlayer(29508928L, List("sysm"))::
+      new KnownPlayer(32387791L, List("ctide"))::
       Nil
   }
 }
