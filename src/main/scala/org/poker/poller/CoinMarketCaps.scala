@@ -12,7 +12,7 @@ import scala.collection.mutable.HashMap
 
 class CoinMarketCaps(configuration: ProgramConfiguration) extends Poller with LazyLogging {
   val scheduler: ScheduledExecutorService = Executors.newScheduledThreadPool(1)
-  private var cryptoIdToMarketCap: Map[String, BigDecimal] = Map()
+  private var cryptoNameToMarketCap: Map[String, BigDecimal] = Map()
 
   override def start(): Unit = {
     val runnable: Runnable = new Runnable {
@@ -31,9 +31,9 @@ class CoinMarketCaps(configuration: ProgramConfiguration) extends Poller with La
     this.scheduler.shutdownNow
   }
 
-  def getMarketCap(cryptoId: String): Option[BigDecimal] = {
-    val cryptoIdToMarketCap: Map[String, BigDecimal] = this.getCryptoIdToMarketCap
-    return cryptoIdToMarketCap.get(cryptoId.toLowerCase)
+  def getMarketCap(cryptoName: String): Option[BigDecimal] = {
+    val cryptoIdToMarketCap: Map[String, BigDecimal] = this.getCryptoNameToMarketCap
+    return cryptoIdToMarketCap.get(cryptoName.toLowerCase)
   }
 
   private def update {
@@ -51,18 +51,18 @@ class CoinMarketCaps(configuration: ProgramConfiguration) extends Poller with La
       val bigDecimal = BigDecimal(decimalFormat.parse(marketCapTd.attr("data-usd")).toString)
       cryptoToMarketCap += e.id.replace("id-", "").toLowerCase -> bigDecimal
     }
-    this.setCryptoIdToMarketCap(cryptoToMarketCap.toMap)
+    this.setCryptoNameToMarketCap(cryptoToMarketCap.toMap)
   }
 
-  private def setCryptoIdToMarketCap(cryptoIdToMarketCap: Map[String, BigDecimal]) {
+  private def setCryptoNameToMarketCap(cryptoIdToMarketCap: Map[String, BigDecimal]) {
     synchronized {
-      this.cryptoIdToMarketCap = cryptoIdToMarketCap
+      this.cryptoNameToMarketCap = cryptoIdToMarketCap
     }
   }
 
-  private def getCryptoIdToMarketCap: Map[String, BigDecimal] = {
+  private def getCryptoNameToMarketCap: Map[String, BigDecimal] = {
     synchronized {
-      cryptoIdToMarketCap
+      cryptoNameToMarketCap
     }
   }
 

@@ -56,7 +56,7 @@ class CryptoCoinMessageEventHandler(configuration: ProgramConfiguration, coinMar
     val usdValue = this.getUsdValue(coin, amount)
     val formattedValueBtc = "%1.8f".format(coin.price_btc)
     val volume = new BigDecimal((coin.volume_btc / coin.price_btc).bigDecimal) with HumanReadable
-    val marketCap = coinMarketCaps.getMarketCap(coin.id.toLowerCase)
+    val marketCap = coinMarketCaps.getMarketCap(coin.name)
     var message = s"${coin.id.toUpperCase()}/BTC: ${formattedValueBtc} | vol: ${volume.toStringHumanReadable()}"
     if (marketCap.isDefined) {
       val prettyCap = (new BigDecimal(marketCap.get.bigDecimal) with HumanReadable).toStringHumanReadable()

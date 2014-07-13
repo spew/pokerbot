@@ -40,7 +40,7 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
     val bitstampLast = formatter.format(bitstampTicker.getLast)
     val average = formatter.format(averageTicker.getLast.doubleValue())
     val volume = (new BigDecimal(averageTicker.getVolume) with HumanReadable).toStringHumanReadable()
-    val marketCap = coinMarketCaps.getMarketCap("btc")
+    val marketCap = coinMarketCaps.getMarketCap("bitcoin")
     var message = s"BTC - coinbase: ${coinbaseLast} | bitstamp: ${bitstampLast} | avg: ${average} | vol: ${volume}"
     if (marketCap.isDefined) {
       val cap = (new BigDecimal(marketCap.get.bigDecimal) with HumanReadable).toStringHumanReadable()

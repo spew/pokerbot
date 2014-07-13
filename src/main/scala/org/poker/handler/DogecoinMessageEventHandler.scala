@@ -55,7 +55,7 @@ class DogecoinMessageEventHandler(configuration: ProgramConfiguration, coinMarke
     val dogecoinResponse = json.extract[DogecoinAverageResponse]
     val volume = dogecoinResponse.markets.map(m => m.volume).sum
     val prettyVolume = (new BigDecimal(new java.math.BigDecimal(volume)) with HumanReadable).toStringHumanReadable()
-    val marketCap = coinMarketCaps.getMarketCap("doge")
+    val marketCap = coinMarketCaps.getMarketCap("dogecoin")
     val formattedPrice = "%1.8f".format(dogecoinResponse.vwap)
     var message = s"DOGE/BTC: ${formattedPrice} | vol: ${prettyVolume}"
     if (marketCap.isDefined) {
