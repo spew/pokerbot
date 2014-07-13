@@ -28,7 +28,7 @@ trait JsonClient {
 
   private def getRequest(relativeUrl: String): HttpRequest = {
     val url = new URL(baseUrl + relativeUrl)
-    GET(url).addHeaders(headers)
+    SimpleRetrier.retry(3)(GET(url).addHeaders(headers))
   }
 
 }

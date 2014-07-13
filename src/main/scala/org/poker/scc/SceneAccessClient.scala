@@ -12,6 +12,7 @@ import com.google.api.client.util.Lists
 import com.google.api.client.repackaged.com.google.common.base.Strings
 import org.joda.time.DateTime
 import org.joda.time.format.{DateTimeFormat, DateTimeFormatter}
+import org.poker.util.SimpleRetrier
 
 class SceneAccessClient(configuration: ProgramConfiguration) {
   val url = "https://sceneaccess.eu"
@@ -30,7 +31,7 @@ class SceneAccessClient(configuration: ProgramConfiguration) {
     cookies = loginResponse.cookies
   }
 
-  def findShow(showName: String): List[SceneTorrent] = {
+  private def doSearch(showName: String): Document = {
     val searchResponse: Connection.Response = Jsoup.connect(url.toString + "/browse?search=" + showName + "&method=2&c27=27")
       .cookies(cookies)
       .method(Method.GET)
@@ -38,11 +39,14 @@ class SceneAccessClient(configuration: ProgramConfiguration) {
       .execute
     if (!searchResponse.url.toString.toLowerCase.contains("browse?search")) {
       this.login(searchResponse)
-      return this.findShow(showName)
+      return this.doSearch(showName)
     }
-    val document = searchResponse.parse
-    val rowElements: Elements = document.select("tr.tt_row")
+    return searchResponse.parse()
+  }
 
+  def findShow(showName: String): List[SceneTorrent] = {
+    val document = SimpleRetrier.retry(3)(doSearch(showName))
+    val rowElements: Elements = document.select("tr.tt_row")
     val torrents = mutable.MutableList[SceneTorrent]()
     import scala.collection.JavaConversions._
     for (elem <- rowElements) {
