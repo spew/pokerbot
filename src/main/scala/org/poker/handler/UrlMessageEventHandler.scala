@@ -31,7 +31,7 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
   val twitter = createTwitter()
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
-    val url = firstMatch.group(1)
+    val url = getUrl(firstMatch)
     url match {
       case twitterRegex(mobile, skip, statusId, photo) => {
         if (twitter.isDefined) {
@@ -49,6 +49,15 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
         val title = document.title
         event.getChannel.send.message(s"$title")
       }
+    }
+  }
+
+  private def getUrl(firstMatch: Match) = {
+    val url = firstMatch.group(1)
+    if (url.contains("://")) {
+      url
+    } else {
+      "http://" + url
     }
   }
 

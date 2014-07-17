@@ -32,7 +32,7 @@ class SteamClient(apiKey: String) {
 
   private def getJson(relativeUri: String): JValue = {
     val httpRequest = GET(new URL(relativeUri))
-    val httpResponse = Await.result(httpRequest.apply, 2.second)
+    val httpResponse = Await.result(httpRequest.apply, 3.second)
     parse(httpResponse.bodyString(UTF8Charset))
   }
 }
