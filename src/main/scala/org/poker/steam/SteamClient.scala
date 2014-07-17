@@ -9,12 +9,12 @@ import com.stackmob.newman.dsl._
 import scala.concurrent._
 import scala.concurrent.duration._
 import org.poker.steam.dota.{MatchDetails, Match, MatchDetailsResponse, MatchHistoryResponse}
+import org.poker.util.JsonClient
 
-class SteamClient(apiKey: String) {
+class SteamClient(apiKey: String) extends JsonClient {
   val baseUrl = "https://api.steampowered.com"
-  val baseDotalURl = baseUrl + "/IDOTA2Match_570"
-  implicit lazy val formats = DefaultFormats
-  implicit val httpClient = new ApacheHttpClient
+  val baseDotalURl = "/IDOTA2Match_570"
+  val headers = Nil
 
   def getLatestDotaMatches(playerId: Long, maxResults: Int, initialMatch: Option[Long] = None): List[Match] = {
     val startAtMatch = if (initialMatch.isDefined) s"&start_at_match_id=${initialMatch.get}" else ""
@@ -26,13 +26,6 @@ class SteamClient(apiKey: String) {
   def getDotaMatchDetails(matchId: Long) : MatchDetails = {
     val url = baseDotalURl + s"/GetMatchDetails/V001/?match_id=${matchId}&key=${apiKey}"
     val json = getJson(url)
-    val test = pretty(render(json))
     json.extract[MatchDetailsResponse].result
-  }
-
-  private def getJson(relativeUri: String): JValue = {
-    val httpRequest = GET(new URL(relativeUri))
-    val httpResponse = Await.result(httpRequest.apply, 3.second)
-    parse(httpResponse.bodyString(UTF8Charset))
   }
 }
