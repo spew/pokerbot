@@ -19,7 +19,7 @@ trait JsonClient {
 
   protected def getJson(relativeUri: String): JValue = {
     val httpRequest = getRequest(relativeUri)
-    val httpResponse = Await.result(httpRequest.apply, 4.second)
+    val httpResponse = Await.result(httpRequest.apply, 3.second)
     if (httpResponse.code != HttpResponseCode.Ok) {
       throw new Exception(s"Bad response code (${httpResponse.code}) from '${httpRequest.url}'")
     }
@@ -28,7 +28,7 @@ trait JsonClient {
 
   private def getRequest(relativeUrl: String): HttpRequest = {
     val url = new URL(baseUrl + relativeUrl)
-    SimpleRetrier.retry(3)(GET(url).addHeaders(headers))
+    SimpleRetrier.retry(4)(GET(url).addHeaders(headers))
   }
 
 }

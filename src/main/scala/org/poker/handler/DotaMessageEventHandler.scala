@@ -47,8 +47,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   }
 
   private def sendLatestMatch(event: MessageEvent[PircBotX]): Unit = {
-    val latestMatch = findLatestMatch()
-    val m = steamClient.getDotaMatchDetails(latestMatch.match_id)
+    val m = findLatestMatch
     val knownPlayers = m.players.filter(p => p.account_id.isDefined && idToPlayer.contains(p.account_id.get))
     val win = (knownPlayers.head.player_slot < 128) == m.radiant_win
     val winMessage = if (win) "WIN" else "LOSS"
@@ -74,10 +73,11 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
     idToPlayerName.get(p.account_id.get).get
   }
 
-  private def findLatestMatch(): org.poker.steam.dota.Match = {
-    val matches = channelPlayers.map(p => steamClient.getLatestDotaMatches(p.id, 1)).flatten
-    val sorted = matches.sortBy(m => m.start_time)
-    sorted.last
+  private def findLatestMatch() = {
+    val result = channelPlayers.map(p => steamClient.getLatestDotaMatches(p.id, 1)).flatten
+    val sorted = result.sortBy(m => m.start_time).reverse
+    val latestDetails = sorted.take(Math.min(3, sorted.size)).map(m => steamClient.getDotaMatchDetails(m.match_id))
+    latestDetails.sortBy(m => m.start_time + m.duration).last
   }
 
   private def sendIndividualPlayerStats(event: MessageEvent[PircBotX], id: Long) {

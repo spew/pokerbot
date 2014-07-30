@@ -1,13 +1,6 @@
 package org.poker.steam
 
 import org.json4s._
-import org.json4s.native.JsonMethods._
-import com.stackmob.newman.Constants._
-import com.stackmob.newman.ApacheHttpClient
-import java.net.URL
-import com.stackmob.newman.dsl._
-import scala.concurrent._
-import scala.concurrent.duration._
 import org.poker.steam.dota.{MatchDetails, Match, MatchDetailsResponse, MatchHistoryResponse}
 import org.poker.util.JsonClient
 
