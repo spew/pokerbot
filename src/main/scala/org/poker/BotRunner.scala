@@ -8,6 +8,9 @@ import org.pircbotx.hooks.Listener
 import org.pircbotx.{UtilSSLSocketFactory, Configuration, PircBotX}
 import org.poker.poller.{SceneAccessPoller, CoinMarketCaps}
 
+import java.nio.charset.Charset
+import java.nio.charset.StandardCharsets
+
 class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
   val coinMarketCaps = new CoinMarketCaps(pc)
   val ircBotConfig = this.getIrcBotConfiguration()
@@ -63,6 +66,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
       .setAutoSplitMessage(true)
       .setAutoNickChange(true)
       .setShutdownHookEnabled(true)
+      .setEncoding(StandardCharsets.UTF_8)
       .setServerHostname(pc.serverHostname)
     for (c <- pc.channels) {
       logger.debug("adding autojoin channel: '{}'", c)
