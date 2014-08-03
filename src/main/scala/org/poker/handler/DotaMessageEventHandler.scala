@@ -5,16 +5,14 @@ import scala.util.matching.Regex.Match
 import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.PircBotX
 import com.github.nscala_time.time.Imports._
-import org.joda.time.format.{PeriodFormatterBuilder, PeriodFormatter}
 import org.poker.ProgramConfiguration
 import org.poker.dota.KnownPlayer
 import org.jsoup.Jsoup
 import org.poker.steam.SteamClient
-import org.poker.steam.dota.MatchDetails
-import org.poker.steam.dota.Player
+import org.poker.steam.dota.{Player, MatchDetails}
 import org.ocpsoft.prettytime.PrettyTime
-import scala.collection.mutable.Set
-import scala.collection._
+import java.util.concurrent.TimeUnit
+import com.google.common.cache.{LoadingCache, CacheBuilder, CacheLoader}
 
 class DotaMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val startTime = DateTime.now
@@ -22,7 +20,6 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   val steamClient = new SteamClient(configuration.steamApiKey.getOrElse(""))
   val idToPlayer = channelPlayers.map(kp => (kp.id, kp)).toMap
   val nameToPlayer = channelPlayers.map(kp => (kp.aliases.map(a => (a, kp)))).flatten.toMap
-  val idToPlayerName = mutable.Map[Long, String]()
 
   override val helpMessage: Option[String] = Option("!dota <player>: send to channel stats about <player>, if no <player> then send to channel the last game played")
 
@@ -63,14 +60,27 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
     event.getChannel.send.message(message)
   }
 
-  private def getPlayerName(p: Player): String = {
-    if (!idToPlayerName.contains(p.account_id.get)) {
-      val url = s"http://dotabuff.com/players/${p.account_id.get}"
-      val document = Jsoup.connect(url).get()
-      val nameElement = document.select("div.content-header-title h1").first
-      idToPlayerName += p.account_id.get -> nameElement.textNodes().get(0).text()
+  val playerNameLoader = new CacheLoader[Long, String] {
+    def load(playerId: Long) = {
+      fetchPlayerName(playerId)
     }
-    idToPlayerName.get(p.account_id.get).get
+  }
+  val idToPlayerNameExpiring = CacheBuilder.newBuilder()
+    .maximumSize(10000)
+    .expireAfterWrite(30, TimeUnit.MINUTES)
+    .build(playerNameLoader)
+    .asInstanceOf[LoadingCache[Long, String]]
+
+  private def getPlayerName(p: Player): String = {
+    val playerId = new java.lang.Long(p.account_id.get)
+    idToPlayerNameExpiring.get(playerId)
+  }
+
+  private def fetchPlayerName(accountId: Long) = {
+    val url = s"http://dotabuff.com/players/${accountId}"
+    val document = Jsoup.connect(url).get()
+    val nameElement = document.select("div.content-header-title h1").first
+    nameElement.textNodes().get(0).text()
   }
 
   private def findLatestMatch() = {
@@ -149,11 +159,11 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
       new KnownPlayer(10648475L, List("fud", "spew", "deathdealer69"))::
       new KnownPlayer(28326143L, List("steven", "bunk"))::
       new KnownPlayer(125412282L, List("mark", "clock", "cl0ck"))::
-      new KnownPlayer(81397072L, List("clock2"))::
+      new KnownPlayer(81397072L, List("clock2", "cl0ck2"))::
       new KnownPlayer(78932949L, List("muiy", "dank"))::
       new KnownPlayer(34117856L, List("viju", "vijal"))::
       new KnownPlayer(29508928L, List("sysm"))::
-      new KnownPlayer(32387791L, List("ctide"))::
+      new KnownPlayer(32387791L, List("ctide", "chris", "tide"))::
       new KnownPlayer(49941053L, List("abduhl", "jake"))::
       new KnownPlayer(32385879L, List("tbs", "tom"))::
       new KnownPlayer(40737752L, List("fourk"))::
