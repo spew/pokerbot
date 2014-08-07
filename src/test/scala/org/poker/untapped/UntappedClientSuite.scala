@@ -6,7 +6,7 @@ class UntappedClientSuite extends fixture.FunSuite {
   case class FixtureParam(client: UntappedClient)
 
   def withFixture(test: OneArgTest) = {
-    val untappedClient = new UntappedClient("clientId", "clientSecret")
+    val untappedClient = new UntappedClient("clientId", "clientSecret", "accessToken")
     withFixture(test.toNoArgTest(FixtureParam(untappedClient)))
   }
 

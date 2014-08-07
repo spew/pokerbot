@@ -6,7 +6,7 @@ import org.poker.handler._
 import org.pircbotx.cap.TLSCapHandler
 import org.pircbotx.hooks.Listener
 import org.pircbotx.{UtilSSLSocketFactory, Configuration, PircBotX}
-import org.poker.poller.{SceneAccessPoller, CoinMarketCaps}
+import org.poker.poller.{UntappdPoller, SceneAccessPoller, CoinMarketCaps}
 
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
@@ -15,7 +15,8 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
   val coinMarketCaps = new CoinMarketCaps(pc)
   val ircBotConfig = this.getIrcBotConfiguration()
   val ircBot = new PircBotX(ircBotConfig)
-  val sceneAccessPoller = new SceneAccessPoller(pc, ircBot)
+  lazy val sceneAccessPoller = new SceneAccessPoller(pc, ircBot)
+  lazy val untappdPoller = new UntappdPoller(pc, ircBot)
 
   def run(): Unit = {
     startPollers()
@@ -28,6 +29,13 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     if (pc.sceneAccessPassword.isDefined && pc.sceneAccessUserName.isDefined) {
       sceneAccessPoller.start()
     }
+    if (untappdEnabled) {
+      untappdPoller.start()
+    }
+  }
+
+  lazy val untappdEnabled = {
+    pc.untappdClientId.isDefined && pc.untappdClientSecret.isDefined && pc.untappdAccessToken.isDefined
   }
 
   def getListener(): Listener[PircBotX] = {
@@ -46,8 +54,8 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     listener.addHandler(new CryptoCoinMessageEventHandler(pc, coinMarketCaps))
     listener.addHandler(new InfoMessageEventHandler)
     listener.addHandler(new WorldCupMessageEventHandler)
-    if (pc.untappedClientId.isDefined && pc.untappedClientSecret.isDefined) {
-      listener.addHandler(new BeerMessageEventHandler(pc.untappedClientId.get, pc.untappedClientSecret.get))
+    if (untappdEnabled) {
+      listener.addHandler(new BeerMessageEventHandler(pc.untappdClientId.get, pc.untappdClientSecret.get, pc.untappdAccessToken.get))
     }
     listener
   }

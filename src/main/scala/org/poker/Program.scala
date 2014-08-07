@@ -23,8 +23,9 @@ case class ProgramConfiguration(
   rottenTomatoesApiKey: Option[String] = None,
   instagramClientId: Option[String] = None,
   instagramClientSecret: Option[String] = None,
-  untappedClientId: Option[String] = None,
-  untappedClientSecret: Option[String] = None
+  untappdClientId: Option[String] = None,
+  untappdClientSecret: Option[String] = None,
+  untappdAccessToken: Option[String] = None
 )
 
 object Program extends StrictLogging {
@@ -59,8 +60,9 @@ object Program extends StrictLogging {
     c = c.copy(rottenTomatoesApiKey = loadEnvVar("RT_API_KEY"))
     c = c.copy(instagramClientId = loadEnvVar("INSTAGRAM_CLIENT_ID"))
     c = c.copy(instagramClientSecret = loadEnvVar("INSTAGRAM_CLIENT_SECRET"))
-    c = c.copy(untappedClientId = loadEnvVar("UNTAPPED_CLIENT_ID"))
-    c = c.copy(untappedClientSecret = loadEnvVar("UNTAPPED_CLIENT_SECRET"))
+    c = c.copy(untappdClientId = loadEnvVar("UNTAPPED_CLIENT_ID"))
+    c = c.copy(untappdClientSecret = loadEnvVar("UNTAPPED_CLIENT_SECRET"))
+    c = c.copy(untappdAccessToken = loadEnvVar("UNTAPPED_ACCESS_TOKEN"))
     val twitterAccessToken = loadEnvVar("TWITTER_OAUTH_ACCESS_TOKEN")
     val twitterAccessTokenSecret = loadEnvVar("TWITTER_OAUTH_ACCESS_TOKEN_SECRET")
     val twitterConsumerKey = loadEnvVar("TWITTER_OAUTH_CONSUMER_KEY")

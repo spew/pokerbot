@@ -42,6 +42,7 @@ libraryDependencies ++= Seq(
   "it" % "tomatoclient" % "0.0.1-SNAPSHOT",
   "org.joda" % "joda-money" % "0.9.1",
   "com.typesafe.akka" %% "akka-actor" % "2.3.3",
+  "org.scribe" % "scribe" % "1.3.5",
   json4sNative,
   json4sExt
 )

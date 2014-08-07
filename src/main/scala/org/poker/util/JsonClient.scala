@@ -1,12 +1,12 @@
 package org.poker.util
 
 import org.json4s._
-import com.stackmob.newman._
 import java.net.{URL}
-import com.stackmob.newman.dsl._
 import org.json4s.native.JsonMethods._
 import scala.concurrent._
 import scala.concurrent.duration._
+import com.stackmob.newman._
+import com.stackmob.newman.dsl._
 import com.stackmob.newman.request.HttpRequest
 import com.stackmob.newman.Constants._
 import com.stackmob.newman.response.HttpResponseCode
