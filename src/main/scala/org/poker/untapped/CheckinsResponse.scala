@@ -8,7 +8,7 @@ class CheckinsList(val count: Int, val items: List[Checkin]) {
 
 }
 
-class Checkin(val checkin_id: Long, val created_at: String, val checkin_comment: String, val rating_score: Int, val user: User, val beer: CheckinBeer, val venue: Option[Venue]) {
+class Checkin(val checkin_id: Long, val created_at: String, val checkin_comment: String, val rating_score: Double, val user: User, val beer: CheckinBeer, val venue: Option[Venue]) {
 
 }
 

@@ -58,7 +58,7 @@ class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) exten
     val rating = formatRating(beerInfo.response.beer.rating_score)
     val url = s"http://untappd.com/user/${checkin.user.user_name}/checkin/${checkin.checkin_id}"
     val venueMessage = if (checkin.venue.isDefined) s"at '${checkin.venue.get.venue_name}' " else ""
-    s"${checkin.user.user_name} just rated '${checkin.beer.beer_name}' ${checkin.rating_score}/5 (avg ${rating}) ${venueMessage}| ${url}"
+    s"${checkin.user.user_name} just rated '${checkin.beer.beer_name}' ${checkin.rating_score}/5.0 (avg ${rating}) ${venueMessage}| ${url}"
   }
 
   private def formatRating(rating: Double) = {
