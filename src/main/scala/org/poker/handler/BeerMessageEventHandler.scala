@@ -8,30 +8,43 @@ import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.PircBotX
 import com.github.nscala_time.time.Imports._
 import org.joda.time.format.PeriodFormatter
-import org.poker.untapped.{SearchResponse, UntappedResponse, CheckinCount, UntappedClient}
+import org.poker.untapped._
 
 class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: String, untappdAccessToken: String) extends MessageEventHandler {
   private val untappedClient = new UntappedClient(untappdClientId, untappdClientSecret, untappdAccessToken)
-
   override val helpMessage: Option[String] = Option("!beer: send untapped information about a beer to channel")
-
   override val messageMatchRegex: Regex = "^[!.](?i)beer? ?(?<query>.*)".r
+  private val knownUsers: List[KnownUser] =
+    (new KnownUser(39106, Seq("ctide", "chris", "tide"), "ctide"))::
+      (new KnownUser(176916, Seq("sa-x", "matt"), "M4ttj0nes"))::
+      (new KnownUser(931534, Seq("spew", "fud"), "spew"))::
+      (new KnownUser(1468127, Seq("cl0ck", "clock", "mark"), "markmcgrail"))::
+      (new KnownUser(1314112, Seq("tbs", "tbs_", "tom"), "tbs_"))::
+      (new KnownUser(1152859, Seq("brettkc", "brett", "bertkc"), "brettkc"))::
+      Nil
+  private val userNameMap = knownUsers.map(u => u.aliases.map(a => (a, u))).flatten.toMap
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
-    val query = firstMatch.group(1).trim
+    val query = firstMatch.group(1).trim.toLowerCase()
     if (query.isEmpty) {
-      val response = untappedClient.recentFriendCheckins()
-      val checkins = response.response.checkins.items
-      val lastCheckin = checkins.head
-      val beerInfo = untappedClient.beerInfo(lastCheckin.beer.bid)
-      val rating = formatRating(beerInfo.response.beer.rating_score)
-      val url = s"http://untappd.com/user/${lastCheckin.user.user_name}/checkin/${lastCheckin.checkin_id}"
-      val venueMessage = if (lastCheckin.venue.isDefined) s"at '${lastCheckin.venue.get.venue_name}' " else ""
-      val message = s"${lastCheckin.user.user_name} just rated '${lastCheckin.beer.beer_name}' ${lastCheckin.rating_score}/5 (avg ${rating}) ${venueMessage}| ${url}"
-      event.getChannel.send.message(message)
       event.getChannel.send.message("usage: !beer <query>")
     } else {
-      sendBeerInfoToChannel(event, query)
+      userNameMap.get(query) match {
+        case Some(user) => {
+          val checkinsResponse = untappedClient.recentCheckins(user.untappdUserName)
+          if (checkinsResponse.response.checkins.items.isEmpty) {
+            event.getChannel.send().message(s"no checkins available for '${query}'")
+          } else {
+            val checkin = checkinsResponse.response.checkins.items.head
+            val beer = untappedClient.beerInfo(checkin.beer.bid).response.beer
+            val message = UntappdMessageFormatter.formatCheckinMessage(checkin, beer)
+            event.getChannel.send.message(message)
+          }
+        }
+        case None => {
+          sendBeerInfoToChannel(event, query)
+        }
+      }
     }
   }
 
@@ -51,5 +64,9 @@ class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: Stri
 
   private def formatRating(rating: Double) = {
     f"${rating}%1.1f"
+  }
+
+  private class KnownUser(val userId: Long, val aliases: Seq[String], val untappdUserName: String) {
+
   }
 }

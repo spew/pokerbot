@@ -31,6 +31,12 @@ class UntappedClient(clientId: String, clientSecret: String, accessToken: String
     json.extract[UntappedResponse[CheckinsResponse]]
   }
 
+  def recentCheckins(userName: String) = {
+    val relativeUrl = getRelativeUrl(s"user/checkins/${userName}", "limit=5")
+    val json = this.getJson(relativeUrl)
+    json.extract[UntappedResponse[CheckinsResponse]]
+  }
+
   private def getRelativeUrl(methodName: String, args: String*) = {
     val authorizationArgs = Seq(s"client_id=${clientId}", s"client_secret=${clientSecret}", s"access_token=${accessToken}")
     val allArgs = authorizationArgs++:args

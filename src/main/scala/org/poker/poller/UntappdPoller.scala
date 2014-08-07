@@ -5,7 +5,7 @@ import java.util.concurrent.{TimeUnit, Executors}
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import org.pircbotx.PircBotX
 import org.poker.ProgramConfiguration
-import org.poker.untapped.{Checkin, UntappedClient}
+import org.poker.untapped.{UntappdMessageFormatter, Checkin, UntappedClient}
 import org.poker.util.DaemonThreadFactory
 import scala.collection.JavaConversions._
 
@@ -27,7 +27,8 @@ class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) exten
                 lastMaxId = Some(newMax)
               }
               for (c <- filteredCheckins) {
-                val message = formatCheckinMessage(c)
+                val beerInfo = untappedClient.beerInfo(c.beer.bid)
+                val message = UntappdMessageFormatter.formatCheckinMessage(c, beerInfo.response.beer)
                 for (channel <- ircBot.getUserBot.getChannels) {
                   channel.send.message(message)
                 }
@@ -46,22 +47,10 @@ class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) exten
         }
       }
     }
-    executor.scheduleAtFixedRate(runnable, 10, 60, TimeUnit.SECONDS)
+    executor.scheduleAtFixedRate(runnable, 2, 5, TimeUnit.MINUTES)
   }
 
   override def stop(): Unit = {
 
-  }
-
-  private def formatCheckinMessage(checkin: Checkin) = {
-    val beerInfo = untappedClient.beerInfo(checkin.beer.bid)
-    val rating = formatRating(beerInfo.response.beer.rating_score)
-    val url = s"http://untappd.com/user/${checkin.user.user_name}/checkin/${checkin.checkin_id}"
-    val venueMessage = if (checkin.venue.isDefined) s"at '${checkin.venue.get.venue_name}' " else ""
-    s"${checkin.user.user_name} just rated '${checkin.beer.beer_name}' ${checkin.rating_score}/5.0 (avg ${rating}) ${venueMessage}| ${url}"
-  }
-
-  private def formatRating(rating: Double) = {
-    f"${rating}%1.1f"
   }
 }
