@@ -29,7 +29,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     if (pc.sceneAccessPassword.isDefined && pc.sceneAccessUserName.isDefined) {
       sceneAccessPoller.start()
     }
-    if (untappdEnabled) {
+    if (untappdEnabled && !pc.testMode) {
       untappdPoller.start()
     }
   }

@@ -25,7 +25,8 @@ case class ProgramConfiguration(
   instagramClientSecret: Option[String] = None,
   untappdClientId: Option[String] = None,
   untappdClientSecret: Option[String] = None,
-  untappdAccessToken: Option[String] = None
+  untappdAccessToken: Option[String] = None,
+  testMode: Boolean = false
 )
 
 object Program extends StrictLogging {
@@ -82,6 +83,7 @@ object Program extends StrictLogging {
       head("pokerbot", "1.0")
       opt[String]('n', "nick") optional() action { (n, c) => c.copy(nick = n) } text("nick-name to be used in irc")
       opt[String]('s', "server-hostname") optional() action { (s, c) => c.copy(serverHostname = s) } text("hostname of irc server")
+      opt[Boolean] ("test-mode") optional() maxOccurs(1) action { (t, c) => c.copy(testMode = t) } text("run in test mode")
       opt[String]("channels") maxOccurs(10) action {
         (ch, c) => {
           c.copy(channels = c.channels :+ (if (ch.startsWith("#")) ch else "#" + ch))
