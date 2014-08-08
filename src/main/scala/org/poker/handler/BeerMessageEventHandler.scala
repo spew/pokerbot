@@ -20,6 +20,7 @@ class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: Stri
       (new KnownUser(931534, Seq("spew", "fud"), "spew"))::
       (new KnownUser(1468127, Seq("cl0ck", "clock", "mark"), "markmcgrail"))::
       (new KnownUser(1314112, Seq("tbs", "tbs_", "tom"), "tbs_"))::
+      (new KnownUser(1490023, Seq("mike", "soul", "mylyons"), "mylons"))::
       (new KnownUser(1152859, Seq("brettkc", "brett", "bertkc"), "brettkc"))::
       Nil
   private val userNameMap = knownUsers.map(u => u.aliases.map(a => (a, u))).flatten.toMap
