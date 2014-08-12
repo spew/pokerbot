@@ -5,7 +5,7 @@ import org.poker.ProgramConfiguration
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.PircBotX
+import org.pircbotx.{Channel, PircBotX}
 import com.github.nscala_time.time.Imports._
 import org.joda.time.format.PeriodFormatter
 import org.poker.untapped._
@@ -21,31 +21,35 @@ class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: Stri
       (new KnownUser(1468127, Seq("cl0ck", "clock", "mark"), "markmcgrail"))::
       (new KnownUser(1314112, Seq("tbs", "tbs_", "tom"), "tbs_"))::
       (new KnownUser(1490023, Seq("mike", "soul", "mylyons"), "mylons"))::
-      (new KnownUser(1152859, Seq("brettkc", "brett", "bertkc"), "brettkc"))::
+      (new KnownUser(1152859, Seq("brettkc", "brett", "bertkc", "idletom"), "brettkc"))::
+      (new KnownUser(1152859, Seq("fourk", "james"), "Fourk"))::
       Nil
   private val userNameMap = knownUsers.map(u => u.aliases.map(a => (a, u))).flatten.toMap
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = firstMatch.group(1).trim.toLowerCase()
     if (query.isEmpty) {
-      event.getChannel.send.message("usage: !beer <query>")
+      sendTopCheckinToChannel(event.getChannel, untappedClient.recentFriendCheckins(), s"no recent checkins available")
     } else {
       userNameMap.get(query) match {
         case Some(user) => {
-          val checkinsResponse = untappedClient.recentCheckins(user.untappdUserName)
-          if (checkinsResponse.response.checkins.items.isEmpty) {
-            event.getChannel.send().message(s"no checkins available for '${query}'")
-          } else {
-            val checkin = checkinsResponse.response.checkins.items.head
-            val beer = untappedClient.beerInfo(checkin.beer.bid).response.beer
-            val message = UntappdMessageFormatter.formatCheckinMessage(checkin, beer)
-            event.getChannel.send.message(message)
-          }
+          sendTopCheckinToChannel(event.getChannel, untappedClient.recentCheckins(user.untappdUserName), s"no checkins available for '${query}'")
         }
         case None => {
           sendBeerInfoToChannel(event, query)
         }
       }
+    }
+  }
+
+  private def sendTopCheckinToChannel(channel: Channel, checkinsResponse: UntappedResponse[CheckinsResponse], emptyMessage: String) = {
+    if (checkinsResponse.response.checkins.items.isEmpty) {
+      channel.send().message(emptyMessage)
+    } else {
+      val checkIn = checkinsResponse.response.checkins.items.head
+      val beer = untappedClient.beerInfo(checkIn.beer.bid).response.beer
+      val message = UntappdMessageFormatter.formatCheckinMessage(checkIn, beer)
+      channel.send.message(message)
     }
   }
 
