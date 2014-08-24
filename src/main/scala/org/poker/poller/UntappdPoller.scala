@@ -47,7 +47,7 @@ class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) exten
         }
       }
     }
-    executor.scheduleAtFixedRate(runnable, 15, 60, TimeUnit.SECONDS)
+    executor.scheduleAtFixedRate(runnable, 15, 120, TimeUnit.SECONDS)
   }
 
   override def stop(): Unit = {
