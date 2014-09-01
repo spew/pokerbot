@@ -38,8 +38,10 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
           val knownPlayer = nameToPlayer.get(playerName).get
           if (knownPlayer == stevenPlayer) {
             val xmasDay = new DateTime(2014, 12, 25, 0, 0)
-            val relativeTimeMsg = RelativeTimeFormatter.relativeToDate(DateTime.now, xmasDay)
-            event.getChannel.send.message(s"${stevenPlayer.aliases.head} is retired until ${relativeTimeMsg}")
+            val now = DateTime.now
+            val relativeTimeMsg = RelativeTimeFormatter.relativeToDate(now, xmasDay)
+            val relativeDays = (now to xmasDay).toDuration.toStandardDays.getDays
+            event.getChannel.send.message(s"${stevenPlayer.aliases.head} is retired from dota until ${relativeTimeMsg} (${relativeDays} days)")
           } else {
             sendIndividualPlayerStats(event, knownPlayer.id)
           }
