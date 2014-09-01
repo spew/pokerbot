@@ -1,5 +1,7 @@
 package org.poker.handler
 
+import org.poker.util.RelativeTimeFormatter
+
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 import org.pircbotx.hooks.events.MessageEvent
@@ -16,6 +18,7 @@ import com.google.common.cache.{LoadingCache, CacheBuilder, CacheLoader}
 
 class DotaMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val startTime = DateTime.now
+  private val stevenPlayer = new KnownPlayer(28326143L, List("bunk", "steven"))
   val channelPlayers = getChannelPlayers()
   val steamClient = new SteamClient(configuration.steamApiKey.getOrElse(""))
   val idToPlayer = channelPlayers.map(kp => (kp.id, kp)).toMap
@@ -33,7 +36,13 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
       } else {
         if (nameToPlayer.contains(playerName)) {
           val knownPlayer = nameToPlayer.get(playerName).get
-          sendIndividualPlayerStats(event, knownPlayer.id)
+          if (knownPlayer == stevenPlayer) {
+            val xmasDay = new DateTime(2014, 12, 25, 0, 0)
+            val relativeTimeMsg = RelativeTimeFormatter.relativeToDate(DateTime.now, xmasDay)
+            event.getChannel.send.message(s"${stevenPlayer.aliases.head} is retired until ${relativeTimeMsg}")
+          } else {
+            sendIndividualPlayerStats(event, knownPlayer.id)
+          }
         } else {
           event.getChannel.send.message(s"unknown player: ${playerName}")
         }
@@ -157,7 +166,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
       new KnownPlayer(80342375L, List("bertkc", "brett", "bank", "gorby"))::
       new KnownPlayer(28308237L, List("mike"))::
       new KnownPlayer(10648475L, List("fud", "spew", "deathdealer69"))::
-      new KnownPlayer(28326143L, List("steven", "bunk"))::
+      stevenPlayer::
       new KnownPlayer(125412282L, List("mark", "clock", "cl0ck"))::
       new KnownPlayer(81397072L, List("clock2", "cl0ck2"))::
       new KnownPlayer(78932949L, List("muiy", "dank"))::
