@@ -12,6 +12,8 @@ import scala.collection.JavaConversions._
 class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) extends Poller with LazyLogging {
   val untappedClient = new UntappedClient(configuration.untappdClientId.get, configuration.untappdClientSecret.get, configuration.untappdAccessToken.get)
   val executor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory())
+  val ignoredUsers = Set("Rayvl2001", "milnak")
+
   override def start(): Unit = {
     var lastMaxId: Option[Long] = None
     val runnable = new Runnable {
@@ -21,7 +23,7 @@ class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) exten
           val checkins = response.response.checkins.items
           lastMaxId match {
             case Some(maxId) => {
-              val filteredCheckins = checkins.filter(k => k.checkin_id > maxId)
+              val filteredCheckins = checkins.filter(k => k.checkin_id > maxId && !ignoredUsers.contains(k.user.user_name))
               if (!filteredCheckins.isEmpty) {
                 val newMax = filteredCheckins.map(c => c.checkin_id).max
                 lastMaxId = Some(newMax)
