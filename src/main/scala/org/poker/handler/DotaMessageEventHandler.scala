@@ -18,7 +18,7 @@ import com.google.common.cache.{LoadingCache, CacheBuilder, CacheLoader}
 
 class DotaMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val startTime = DateTime.now
-  private val stevenPlayer = new KnownPlayer(28326143L, List("bunk", "steven"))
+  private val stevenPlayer = new KnownPlayer(28326143L, List("bunk", "steven"), true)
   val channelPlayers = getChannelPlayers()
   val steamClient = new SteamClient(configuration.steamApiKey.getOrElse(""))
   val idToPlayer = channelPlayers.map(kp => (kp.id, kp)).toMap
@@ -56,7 +56,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
 
   private def sendLatestMatch(event: MessageEvent[PircBotX]): Unit = {
     val m = findLatestMatch
-    val knownPlayers = m.players.filter(p => p.account_id.isDefined && idToPlayer.contains(p.account_id.get))
+    val knownPlayers = m.players.filter(p => p.account_id.isDefined && idToPlayer.contains(p.account_id.get) && idToPlayer.get(p.account_id.get).get.enabledForPing)
     val win = (knownPlayers.head.player_slot < 128) == m.radiant_win
     val winMessage = if (win) "WIN" else "LOSS"
     val playerNames = knownPlayers.map(kp => this.getPlayerName(kp))
@@ -164,21 +164,21 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   }
 
   private def getChannelPlayers(): List[KnownPlayer] = {
-    new KnownPlayer(38926297L, List("whitey", "pete"))::
-      new KnownPlayer(80342375L, List("bertkc", "brett", "bank", "gorby"))::
-      new KnownPlayer(28308237L, List("mike"))::
-      new KnownPlayer(10648475L, List("fud", "spew", "deathdealer69"))::
+    new KnownPlayer(38926297L, List("whitey", "pete"), false)::
+      new KnownPlayer(80342375L, List("bertkc", "brett", "bank", "gorby"), true)::
+      new KnownPlayer(28308237L, List("mike"), true)::
+      new KnownPlayer(10648475L, List("fud", "spew", "deathdealer69"), true)::
       stevenPlayer::
-      new KnownPlayer(125412282L, List("mark", "clock", "cl0ck"))::
-      new KnownPlayer(81397072L, List("clock2", "cl0ck2"))::
-      new KnownPlayer(78932949L, List("muiy", "dank"))::
-      new KnownPlayer(34117856L, List("viju", "vijal"))::
-      new KnownPlayer(29508928L, List("sysm"))::
-      new KnownPlayer(32387791L, List("ctide", "chris", "tide"))::
-      new KnownPlayer(49941053L, List("abduhl", "jake"))::
-      new KnownPlayer(32385879L, List("tbs", "tom"))::
-      new KnownPlayer(40737752L, List("fourk"))::
-      new KnownPlayer(12855832L, List("hed", "handsomehed", "xhedx"))::
+      new KnownPlayer(125412282L, List("mark", "clock", "cl0ck"), true)::
+      new KnownPlayer(81397072L, List("clock2", "cl0ck2"), true)::
+      new KnownPlayer(78932949L, List("muiy", "dank"), true)::
+      new KnownPlayer(34117856L, List("viju", "vijal"), true)::
+      new KnownPlayer(29508928L, List("sysm"), true)::
+      new KnownPlayer(32387791L, List("ctide", "chris", "tide"), true)::
+      new KnownPlayer(49941053L, List("abduhl", "jake"), true)::
+      new KnownPlayer(32385879L, List("tbs", "tom"), true)::
+      new KnownPlayer(40737752L, List("fourk"), true)::
+      new KnownPlayer(12855832L, List("hed", "handsomehed", "xhedx"), true)::
       Nil
   }
 }
