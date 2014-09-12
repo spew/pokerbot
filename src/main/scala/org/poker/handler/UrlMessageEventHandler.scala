@@ -1,5 +1,6 @@
 package org.poker.handler
 
+import org.poker.util.SimpleRetrier
 import twitter4j.conf.ConfigurationBuilder
 import twitter4j.Twitter
 import twitter4j.TwitterFactory
@@ -45,7 +46,7 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
       } case instagramRegex(mediaId) => {
         sendInstagram(event, url)
       } case _ => {
-        val document = Jsoup.connect(url).get()
+        val document = SimpleRetrier.retry(3)(Jsoup.connect(url).get())
         val title = document.title
         event.getChannel.send.message(s"$title")
       }

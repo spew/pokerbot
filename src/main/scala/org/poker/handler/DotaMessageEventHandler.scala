@@ -30,7 +30,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     if (configuration.steamApiKey.isDefined) {
-      val playerName = firstMatch.group(4)
+      val playerName = firstMatch.group(4).toLowerCase
       if (playerName.isEmpty) {
         sendLatestMatch(event)
       } else {

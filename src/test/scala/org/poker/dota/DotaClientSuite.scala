@@ -9,8 +9,8 @@ class DotaClientSuite extends fixture.FunSuite {
   case class FixtureParam(client: SteamClient)
 
   private val channelPlayers = {
-    new KnownPlayer(38926297L, List("whitey", "pete"))::
-      new KnownPlayer(80342375L, List("bertkc", "brett", "bank", "gorby"))::
+    new KnownPlayer(38926297L, List("whitey", "pete"), false)::
+      new KnownPlayer(80342375L, List("bertkc", "brett", "bank", "gorby"), true)::
       new KnownPlayer(28308237L, List("mike"))::
       new KnownPlayer(10648475L, List("fud", "spew", "deathdealer69"))::
       new KnownPlayer(28326143L, List("steven", "bunk"))::
