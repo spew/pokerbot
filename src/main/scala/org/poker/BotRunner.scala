@@ -6,7 +6,7 @@ import org.poker.handler._
 import org.pircbotx.cap.TLSCapHandler
 import org.pircbotx.hooks.Listener
 import org.pircbotx.{UtilSSLSocketFactory, Configuration, PircBotX}
-import org.poker.poller.{UntappdPoller, SceneAccessPoller, CoinMarketCaps}
+import org.poker.poller.{DotaPoller, UntappdPoller, SceneAccessPoller, CoinMarketCaps}
 
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
@@ -17,6 +17,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
   val ircBot = new PircBotX(ircBotConfig)
   lazy val sceneAccessPoller = new SceneAccessPoller(pc, ircBot)
   lazy val untappdPoller = new UntappdPoller(pc, ircBot)
+  lazy val dotaPoller = new DotaPoller(pc, ircBot)
 
   def run(): Unit = {
     startPollers()
@@ -32,6 +33,13 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     if (untappdEnabled && !pc.testMode) {
       untappdPoller.start()
     }
+    if (dotaEnabled) {
+      dotaPoller.start()
+    }
+  }
+
+  lazy val dotaEnabled =  {
+    pc.steamApiKey.isDefined
   }
 
   lazy val untappdEnabled = {

@@ -8,7 +8,7 @@ import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.PircBotX
 import com.github.nscala_time.time.Imports._
 import org.poker.ProgramConfiguration
-import org.poker.dota.KnownPlayer
+import org.poker.dota.{MatchFormatter, LatestMatchFinder, KnownPlayers, KnownPlayer}
 import org.jsoup.Jsoup
 import org.poker.steam.SteamClient
 import org.poker.steam.dota.{Player, MatchDetails}
@@ -18,14 +18,12 @@ import com.google.common.cache.{LoadingCache, CacheBuilder, CacheLoader}
 
 class DotaMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val startTime = DateTime.now
-  private val stevenPlayer = new KnownPlayer(28326143L, List("bunk", "steven"), true)
-  val channelPlayers = getChannelPlayers()
+  val channelPlayers = KnownPlayers.all
   val steamClient = new SteamClient(configuration.steamApiKey.getOrElse(""))
   val idToPlayer = channelPlayers.map(kp => (kp.id, kp)).toMap
   val nameToPlayer = channelPlayers.map(kp => (kp.aliases.map(a => (a, kp)))).flatten.toMap
-
+  private val latestMatchFinder = new LatestMatchFinder(steamClient)
   override val helpMessage: Option[String] = Option("!dota <player>: send to channel stats about <player>, if no <player> then send to channel the last game played")
-
   override val messageMatchRegex: Regex = "^[!.](?i)((dota)|(dotabuff)) ?(?<player>.*)".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
@@ -36,12 +34,12 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
       } else {
         if (nameToPlayer.contains(playerName)) {
           val knownPlayer = nameToPlayer.get(playerName).get
-          if (knownPlayer == stevenPlayer) {
+          if (knownPlayer == KnownPlayers.steven) {
             val xmasDay = new DateTime(2014, 12, 25, 0, 0)
             val now = DateTime.now
             val relativeTimeMsg = RelativeTimeFormatter.relativeToDate(now, xmasDay)
             val relativeDays = (now to xmasDay).toDuration.toStandardDays.getDays
-            event.getChannel.send.message(s"${stevenPlayer.aliases.head} is retired from dota until ${relativeTimeMsg} (${relativeDays} days)")
+            event.getChannel.send.message(s"${KnownPlayers.steven.aliases.head} is retired from dota until ${relativeTimeMsg} (${relativeDays} days)")
           } else {
             sendIndividualPlayerStats(event, knownPlayer.id)
           }
@@ -55,50 +53,9 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   }
 
   private def sendLatestMatch(event: MessageEvent[PircBotX]): Unit = {
-    val m = findLatestMatch
-    val knownPlayers = m.players.filter(p => p.account_id.isDefined && idToPlayer.contains(p.account_id.get))
-    val win = (knownPlayers.head.player_slot < 128) == m.radiant_win
-    val winMessage = if (win) "WIN" else "LOSS"
-    val playerNames = knownPlayers.map(kp => this.getPlayerName(kp))
-    val relativeDate = this.getFormattedRelativeFinishTime(m)
-    var message = s"http://dotabuff.com/matches/${m.match_id} | ${relativeDate} | ${winMessage} for"
-    if (playerNames.size > 1) {
-      val andMessage = if (playerNames.size > 2) ", and " else " and "
-      message += " " + playerNames.dropRight(1).mkString(", ") + andMessage + playerNames.last
-    } else {
-      message += " " + playerNames.head
-    }
+    val m = latestMatchFinder.findLatestMatch()
+    val message = MatchFormatter.format(m)
     event.getChannel.send.message(message)
-  }
-
-  val playerNameLoader = new CacheLoader[Long, String] {
-    def load(playerId: Long) = {
-      fetchPlayerName(playerId)
-    }
-  }
-  val idToPlayerNameExpiring = CacheBuilder.newBuilder()
-    .maximumSize(10000)
-    .expireAfterWrite(30, TimeUnit.MINUTES)
-    .build(playerNameLoader)
-    .asInstanceOf[LoadingCache[Long, String]]
-
-  private def getPlayerName(p: Player): String = {
-    val playerId = new java.lang.Long(p.account_id.get)
-    idToPlayerNameExpiring.get(playerId)
-  }
-
-  private def fetchPlayerName(accountId: Long) = {
-    val url = s"http://dotabuff.com/players/${accountId}"
-    val document = Jsoup.connect(url).get()
-    val nameElement = document.select("div.content-header-title h1").first
-    nameElement.textNodes().get(0).text()
-  }
-
-  private def findLatestMatch() = {
-    val result = channelPlayers.filter(p => p.enabledForPing).map(p => steamClient.getLatestDotaMatches(p.id, 1)).flatten
-    val sorted = result.sortBy(m => m.start_time).reverse
-    val latestDetails = sorted.take(Math.min(3, sorted.size)).map(m => steamClient.getDotaMatchDetails(m.match_id))
-    latestDetails.sortBy(m => m.start_time + m.duration).last
   }
 
   private def sendIndividualPlayerStats(event: MessageEvent[PircBotX], id: Long) {
@@ -161,24 +118,5 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
         true
       }
     }
-  }
-
-  private def getChannelPlayers(): List[KnownPlayer] = {
-    new KnownPlayer(38926297L, List("whitey", "pete"), false)::
-      new KnownPlayer(80342375L, List("bertkc", "brett", "bank", "gorby"), true)::
-      new KnownPlayer(28308237L, List("mike"), true)::
-      new KnownPlayer(10648475L, List("fud", "spew", "deathdealer69"), true)::
-      stevenPlayer::
-      new KnownPlayer(125412282L, List("mark", "clock", "cl0ck"), true)::
-      new KnownPlayer(81397072L, List("clock2", "cl0ck2"), true)::
-      new KnownPlayer(78932949L, List("muiy", "dank"), true)::
-      new KnownPlayer(34117856L, List("viju", "vijal"), true)::
-      new KnownPlayer(29508928L, List("sysm"), true)::
-      new KnownPlayer(32387791L, List("ctide", "chris", "tide"), true)::
-      new KnownPlayer(49941053L, List("abduhl", "jake"), true)::
-      new KnownPlayer(32385879L, List("tbs", "tom"), true)::
-      new KnownPlayer(40737752L, List("fourk"), true)::
-      new KnownPlayer(12855832L, List("hed", "handsomehed", "xhedx"), true)::
-      Nil
   }
 }

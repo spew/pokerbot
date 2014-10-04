@@ -1,6 +1,6 @@
 package org.poker.poller
 
-import java.util.concurrent.{TimeUnit, Executors}
+import java.util.concurrent.{Future, TimeUnit, Executors}
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import org.pircbotx.PircBotX
@@ -13,6 +13,7 @@ class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) exten
   val untappedClient = new UntappedClient(configuration.untappdClientId.get, configuration.untappdClientSecret.get, configuration.untappdAccessToken.get)
   val executor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory())
   val ignoredUsers = Set("Rayvl2001", "milnak")
+  var future: Option[Future[_]] = None
 
   override def start(): Unit = {
     var lastMaxId: Option[Long] = None
@@ -49,10 +50,19 @@ class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) exten
         }
       }
     }
-    executor.scheduleAtFixedRate(runnable, 15, 120, TimeUnit.SECONDS)
+    val f = executor.scheduleAtFixedRate(runnable, 15, 120, TimeUnit.SECONDS)
+    future = Some(f)
   }
 
   override def stop(): Unit = {
+    future match {
+      case Some(f) => {
+        f.cancel(true)
+      }
+      case None => {
 
+      }
+    }
+    executor.shutdownNow()
   }
 }
