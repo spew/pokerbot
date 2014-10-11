@@ -35,7 +35,7 @@ class YahooQueryResultsChannel(val units: YahooQueryUnits, val item: YahooQueryI
 
 }
 
-class YahooQueryUnits(val distance: String, val pressure: String, val speed: String, val temperature: String) {
+class YahooQueryUnits(val pressure: String, val speed: String, val temperature: String) {
 
 }
 
