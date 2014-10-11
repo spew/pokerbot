@@ -46,6 +46,10 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     pc.untappdClientId.isDefined && pc.untappdClientSecret.isDefined && pc.untappdAccessToken.isDefined
   }
 
+  lazy val weatherEnabled = {
+    pc.yahooConsumerKey.isDefined && pc.yahooConsumerSecret.isDefined
+  }
+
   def getListener(): Listener[PircBotX] = {
     val listener = new BotListener()
     listener.addHandler(new UptimeMessageEventHandler)
@@ -64,6 +68,9 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     listener.addHandler(new WorldCupMessageEventHandler)
     if (untappdEnabled) {
       listener.addHandler(new BeerMessageEventHandler(pc.untappdClientId.get, pc.untappdClientSecret.get, pc.untappdAccessToken.get))
+    }
+    if (weatherEnabled) {
+      listener.addHandler(new WeatherMessageHandler(pc))
     }
     listener
   }
