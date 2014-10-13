@@ -15,7 +15,6 @@ package object KnownPlayers {
     new KnownPlayer(29508928L, List("sysm"), true)::
     new KnownPlayer(32387791L, List("ctide", "chris", "tide"), true)::
     new KnownPlayer(49941053L, List("abduhl", "jake"), true)::
-    new KnownPlayer(32385879L, List("tbs", "tom"), true)::
     new KnownPlayer(40737752L, List("fourk"), true)::
     new KnownPlayer(12855832L, List("hed", "handsomehed", "xhedx"), true)::
     new KnownPlayer(2462417L, List("shaftian", "clay"), true)::
