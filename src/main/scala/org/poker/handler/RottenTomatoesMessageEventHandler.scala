@@ -24,7 +24,7 @@ class RottenTomatoesMessageEventHandler(configuration: ProgramConfiguration) ext
     if (configuration.rottenTomatoesApiKey.isDefined) {
       val movies = new java.util.ArrayList[Movie]()
       val urlEncodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8.name())
-      val total = jTomato.searchMovie(urlEncodedQuery, movies, 1)
+      val total = jTomato.searchMovie(query, movies, 1)
       if (total == 0) {
         event.getChannel.send.message(s"no titles found for '${query}'")
       } else {
