@@ -17,7 +17,7 @@ package object KnownPlayers {
     new KnownPlayer(49941053L, List("abduhl", "jake"), true)::
     new KnownPlayer(40737752L, List("fourk"), true)::
     new KnownPlayer(12855832L, List("hed", "handsomehed", "xhedx"), true)::
-    new KnownPlayer(2462417L, List("shaftian", "clay"), true)::
+    new KnownPlayer(2462417L, List("shaftian", "clay"), false)::
     new KnownPlayer(16296712L, List("jones"), true)::
     Nil
 }

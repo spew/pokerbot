@@ -27,6 +27,7 @@ libraryDependencies ++= Seq(
   "ch.qos.logback" % "logback-classic" % "1.1.2",
   "com.github.scopt" %% "scopt" % "3.2.0",
   "com.github.nscala-time" %% "nscala-time" % "1.2.0",
+  "org.hibernate" % "hibernate-core" % "4.3.6.Final",
   "com.stackmob" %% "newman" % "1.3.5",
   "org.pircbotx" % "pircbotx" % "2.0.1",
   "org.jsoup" % "jsoup" % "1.7.3",
