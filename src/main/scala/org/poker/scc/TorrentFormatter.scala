@@ -8,7 +8,10 @@ class TorrentFormatter {
   def format(torrent: SceneTorrent, sceneAccessClient: SceneAccessClient): String = {
     val url = sceneAccessClient.url + "/" + torrent.url
     val period = (torrent.dateAdded to DateTime.now).toPeriod
-    val prettyTime = new PrettyTime(new java.util.Date(period.toStandardDuration.getStandardSeconds * 1000))
+    val duration = period.toDurationFrom(new DateTime())
+    val seconds = duration.toStandardSeconds.getSeconds.toLong
+    val prettyTime = new PrettyTime(new java.util.Date(seconds * 1000))
+    //val prettyTime = new PrettyTime(new java.util.Date(period.toStandardDuration.getStandardSeconds * 1000))
     val formattedDate = prettyTime.format(new java.util.Date(0))
     s"${torrent.title} | ${formattedDate} | 720p | ${url}"
   }
