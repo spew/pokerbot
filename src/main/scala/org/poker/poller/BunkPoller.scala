@@ -52,7 +52,7 @@ class BunkPoller(configuration: ProgramConfiguration, ircBot: PircBotX) extends 
   }
 
   override def start {
-    val f = executor.scheduleAtFixedRate(runnable, 1, 20, TimeUnit.SECONDS)
+    val f = executor.scheduleAtFixedRate(runnable, 1, 60, TimeUnit.SECONDS)
   }
 
   override def stop {
