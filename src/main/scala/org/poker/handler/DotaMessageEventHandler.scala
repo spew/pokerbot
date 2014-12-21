@@ -35,11 +35,16 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
         if (nameToPlayer.contains(playerName)) {
           val knownPlayer = nameToPlayer.get(playerName).get
           if (knownPlayer == KnownPlayers.steven) {
-            val xmasDay = new DateTime(2014, 12, 25, 0, 0)
             val now = DateTime.now
-            val relativeTimeMsg = RelativeTimeFormatter.relativeToDate(now, xmasDay)
-            val relativeDays = (now to xmasDay).toDuration.toStandardDays.getDays
-            event.getChannel.send.message(s"${KnownPlayers.steven.aliases.head} is retired from dota until ${relativeTimeMsg} (${relativeDays} days)")
+            val xmasDay = new DateTime(2014, 12, 25, 0, 0)
+            if (now.isBefore(xmasDay)) {
+              val relativeTimeMsg = RelativeTimeFormatter.relativeToDate(now, xmasDay)
+              val relativeDays = (now to xmasDay).toDuration.toStandardDays.getDays
+              event.getChannel.send.message(s"${KnownPlayers.steven.aliases.head} is retired from dota until ${relativeTimeMsg}")
+            } else {
+              sendIndividualPlayerStats(event, knownPlayer.id)
+              // TODO: print out how far out of violation he is here?
+            }
           } else {
             sendIndividualPlayerStats(event, knownPlayer.id)
           }
