@@ -12,7 +12,7 @@ import com.github.nscala_time.time.Imports._
 
 class BunkPoller(configuration: ProgramConfiguration, ircBot: PircBotX) extends Poller with LazyLogging {
   val executor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory())
-  val xmasDay = new DateTime(2014, 12, 25, 0, 0)
+  val xmasDay = new DateTime(2014, 12, 25, 8, 0)
   private var lastDate: Option[DateTime] = None;
   private val runnable = new Runnable {
     override def run(): Unit = {

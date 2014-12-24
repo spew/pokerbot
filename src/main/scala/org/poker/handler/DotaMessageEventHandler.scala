@@ -89,7 +89,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   }
 
   private def getFormattedRelativeFinishTime(m: MatchDetails): String = {
-    val date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeZone.UTC).plusSeconds(m.start_time + m.duration)
+    val date = new DateTime(1970, 1, 1, 8, 0, 0, DateTimeZone.UTC).plusSeconds(m.start_time + m.duration)
     formatRelativeDate(date)
   }
 
