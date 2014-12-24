@@ -36,7 +36,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
           val knownPlayer = nameToPlayer.get(playerName).get
           if (knownPlayer == KnownPlayers.steven) {
             val now = DateTime.now
-            val xmasDay = new DateTime(2014, 12, 25, 0, 0)
+            val xmasDay = new DateTime(2014, 12, 25, 8, 0)
             if (now.isBefore(xmasDay)) {
               val relativeTimeMsg = RelativeTimeFormatter.relativeToDate(now, xmasDay)
               val relativeDays = (now to xmasDay).toDuration.toStandardDays.getDays
@@ -89,7 +89,7 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   }
 
   private def getFormattedRelativeFinishTime(m: MatchDetails): String = {
-    val date = new DateTime(1970, 1, 1, 8, 0, 0, DateTimeZone.UTC).plusSeconds(m.start_time + m.duration)
+    val date = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeZone.UTC).plusSeconds(m.start_time + m.duration)
     formatRelativeDate(date)
   }
 
