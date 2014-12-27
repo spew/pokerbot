@@ -36,7 +36,6 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     }
     if (dotaEnabled) {
       dotaPoller.start()
-      bunkPoller.start()
     }
   }
 
