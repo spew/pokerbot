@@ -34,10 +34,9 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
     val formatter = NumberFormat.getCurrencyInstance
     // have to create the tickers each time because they don't actually poll
     val averageTicker = createTicker("com.xeiam.xchange.bitcoinaverage.BitcoinAverageExchange")
-    val coinbaseTicker = createTicker("com.xeiam.xchange.coinbase.CoinbaseExchange")
-    val bitstampTicker = createTicker("com.xeiam.xchange.bitstamp.BitstampExchange")
-    val coinbaseLast = formatter.format(coinbaseTicker.getLast)
-    val bitstampLast = formatter.format(bitstampTicker.getLast)
+    val coinbaseLast = getLast("com.xeiam.xchange.coinbase.CoinbaseExchange")
+    val bitstampLast = getLast("com.xeiam.xchange.bitstamp.BitstampExchange")
+    val averageLast = formatter.format(averageTicker.getLast.doubleValue())
     val average = formatter.format(averageTicker.getLast.doubleValue())
     val volume = (new BigDecimal(averageTicker.getVolume) with HumanReadable).toStringHumanReadable()
     val marketCap = coinMarketCaps.getMarketCap("bitcoin")
@@ -47,11 +46,21 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
       message += s" | cap: ${cap}"
     }
     if (amount.isDefined) {
-      val amountBtc = amount.get * coinbaseTicker.getLast
+      val amountBtc = amount.get * averageTicker.getLast
       val amountMessage = formatter.format(amountBtc)
       message += s" | ${amount.get} BTC = ${amountMessage}"
     }
     event.getChannel.send.message(message)
+  }
+
+  private def getLast(className: String): String = {
+    val formatter = NumberFormat.getCurrencyInstance
+    try {
+      val ticker = createTicker(className)
+      formatter.format(ticker.getLast)
+    } catch {
+      case _: Throwable => "n/a"
+    }
   }
 
   private def createTicker(className: String): Ticker = {
