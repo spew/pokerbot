@@ -50,7 +50,7 @@ class SceneAccessPoller(configuration: ProgramConfiguration, ircBot: PircBotX) e
     val BoardwalkEmpire = new SceneShow("Boardwalk Empire", DateTimeConstants.MONDAY, 2)
     val Homeland = new SceneShow("Homeland", DateTimeConstants.MONDAY, 2)
     // TODO add an enabled bit?
-    Seq(RealTime, RayDonovan, BoardwalkEmpire, Homeland)
+    Seq(RealTime)
   }
 }
 
@@ -148,10 +148,10 @@ class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: Scene
   private def getDuration(dateAdded: DateTime): FiniteDuration = {
     val now = new DateTime(DateTimeZone.UTC)
     if (dateAdded.isBefore(now)) {
-      val duration = new Period(dateAdded, now).toStandardDuration
+      val duration = new Period(dateAdded, now).toDurationTo(now)
       duration.toStandardSeconds.getSeconds.seconds
     } else {
-      val duration = new Period(now, dateAdded).toStandardDuration
+      val duration = new Period(now, dateAdded).toDurationFrom(now)
       duration.toStandardSeconds.getSeconds.seconds
     }
   }
