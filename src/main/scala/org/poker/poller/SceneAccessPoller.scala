@@ -49,8 +49,9 @@ class SceneAccessPoller(configuration: ProgramConfiguration, ircBot: PircBotX) e
     val RayDonovan = new SceneShow("Ray Donovan", DateTimeConstants.SUNDAY, 3)
     val BoardwalkEmpire = new SceneShow("Boardwalk Empire", DateTimeConstants.MONDAY, 2)
     val Homeland = new SceneShow("Homeland", DateTimeConstants.MONDAY, 2)
+    val Shameless = new SceneShow("Shameless", DateTimeConstants.MONDAY, 2)
     // TODO add an enabled bit?
-    Seq(RealTime)
+    Seq(RealTime, Shameless)
   }
 }
 
