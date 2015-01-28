@@ -43,7 +43,7 @@ object MatchFormatter {
 
   val idToPlayerNameExpiring = CacheBuilder.newBuilder()
     .maximumSize(10000)
-    .expireAfterWrite(30, TimeUnit.MINUTES)
+    .expireAfterWrite(120, TimeUnit.MINUTES)
     .build(playerNameLoader)
     .asInstanceOf[LoadingCache[Long, String]]
 
