@@ -46,7 +46,7 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
       } case instagramRegex(mediaId) => {
         sendInstagram(event, url)
       } case _ => {
-        val document = SimpleRetrier.retry(3)(Jsoup.connect(url).get())
+        val document = SimpleRetrier.retry(3)(Jsoup.connect(url).userAgent("Mozilla").get())
         val title = document.title
         event.getChannel.send.message(s"$title")
       }

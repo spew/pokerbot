@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
   "org.hibernate" % "hibernate-core" % "4.3.6.Final",
   "com.stackmob" %% "newman" % "1.3.5",
   "org.pircbotx" % "pircbotx" % "2.0.1",
-  "org.jsoup" % "jsoup" % "1.7.3",
+  "org.jsoup" % "jsoup" % "1.8.1",
   "com.google.apis" % "google-api-services-customsearch" % "v1-rev33-1.17.0-rc",
   "com.google.apis" % "google-api-services-youtube" % "v3-rev107-1.18.0-rc",
   "com.google.http-client" % "google-http-client-jackson" % "1.15.0-rc",

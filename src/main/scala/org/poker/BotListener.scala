@@ -20,7 +20,14 @@ class BotListener() extends ListenerAdapter[PircBotX] with LazyLogging {
         try {
           h.onMessage(event, m.get)
         } catch {
-          case t: Throwable => logger.warn("Error executing org.poker.handler", t)
+          case e: org.jsoup.HttpStatusException => {
+            logger.warn("Error executing org.poker.handler", e)
+            event.getChannel.send.message(e.getMessage() + s": ${e.getStatusCode}")
+          }
+          case t: Throwable => {
+            logger.warn("Error executing org.poker.handler", t)
+            event.getChannel.send.message(t.getMessage)
+          }
         }
       }
     }
