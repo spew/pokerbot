@@ -9,7 +9,7 @@ import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.PircBotX
 import scala.util.matching.Regex.Match
 import org.poker.ProgramConfiguration
-import org.jsoup.Jsoup
+import org.jsoup.{UnsupportedMimeTypeException, Jsoup}
 import com.google.api.services.youtube.YouTube
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson.JacksonFactory
@@ -46,10 +46,19 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
       } case instagramRegex(mediaId) => {
         sendInstagram(event, url)
       } case _ => {
-        val document = SimpleRetrier.retry(3)(Jsoup.connect(url).userAgent("Mozilla").get())
+        val document = SimpleRetrier.retry(3)(getDocument(url))
         val title = document.title
         event.getChannel.send.message(s"$title")
       }
+    }
+  }
+
+  private def getDocument(url: String) = {
+    try {
+      Jsoup.connect(url).userAgent("Mozilla").get()
+    } catch {
+      case e: UnsupportedMimeTypeException => throw new ExpectedFailureException()
+
     }
   }
 

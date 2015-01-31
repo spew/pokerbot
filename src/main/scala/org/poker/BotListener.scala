@@ -1,7 +1,7 @@
 package org.poker
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
-import org.poker.handler.MessageEventHandler
+import org.poker.handler.{ExpectedFailureException, MessageEventHandler}
 import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.hooks.ListenerAdapter
 import org.pircbotx.PircBotX
@@ -20,6 +20,9 @@ class BotListener() extends ListenerAdapter[PircBotX] with LazyLogging {
         try {
           h.onMessage(event, m.get)
         } catch {
+          case e: ExpectedFailureException => {
+
+          }
           case e: org.jsoup.HttpStatusException => {
             logger.warn("Error executing org.poker.handler", e)
             event.getChannel.send.message(e.getMessage() + s": ${e.getStatusCode}")
