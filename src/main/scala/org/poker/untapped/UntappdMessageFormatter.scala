@@ -14,7 +14,11 @@ object UntappdMessageFormatter {
     val checkinTime = new DateTime(dateFormatter.parse(checkin.created_at))
     val relativeTime = RelativeTimeFormatter.relativeToNow(checkinTime)
     val checkinMessage = if (checkin.checkin_comment == "") "" else s"said '${checkin.checkin_comment}' and "
-    s"${checkin.user.user_name} ${checkinMessage}rated '${checkin.beer.beer_name} (${beer.brewery.brewery_name})' ${checkin.rating_score}/5.0 (avg ${rating}) ${venueMessage}${relativeTime}: ${url}"
+    if (checkin.rating_score > 0) {
+      s"${checkin.user.user_name} ${checkinMessage}rated '${checkin.beer.beer_name} (${beer.brewery.brewery_name})' ${checkin.rating_score}/5.0 (avg ${rating}) ${venueMessage}${relativeTime}: ${url}"
+    } else {
+      s"${checkin.user.user_name} ${checkinMessage}declined to rate '${checkin.beer.beer_name} (${beer.brewery.brewery_name})' (avg ${rating}) ${venueMessage}${relativeTime}: ${url}"
+    }
   }
 
   private def formatRating(rating: Double) = {
