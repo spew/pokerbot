@@ -9,7 +9,7 @@ import java.net.{URLEncoder}
 import org.scribe.builder.api.{DefaultApi20, DefaultApi10a, Api}
 
 class UntappedClient(clientId: String, clientSecret: String, accessToken: String) extends JsonClient with LazyLogging {
-  val baseUrl = s"http://api.untappd.com/v4"
+  val baseUrl = s"https://api.untappd.com/v4"
   val headers = Nil
 
   def beerSearch(query: String, ordering: SearchOrdering = Alphabetical()) = {
