@@ -67,6 +67,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     listener.addHandler(new CryptoCoinMessageEventHandler(pc, coinMarketCaps))
     listener.addHandler(new InfoMessageEventHandler)
     listener.addHandler(new WorldCupMessageEventHandler)
+    listener.addHandler(new ImdbMessageEventHandler)
     if (untappdEnabled) {
       listener.addHandler(new BeerMessageEventHandler(pc.untappdClientId.get, pc.untappdClientSecret.get, pc.untappdAccessToken.get))
     }
