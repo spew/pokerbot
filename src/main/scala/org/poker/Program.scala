@@ -93,7 +93,7 @@ object Program extends StrictLogging {
           c.copy(channels = c.channels :+ (if (ch.startsWith("#")) ch else "#" + ch))
         }
       } text("channels to join")
-      help("help") text("prints usage")
+      help("help") text("print usage")
     }
     parser
   }

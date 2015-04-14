@@ -2,7 +2,7 @@ package org.poker.handler
 
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import org.poker.util.HumanReadable
+import org.poker.util.{HumanReadableByteFormatter}
 import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.PircBotX
 import com.xeiam.xchange.Exchange
@@ -55,11 +55,11 @@ class CryptoCoinMessageEventHandler(configuration: ProgramConfiguration, coinMar
     val amount = 1000
     val usdValue = this.getUsdValue(coin, amount)
     val formattedValueBtc = "%1.8f".format(coin.price_btc)
-    val volume = new BigDecimal((coin.volume_btc / coin.price_btc).bigDecimal) with HumanReadable
+    val volume = HumanReadableByteFormatter.format((coin.volume_btc / coin.price_btc).bigDecimal)
     val marketCap = coinMarketCaps.getMarketCap(coin.name)
-    var message = s"${coin.id.toUpperCase()}/BTC: ${formattedValueBtc} | vol: ${volume.toStringHumanReadable()}"
+    var message = s"${coin.id.toUpperCase()}/BTC: ${formattedValueBtc} | vol: ${volume}"
     if (marketCap.isDefined) {
-      val prettyCap = (new BigDecimal(marketCap.get.bigDecimal) with HumanReadable).toStringHumanReadable()
+      val prettyCap = HumanReadableByteFormatter.format(marketCap.get.bigDecimal)
       message += s" | cap: ${prettyCap}"
     }
     val formatter = NumberFormat.getCurrencyInstance

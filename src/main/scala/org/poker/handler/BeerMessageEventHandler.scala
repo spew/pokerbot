@@ -54,7 +54,7 @@ class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: Stri
   }
 
   private def sendBeerInfoToChannel(event: MessageEvent[PircBotX], query: String) = {
-    val searchResponse = untappedClient.beerSearch(query, CheckinCount())
+    val searchResponse = untappedClient.beerSearch(query, CheckinCount)
     if (searchResponse.response.beers.items.isEmpty) {
       event.getChannel.send.message(s"no beers found for '${query}'")
     } else {

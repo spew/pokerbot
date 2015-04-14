@@ -12,7 +12,7 @@ class UntappedClient(clientId: String, clientSecret: String, accessToken: String
   val baseUrl = s"https://api.untappd.com/v4"
   val headers = Nil
 
-  def beerSearch(query: String, ordering: SearchOrdering = Alphabetical()) = {
+  def beerSearch(query: String, ordering: SearchOrdering = Alphabetical) = {
     val encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8.name())
     val relativeUrl = getRelativeUrl("search/beer", s"q=${encodedQuery}", s"sort=${ordering.strategy}")
     val json = this.getJson(relativeUrl)
@@ -45,5 +45,5 @@ class UntappedClient(clientId: String, clientSecret: String, accessToken: String
 }
 
 abstract sealed class SearchOrdering(val strategy: String)
-case class Alphabetical extends SearchOrdering("name")
-case class CheckinCount extends SearchOrdering("count")
+case object Alphabetical extends SearchOrdering("name")
+case object CheckinCount extends SearchOrdering("count")

@@ -3,7 +3,7 @@ package org.poker.handler
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
 import org.poker.ProgramConfiguration
-import org.poker.util.HumanReadable
+import org.poker.util.{HumanReadableByteFormatter}
 import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.PircBotX
 import com.xeiam.xchange.Exchange
@@ -38,11 +38,11 @@ class BitcoinMessageEventHandler(configuration: ProgramConfiguration, coinMarket
     val bitstampLast = getLast("com.xeiam.xchange.bitstamp.BitstampExchange")
     val averageLast = formatter.format(averageTicker.getLast.doubleValue())
     val average = formatter.format(averageTicker.getLast.doubleValue())
-    val volume = (new BigDecimal(averageTicker.getVolume) with HumanReadable).toStringHumanReadable()
+    val volume = HumanReadableByteFormatter.format(averageTicker.getVolume)
     val marketCap = coinMarketCaps.getMarketCap("bitcoin")
     var message = s"BTC - coinbase: ${coinbaseLast} | bitstamp: ${bitstampLast} | avg: ${average} | vol: ${volume}"
     if (marketCap.isDefined) {
-      val cap = (new BigDecimal(marketCap.get.bigDecimal) with HumanReadable).toStringHumanReadable()
+      val cap = HumanReadableByteFormatter.format(marketCap.get.bigDecimal)
       message += s" | cap: ${cap}"
     }
     if (amount.isDefined) {

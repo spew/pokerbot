@@ -2,7 +2,7 @@ package org.poker.handler
 
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import org.poker.util.HumanReadable
+import org.poker.util.{HumanReadableByteFormatter}
 import org.pircbotx.hooks.events.MessageEvent
 import org.pircbotx.PircBotX
 import com.xeiam.xchange.Exchange
@@ -54,12 +54,12 @@ class DogecoinMessageEventHandler(configuration: ProgramConfiguration, coinMarke
     val json = parse(body)
     val dogecoinResponse = json.extract[DogecoinAverageResponse]
     val volume = dogecoinResponse.markets.map(m => m.volume).sum
-    val prettyVolume = (new BigDecimal(new java.math.BigDecimal(volume)) with HumanReadable).toStringHumanReadable()
+    val prettyVolume = HumanReadableByteFormatter.format(volume)
     val marketCap = coinMarketCaps.getMarketCap("dogecoin")
     val formattedPrice = "%1.8f".format(dogecoinResponse.vwap)
     var message = s"DOGE/BTC: ${formattedPrice} | vol: ${prettyVolume}"
     if (marketCap.isDefined) {
-      val prettyCap = (new BigDecimal(marketCap.get.bigDecimal) with HumanReadable).toStringHumanReadable()
+      val prettyCap = HumanReadableByteFormatter.format(marketCap.get)
       message += s" | cap: ${prettyCap}"
     }
     val coinbaseTicker = createTicker("com.xeiam.xchange.coinbase.CoinbaseExchange")
