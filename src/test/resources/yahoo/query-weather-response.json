@@ -1,0 +1,110 @@
+{
+  "query": {
+    "count": 1,
+    "created": "2015-04-15T02:48:35Z",
+    "lang": "en-US",
+    "results": {
+      "channel": {
+        "title": "Yahoo! Weather - Sao Paulo, BR",
+        "link": "http://us.rd.yahoo.com/dailynews/rss/weather/Sao_Paulo__BR/*http://weather.yahoo.com/forecast/BRXX0232_f.html",
+        "description": "Yahoo! Weather for Sao Paulo, BR",
+        "language": "en-us",
+        "lastBuildDate": "Tue, 14 Apr 2015 11:01 pm BRT",
+        "ttl": "60",
+        "location": {
+          "city": "Sao Paulo",
+          "country": "Brazil",
+          "region": "SP"
+        },
+        "units": {
+          "distance": "mi",
+          "pressure": "in",
+          "speed": "mph",
+          "temperature": "F"
+        },
+        "wind": {
+          "chill": "68",
+          "direction": "90",
+          "speed": "5"
+        },
+        "atmosphere": {
+          "humidity": "78",
+          "pressure": "30.09",
+          "rising": "2",
+          "visibility": "3.73"
+        },
+        "astronomy": {
+          "sunrise": "6:20 am",
+          "sunset": "5:54 pm"
+        },
+        "image": {
+          "title": "Yahoo! Weather",
+          "width": "142",
+          "height": "18",
+          "link": "http://weather.yahoo.com",
+          "url": "http://l.yimg.com/a/i/brand/purplelogo//uh/us/news-wea.gif"
+        },
+        "item": {
+          "title": "Conditions for Sao Paulo, BR at 11:01 pm BRT",
+          "lat": "-22.51",
+          "long": "-48.64",
+          "link": "http://us.rd.yahoo.com/dailynews/rss/weather/Sao_Paulo__BR/*http://weather.yahoo.com/forecast/BRXX0232_f.html",
+          "pubDate": "Tue, 14 Apr 2015 11:01 pm BRT",
+          "condition": {
+            "code": "31",
+            "date": "Tue, 14 Apr 2015 11:01 pm BRT",
+            "temp": "68",
+            "text": "Clear"
+          },
+          "description": "\n<img src=\"http://l.yimg.com/a/i/us/we/52/31.gif\"/><br />\n<b>Current Conditions:</b><br />\nClear, 68 F<BR />\n<BR /><b>Forecast:</b><BR />\nTue - Partly Cloudy. High: 76 Low: 65<br />\nWed - Thunderstorms. High: 79 Low: 65<br />\nThu - Thunderstorms. High: 78 Low: 65<br />\nFri - AM Clouds/PM Sun. High: 78 Low: 65<br />\nSat - PM Thunderstorms. High: 84 Low: 68<br />\n<br />\n<a href=\"http://us.rd.yahoo.com/dailynews/rss/weather/Sao_Paulo__BR/*http://weather.yahoo.com/forecast/BRXX0232_f.html\">Full Forecast at Yahoo! Weather</a><BR/><BR/>\n(provided by <a href=\"http://www.weather.com\" >The Weather Channel</a>)<br/>\n",
+          "forecast": [
+            {
+              "code": "29",
+              "date": "14 Apr 2015",
+              "day": "Tue",
+              "high": "76",
+              "low": "65",
+              "text": "Partly Cloudy"
+            },
+            {
+              "code": "4",
+              "date": "15 Apr 2015",
+              "day": "Wed",
+              "high": "79",
+              "low": "65",
+              "text": "Thunderstorms"
+            },
+            {
+              "code": "4",
+              "date": "16 Apr 2015",
+              "day": "Thu",
+              "high": "78",
+              "low": "65",
+              "text": "Thunderstorms"
+            },
+            {
+              "code": "30",
+              "date": "17 Apr 2015",
+              "day": "Fri",
+              "high": "78",
+              "low": "65",
+              "text": "AM Clouds/PM Sun"
+            },
+            {
+              "code": "38",
+              "date": "18 Apr 2015",
+              "day": "Sat",
+              "high": "84",
+              "low": "68",
+              "text": "PM Thunderstorms"
+            }
+          ],
+          "guid": {
+            "isPermaLink": "false",
+            "content": "BRXX0232_2015_04_18_7_00_BRT"
+          }
+        }
+      }
+    }
+  }
+}
