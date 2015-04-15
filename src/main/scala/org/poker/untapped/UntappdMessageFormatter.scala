@@ -7,7 +7,8 @@ import org.poker.util.RelativeTimeFormatter
 
 object UntappdMessageFormatter {
   private val dateFormatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss Z")
-  def formatCheckinMessage(checkin: Checkin, beer: Beer) = {
+
+  def formatCheckin(checkin: Checkin, beer: Beer) = {
     val rating = formatRating(beer.rating_score)
     val url = s"http://untappd.com/user/${checkin.user.user_name}/checkin/${checkin.checkin_id}"
     val venueMessage = if (checkin.venue.isDefined) s"at '${checkin.venue.get.venue_name}' " else ""
@@ -19,6 +20,12 @@ object UntappdMessageFormatter {
     } else {
       s"${checkin.user.user_name} ${checkinMessage}declined to rate '${checkin.beer.beer_name} (${beer.brewery.brewery_name})' (avg ${rating}) ${venueMessage}${relativeTime}: ${url}"
     }
+  }
+
+  def formatBeer(beer: Beer) = {
+    val untappedUrl = s"https://untappd.com/b/${beer.beer_slug}/${beer.bid}"
+    val rating = formatRating(beer.rating_score)
+    s"${beer.beer_name} | ${rating}/5.0 | style: ${beer.beer_style} | abv: ${beer.beer_abv} | ibu: ${beer.beer_ibu} | ${untappedUrl}"
   }
 
   private def formatRating(rating: Double) = {

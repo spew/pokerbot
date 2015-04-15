@@ -48,7 +48,7 @@ class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: Stri
     } else {
       val checkIn = checkinsResponse.response.checkins.items.head
       val beer = untappedClient.beerInfo(checkIn.beer.bid).response.beer
-      val message = UntappdMessageFormatter.formatCheckinMessage(checkIn, beer)
+      val message = UntappdMessageFormatter.formatCheckin(checkIn, beer)
       channel.send.message(message)
     }
   }
@@ -58,17 +58,10 @@ class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: Stri
     if (searchResponse.response.beers.items.isEmpty) {
       event.getChannel.send.message(s"no beers found for '${query}'")
     } else {
-      val firstResult = searchResponse.response.beers.items.head
-      val beerInfoResponse = untappedClient.beerInfo(firstResult.beer.bid)
-      val beer = beerInfoResponse.response.beer
-      val untappedUrl = s"https://untappd.com/b/${beer.beer_slug}/${beer.bid}"
-      val rating = formatRating(beer.rating_score)
-      event.getChannel.send.message(s"${beer.beer_name} | ${rating}/5.0 | style: ${beer.beer_style} | abv: ${beer.beer_abv} | ibu: ${beer.beer_ibu} | ${untappedUrl}")
+      val beerInfoResponse = untappedClient.beerInfo(searchResponse.response.beers.items.head.beer.bid)
+      val message = UntappdMessageFormatter.formatBeer(beerInfoResponse.response.beer)
+      event.getChannel.send.message(message)
     }
-  }
-
-  private def formatRating(rating: Double) = {
-    f"${rating}%1.1f"
   }
 
   private class KnownUser(val userId: Long, val aliases: Seq[String], val untappdUserName: String) {

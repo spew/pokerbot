@@ -1,0 +1,695 @@
+{
+  "meta": {
+    "code": 200,
+    "response_time": {
+      "time": 0.106,
+      "measure": "seconds"
+    },
+    "init_time": {
+      "time": 0.012,
+      "measure": "seconds"
+    }
+  },
+  "notifications": {
+    "type": "notifications",
+    "unread_count": {
+      "comments": 0,
+      "toasts": 0,
+      "friends": 0,
+      "messages": 0,
+      "news": 0
+    }
+  },
+  "response": {
+    "message": "",
+    "brewery_id": false,
+    "search_type": "",
+    "type_id": 0,
+    "search_version": 3,
+    "found": 17,
+    "offset": 0,
+    "limit": 25,
+    "term": "heady topper",
+    "parsed_term": "heady* AND topper*",
+    "beers": {
+      "count": 2,
+      "items": [
+        {
+          "checkin_count": 241256,
+          "have_had": true,
+          "your_count": 4,
+          "beer": {
+            "bid": 4691,
+            "beer_name": "Heady Topper",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/beer_logos/beer-HeadyTopper_4691.jpeg",
+            "beer_abv": 8,
+            "beer_ibu": 100,
+            "beer_description": "We love hops – that’s why our flagship Double IPA, Heady Topper, is packed full of them. Heady Topper was designed to showcase the complex flavors and aromas these flowers produce. The Alchemist has been brewing Heady Topper since 2003. This Double IPA is not intended to be the strongest or most bitter DIPA. It is brewed to give you wave after wave of hop flavor without any astringent bitterness. We brew Heady Topper with a proprietary blend of six hops – each imparting its own unique flavor and aroma. Take a big sip of Heady and see what hop flavors you can pick out. Orange? Tropical Fruit? Pink Grapefruit? Pine? Spice? There is just enough malt to give this beer some backbone, but not enough to take the hops away from the center stage.",
+            "created_at": "Sat, 21 Aug 2010 07:26:35 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 5,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 1244,
+            "brewery_name": "The Alchemist",
+            "brewery_slug": "the-alchemist",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/brewery_logos/brewery-TheAlchemistPubBrewery_1244.jpeg",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "alchemistbeer",
+              "facebook": "https://www.facebook.com/alchemistbeer",
+              "instagram": "",
+              "url": "http://www.alchemistbeer.com/"
+            },
+            "location": {
+              "brewery_city": "Waterbury",
+              "brewery_state": "VT",
+              "lat": 44.3505,
+              "lng": -72.7438
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 1020363,
+            "beer_name": "Heady Topper Clone",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 10,
+            "beer_ibu": 130,
+            "beer_description": "",
+            "created_at": "Sun, 22 Mar 2015 00:29:22 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 90402,
+            "brewery_name": "Huck's Nano Brewery",
+            "brewery_slug": "hucks-nano-brewery",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "https://www.facebook.com/pages/Hucks-Nano-Brewery/245985292220720",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "Christiansburg",
+              "brewery_state": "VA",
+              "lat": 37.1299,
+              "lng": -80.4089
+            },
+            "brewery_active": 1
+          }
+        }
+      ]
+    },
+    "homebrew": {
+      "count": 15,
+      "items": [
+        {
+          "checkin_count": 13,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 509955,
+            "beer_name": "Heady Pop Topper",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 7,
+            "beer_ibu": 75,
+            "beer_description": "American DIPA made with the infamous Conan yeast. Dry hopped with cascade, simcoe, falconers flight, centennial, chinook, and columbus.",
+            "created_at": "Wed, 20 Nov 2013 21:59:38 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 92417,
+            "brewery_name": "Derek's Homebrew",
+            "brewery_slug": "derek-s-homebrew",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 2,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 693654,
+            "beer_name": "Dead Bird Blonde (2014, Heady Topper Yeast)",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 6,
+            "beer_ibu": 40,
+            "beer_description": "",
+            "created_at": "Sun, 25 May 2014 17:05:56 +0000",
+            "beer_style": "Blonde Ale",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 17293,
+            "brewery_name": "Beer Scouts",
+            "brewery_slug": "beer-scouts",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 1,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 1036258,
+            "beer_name": "Bad J Heady Topper Clone",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/beer_logos/beer-1036258_7dfe2_sm.jpeg",
+            "beer_abv": 8.1,
+            "beer_ibu": 91,
+            "beer_description": "",
+            "created_at": "Sat, 04 Apr 2015 19:12:32 +0000",
+            "beer_style": "American IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 173542,
+            "brewery_name": "Bad J Brewing",
+            "brewery_slug": "bad-j-brewing",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/brewery_logos/brewery-173542_ca1c8.jpeg",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "McAllen",
+              "brewery_state": "TX",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 1,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 736443,
+            "beer_name": "Buffs Brewed Heady Topper",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8,
+            "beer_ibu": 120,
+            "beer_description": "",
+            "created_at": "Sat, 05 Jul 2014 10:31:00 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 96622,
+            "brewery_name": "Buff Buffington",
+            "brewery_slug": "buff-buffington",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 960296,
+            "beer_name": "Heady Topper Clone",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8,
+            "beer_ibu": 100,
+            "beer_description": "",
+            "created_at": "Thu, 29 Jan 2015 22:50:02 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 88727,
+            "brewery_name": "425 Brewing Co.",
+            "brewery_slug": "425-brewing-co",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/brewery_logos/brewery-425brewingco_88727.jpeg",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "Norwood",
+              "brewery_state": "MA",
+              "lat": 42.1986,
+              "lng": -71.1587
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 931857,
+            "beer_name": "Heady Topper Clone",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 0,
+            "beer_ibu": 0,
+            "beer_description": "Heady topper clone based on farmhousebrewing.com kit",
+            "created_at": "Thu, 01 Jan 2015 04:11:45 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 168925,
+            "brewery_name": "Science Of Brewing",
+            "brewery_slug": "science-brewing",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 962954,
+            "beer_name": "Off the Topper (northern Brewer Heady Clone)",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8.2,
+            "beer_ibu": 85,
+            "beer_description": "Northern brewers heady clone kit",
+            "created_at": "Sat, 31 Jan 2015 20:52:06 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 117616,
+            "brewery_name": "Grainwashed Brewing",
+            "brewery_slug": "grainwashed-brewing",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 890381,
+            "beer_name": "Better Than Heady Topper",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8,
+            "beer_ibu": 75,
+            "beer_description": "Heaven",
+            "created_at": "Thu, 27 Nov 2014 00:36:09 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 154359,
+            "brewery_name": "Trimmer's Taps",
+            "brewery_slug": "trimmer-s-taps",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 1007867,
+            "beer_name": "Northern Brewing Heady Topper",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8.2,
+            "beer_ibu": 0,
+            "beer_description": "",
+            "created_at": "Fri, 13 Mar 2015 00:23:50 +0000",
+            "beer_style": "American IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 191288,
+            "brewery_name": "Abric Brewing Co.",
+            "brewery_slug": "abric-brewing-co",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 911834,
+            "beer_name": "Off the Topper (Heady Topper Clone)",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8,
+            "beer_ibu": 100,
+            "beer_description": "",
+            "created_at": "Mon, 15 Dec 2014 17:36:02 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 119749,
+            "brewery_name": "Karbräu ",
+            "brewery_slug": "karbr-u",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 919254,
+            "beer_name": "Heady Topper Clone",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 0,
+            "beer_ibu": 0,
+            "beer_description": "",
+            "created_at": "Sun, 21 Dec 2014 22:33:17 +0000",
+            "beer_style": "Imperial / Double IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 175670,
+            "brewery_name": "O'Cohen's Brewery",
+            "brewery_slug": "o-cohen-s-brewery",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 998741,
+            "beer_name": "Off the Topper™ (Heady Topper Clone)",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 7,
+            "beer_ibu": 100,
+            "beer_description": "Heady Topper Clone from Northern Brewer\n",
+            "created_at": "Wed, 04 Mar 2015 22:36:49 +0000",
+            "beer_style": "American IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 147380,
+            "brewery_name": "Facedown Glass Up",
+            "brewery_slug": "facedown-glass-up",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 923340,
+            "beer_name": "Heady Topper 2.0",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8,
+            "beer_ibu": 120,
+            "beer_description": "",
+            "created_at": "Thu, 25 Dec 2014 17:30:55 +0000",
+            "beer_style": "American Imperial / Double Stout",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 104628,
+            "brewery_name": "Three Brothers Brewery",
+            "brewery_slug": "three-brothers-brewery",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 961050,
+            "beer_name": "Heady Topper 1.21 Gigawatts",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8.2,
+            "beer_ibu": 80,
+            "beer_description": "Heady Topper Clone",
+            "created_at": "Fri, 30 Jan 2015 19:14:51 +0000",
+            "beer_style": "American IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 116735,
+            "brewery_name": "Angry Hops Brewery",
+            "brewery_slug": "angry-hops-brewery",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        },
+        {
+          "checkin_count": 0,
+          "have_had": false,
+          "your_count": 0,
+          "beer": {
+            "bid": 989359,
+            "beer_name": "Heady Topper Clone",
+            "beer_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-beer-default.png",
+            "beer_abv": 8.2,
+            "beer_ibu": 100,
+            "beer_description": "",
+            "created_at": "Tue, 24 Feb 2015 00:18:11 +0000",
+            "beer_style": "American IPA",
+            "auth_rating": 0,
+            "wish_list": false,
+            "in_production": 1
+          },
+          "brewery": {
+            "brewery_id": 188464,
+            "brewery_name": "Salas Brewing",
+            "brewery_slug": "salas-brewing",
+            "brewery_label": "https://d1c8v1qci5en44.cloudfront.net/site/assets/images/temp/badge-brewery-default.png",
+            "country_name": "United States",
+            "contact": {
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "url": ""
+            },
+            "location": {
+              "brewery_city": "",
+              "brewery_state": "",
+              "lat": 0,
+              "lng": 0
+            },
+            "brewery_active": 1
+          }
+        }
+      ]
+    },
+    "breweries": {
+      "items": [],
+      "count": 0
+    }
+  }
+}

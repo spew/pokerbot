@@ -1,0 +1,24 @@
+{
+  "_links": {"self": "https://api.twitch.tv/kraken/search/games?live=true&q=Dota+2&type=suggest"},
+  "games": [
+    {
+      "name": "Dota 2",
+      "popularity": 230,
+      "_id": 29595,
+      "giantbomb_id": 32887,
+      "box": {
+        "large": "http://static-cdn.jtvnw.net/ttv-boxart/Dota%202-272x380.jpg",
+        "medium": "http://static-cdn.jtvnw.net/ttv-boxart/Dota%202-136x190.jpg",
+        "small": "http://static-cdn.jtvnw.net/ttv-boxart/Dota%202-52x72.jpg",
+        "template": "http://static-cdn.jtvnw.net/ttv-boxart/Dota%202-{width}x{height}.jpg"
+      },
+      "logo": {
+        "large": "http://static-cdn.jtvnw.net/ttv-logoart/Dota%202-240x144.jpg",
+        "medium": "http://static-cdn.jtvnw.net/ttv-logoart/Dota%202-120x72.jpg",
+        "small": "http://static-cdn.jtvnw.net/ttv-logoart/Dota%202-60x36.jpg",
+        "template": "http://static-cdn.jtvnw.net/ttv-logoart/Dota%202-{width}x{height}.jpg"
+      },
+      "_links": {}
+    }
+  ]
+}

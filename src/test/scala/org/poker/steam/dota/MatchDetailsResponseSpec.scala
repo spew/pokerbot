@@ -10,7 +10,7 @@ class MatchDetailsResponseSpec extends UnitSpec {
   implicit val formats = DefaultFormats
 
   "deserialize match history response" should "succeed" in {
-    for (stream <- managed(getClass.getResourceAsStream("/get-match-history-response.json"))) {
+    for (stream <- managed(getClass.getResourceAsStream("/steam/get-match-history-response.json"))) {
       val matchHistory = JsonMethods.parse(stream).extract[MatchHistoryResponse]
       assert(!matchHistory.matches.isEmpty)
       assert(10 == matchHistory.matches(0).players.size)

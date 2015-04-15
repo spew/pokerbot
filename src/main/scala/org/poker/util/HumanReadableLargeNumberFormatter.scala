@@ -2,7 +2,7 @@ package org.poker.util
 
 import java.text.DecimalFormat
 
-object HumanReadableByteFormatter {
+object HumanReadableLargeNumberFormatter {
   val suffixes = Seq("", "k", "m", "b", "t")
   val exponentRegex = "E[0-9]".r
   val formatter = new DecimalFormat("##0E0")

@@ -31,7 +31,7 @@ class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) exten
               }
               for (c <- filteredCheckins) {
                 val beerInfo = untappedClient.beerInfo(c.beer.bid)
-                val message = UntappdMessageFormatter.formatCheckinMessage(c, beerInfo.response.beer)
+                val message = UntappdMessageFormatter.formatCheckin(c, beerInfo.response.beer)
                 for (channel <- ircBot.getUserBot.getChannels) {
                   channel.send.message(message)
                 }
