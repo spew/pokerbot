@@ -10,7 +10,7 @@ import scala.util.matching.Regex.Match
 
 class WeatherMessageHandler(val configuration: ProgramConfiguration) extends MessageEventHandler {
   private val weatherClient = new WeatherClient(configuration.yahooConsumerKey.get, configuration.yahooConsumerSecret.get)
-  override val messageMatchRegex: Regex = "^[!.](?i)((weather)|(w)) ?(?<query>.*)".r
+  override val messageMatchRegex: Regex = "^[!.](?i)((weather)|(w)) (?<query>.*)".r
   override val helpMessage: Option[String] = Option("!weather <query>: send current weather information for <query> to channel")
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
