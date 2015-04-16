@@ -3,7 +3,7 @@ package org.poker.handler
 
 import org.pircbotx.PircBotX
 import org.pircbotx.hooks.events.MessageEvent
-import org.poker.imdb.{NotFoundResult, FoundResult, ImdbClient}
+import org.poker.imdb.{NotFoundResult, FoundResult, ImdbClient, ImdbMessageFormatter}
 
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
@@ -15,20 +15,16 @@ class ImdbMessageEventHandler extends MessageEventHandler {
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
     val query = Option(firstMatch.group(2).toLowerCase)
-    if(query.isDefined){
-      sendImdbMessage(event, query.get)
-    }
+    val message = formatMessage(query)
+    event.getChannel.send.message(message)
   }
 
-  private def sendImdbMessage(event: MessageEvent[PircBotX], title: String): Unit = {
-    val imdbResult = imdbClient.getFilmInfo(title)
-    imdbResult match {
-      case FoundResult(title, year, parentalRating, released, runtime, rating, genre) =>
-        val message = s"${title} | Rating: ${rating} | Genre: ${genre} |  Rated: ${parentalRating} | Released: ${released}"
-        event.getChannel.send.message(message)
-      case NotFoundResult(response, error) =>
-        val message = s"Film not found."
-        event.getChannel.send.message(message)
+  private def formatMessage(query: Option[String]) = {
+    if (query.isDefined) {
+      val imdbResult = imdbClient.getFilmInfo(query.get)
+      ImdbMessageFormatter.format(imdbResult)
+    } else {
+      s"usage: ${helpMessage}"
     }
   }
 }

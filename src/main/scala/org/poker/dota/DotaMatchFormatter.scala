@@ -9,7 +9,7 @@ import org.jsoup.Jsoup
 import org.ocpsoft.prettytime.PrettyTime
 import org.poker.steam.dota.{Player, MatchDetails}
 
-object MatchFormatter {
+object DotaMatchFormatter {
   val idToPlayer = KnownPlayers.all.map(kp => (kp.id, kp)).toMap
 
   def format(m: MatchDetails) = {

@@ -5,7 +5,7 @@ import java.util.concurrent.{TimeUnit, Future, Executors}
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import org.pircbotx.PircBotX
 import org.poker.ProgramConfiguration
-import org.poker.dota.{MatchFormatter, LatestMatchFinder}
+import org.poker.dota.{DotaMatchFormatter, LatestMatchFinder}
 import org.poker.steam.SteamClient
 import org.poker.util.DaemonThreadFactory
 import scala.collection.JavaConversions._
@@ -23,7 +23,7 @@ class DotaPoller(val pc: ProgramConfiguration, ircBot: PircBotX) extends Poller 
         lastMatchId match {
           case Some(id) => {
             if (id != latestMatch.match_id) {
-              val message = MatchFormatter.format(latestMatch)
+              val message = DotaMatchFormatter.format(latestMatch)
               for (channel <- ircBot.getUserBot.getChannels) {
                 channel.send.message(message)
               }

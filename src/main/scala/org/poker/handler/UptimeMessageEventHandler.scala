@@ -9,12 +9,15 @@ import org.joda.time.format.{PeriodFormatterBuilder, PeriodFormatter}
 
 class UptimeMessageEventHandler extends MessageEventHandler {
   val startTime = DateTime.now
-
   override val helpMessage: Option[String] = Option("!uptime: send bot uptime to channel")
-
   override val messageMatchRegex: Regex = "^[.!](?i)uptime".r
 
   override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+    val message = formatMessage()
+    event.getChannel.send.message(message)
+  }
+
+  private def formatMessage() = {
     val now = DateTime.now
     val interval = startTime to now
     val period = interval.toPeriod()
@@ -30,7 +33,6 @@ class UptimeMessageEventHandler extends MessageEventHandler {
       .appendSeparator(":")
       .appendSeconds
       .toFormatter
-    val message = formatter.print(period)
-    event.getChannel.send().message("uptime: " + message)
+    "uptime: " + formatter.print(period)
   }
 }
