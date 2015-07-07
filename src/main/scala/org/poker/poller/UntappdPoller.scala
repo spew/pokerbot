@@ -12,7 +12,7 @@ import scala.collection.JavaConversions._
 class UntappdPoller(configuration: ProgramConfiguration, ircBot: PircBotX) extends Poller with LazyLogging {
   val untappedClient = new UntappedClient(configuration.untappdClientId.get, configuration.untappdClientSecret.get, configuration.untappdAccessToken.get)
   val executor = Executors.newSingleThreadScheduledExecutor(new DaemonThreadFactory())
-  val ignoredUsers = Set("Rayvl2001", "milnak")
+  val ignoredUsers = Set("Rayvl2001", "milnak", "Tommyhawkers" )
   var future: Option[Future[_]] = None
 
   override def start(): Unit = {
