@@ -31,7 +31,7 @@ object DotaMatchFormatter {
   private def fetchPlayerName(accountId: Long) = {
     val url = s"http://dotabuff.com/players/${accountId}"
     val document = Jsoup.connect(url).userAgent("Mozilla").get()
-    val nameElement = document.select("div.content-header-title h1").first
+    val nameElement = document.select("div.header-content-title h1").first
     nameElement.textNodes().get(0).text()
   }
 
