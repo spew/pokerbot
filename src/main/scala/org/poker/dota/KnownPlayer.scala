@@ -11,6 +11,7 @@ package object KnownPlayers {
     new KnownPlayer(125412282L, List("mark", "clock", "cl0ck"), true)::
     new KnownPlayer(81397072L, List("clock2", "cl0ck2"), true)::
     new KnownPlayer(78932949L, List("muiy", "dank"), true)::
+    new KnownPlayer(34117856L, List("viju", "vijal"), false)::
     new KnownPlayer(29508928L, List("sysm"), true)::
     new KnownPlayer(32387791L, List("ctide", "chris", "tide"), true)::
     new KnownPlayer(49941053L, List("abduhl", "jake"), true)::
