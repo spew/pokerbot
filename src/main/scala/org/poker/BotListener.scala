@@ -13,6 +13,14 @@ class BotListener() extends ListenerAdapter[PircBotX] with LazyLogging {
     handlers = handler::handlers
   }
 
+  private def formatExceptionMessage(message: String): String = {
+    if (message.contains("\n")) {
+      message.substring(0, message.indexOf("\n")) + "..."
+    } else {
+      message
+    }
+  }
+
   override def onMessage(event: MessageEvent[PircBotX]): Unit = {
     for (h <- handlers) {
       val m = h.messageMatchRegex.findFirstMatchIn(event.getMessage)
@@ -29,7 +37,8 @@ class BotListener() extends ListenerAdapter[PircBotX] with LazyLogging {
           }
           case t: Throwable => {
             logger.warn("Error executing org.poker.handler", t)
-            event.getChannel.send.message(t.getMessage)
+            val message = formatExceptionMessage(t.getMessage)
+            event.getChannel.send.message(message)
           }
         }
       }

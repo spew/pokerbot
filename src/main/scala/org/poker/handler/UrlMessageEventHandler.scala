@@ -1,5 +1,6 @@
 package org.poker.handler
 
+import org.poker.poller.InstagramOembedPatched
 import org.poker.util.SimpleRetrier
 import twitter4j.conf.ConfigurationBuilder
 import twitter4j.Twitter
@@ -73,7 +74,7 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
 
   private def sendInstagram(event: MessageEvent[PircBotX], url: String): Unit = {
     val instagramClient = new Instagram(configuration.instagramClientId.get)
-    val instagramOembed = new InstagramOembed()
+    val instagramOembed = new InstagramOembedPatched()
     val oembedInfo = instagramOembed.getOembedInformation(url)
     val mediaInfo = instagramClient.getMediaInfo(oembedInfo.getMediaId)
     val comments = if (mediaInfo.getData.getComments.getCount == 1) "comment" else "comments"

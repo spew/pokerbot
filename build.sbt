@@ -30,7 +30,7 @@ libraryDependencies ++= Seq(
   "com.google.apis" % "google-api-services-youtube" % "v3-rev107-1.18.0-rc",
   "com.google.http-client" % "google-http-client-jackson" % "1.15.0-rc",
   "org.twitter4j" % "twitter4j-core" % "3.0.5",
-  "com.sachinhandiekar" % "jInstagram" % "1.0.7",
+  "com.sachinhandiekar" % "jInstagram" % "1.1.3",
   "org.ocpsoft.prettytime" % "prettytime" % "3.2.4.Final",
   "it" % "tomatoclient" % "0.0.1-SNAPSHOT"
 )
