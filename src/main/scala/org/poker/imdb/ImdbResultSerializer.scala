@@ -23,7 +23,7 @@ class ImdbResultSerializer extends CustomSerializer[ImdbResult](format => ({
        JField("imdbVotes", JString(votes)),
        JField("imdbID", JString(imdbId)),
        JField("Type", JString(filmType)),
-       JField("Response", JString(response)))) => FoundResult(title, year, rated, released, runtime, rating, genre)
+       JField("Response", JString(response)))) => FoundResult(title, year, rated, released, runtime, rating, genre, imdbId)
   case JObject(List(JField("Response", JString(response)),
        JField("Error", JString(error)))) => NotFoundResult(response, error)
 }, {
