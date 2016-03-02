@@ -29,7 +29,7 @@ class RottenTomatoesMessageEventHandler(configuration: ProgramConfiguration) ext
         event.getChannel.send.message(s"no titles found for '${query}'")
       } else {
         val movie = movies.get(0)
-        val message = s"${movie.title} | critics: ${movie.rating.criticsScore}% | audience: ${movie.rating.audienceScore}% | ${movie.links.alternate}"
+        val message = s"${movie.title} | critics: ${movie.rating.criticsScore}% | audience: ${movie.rating.audienceScore}% | http:${movie.links.alternate}"
         event.getChannel.send.message(message)
       }
     } else {
