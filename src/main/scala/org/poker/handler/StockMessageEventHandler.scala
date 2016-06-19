@@ -1,13 +1,13 @@
 package org.poker.handler
 
+import java.text.NumberFormat
+
+import com.github.nscala_time.time.Imports._
+import org.poker.stock.StockTicker
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.PircBotX
-import com.github.nscala_time.time.Imports._
-import org.joda.time.format.{PeriodFormatterBuilder, PeriodFormatter}
-import org.poker.stock.StockTicker
-import java.text.NumberFormat
 
 class StockMessageEventHandler extends MessageEventHandler {
   val startTime = DateTime.now
@@ -18,14 +18,14 @@ class StockMessageEventHandler extends MessageEventHandler {
 
   override val messageMatchRegex: Regex = "^[!.](?i)((stock)|(quote)) ?(?<symbol>.*)".r
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: Match): Unit = {
     val symbol = firstMatch.group(4)
     if (symbol.isEmpty) {
-      event.getChannel.send().message("usage: !stock <symbol>")
+      event.getMessage.getChannel.sendMessage("usage: !stock <symbol>")
     } else {
       if (symbol.size < 8) {
         val message = this.getMessage(symbol)
-        event.getChannel.send().message(message)
+        event.getMessage.getChannel.sendMessage(message)
       }
     }
   }

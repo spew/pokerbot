@@ -1,19 +1,14 @@
 package org.poker.handler
 
-import scala.util.matching.Regex
-import scala.util.matching.Regex.{MatchData}
-
-import org.poker.worldcup.{Team, Match, WorldCupClient}
-import org.pircbotx.PircBotX
-import org.pircbotx.hooks.events.MessageEvent
-import org.joda.time.{DateTimeZone, DateTime}
-import com.typesafe.scalalogging.slf4j.StrictLogging
-import scala.collection.mutable.ListBuffer
-import scala.collection.mutable
 import com.github.nscala_time.time.Imports._
-import org.poker.worldcup.Match
-import org.poker.worldcup.Team
+import com.typesafe.scalalogging.slf4j.StrictLogging
+import org.joda.time.DateTime
 import org.ocpsoft.prettytime.PrettyTime
+import org.poker.worldcup.{Match, Team, WorldCupClient}
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+
+import scala.collection.mutable
+import scala.util.matching.Regex
 
 class WorldCupMessageEventHandler extends MessageEventHandler with StrictLogging {
 
@@ -23,9 +18,9 @@ class WorldCupMessageEventHandler extends MessageEventHandler with StrictLogging
 
   override val messageMatchRegex: Regex = "^[!.](?i)wc ?(?<query>.*)".r
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: scala.util.matching.Regex.Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: scala.util.matching.Regex.Match): Unit = {
     val query = firstMatch.group(1).trim
-    event.getChannel.send.message(getChannelMessage(query))
+    event.getMessage.getChannel.sendMessage(getChannelMessage(query))
   }
 
   private def getChannelMessage(query: String) = {

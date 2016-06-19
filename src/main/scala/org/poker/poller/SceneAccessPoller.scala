@@ -1,21 +1,20 @@
 package org.poker.poller
 
-import org.poker.ProgramConfiguration
-import com.typesafe.scalalogging.slf4j.LazyLogging
+import org.poker.MessageSender
 import akka.actor._
+
 import scala.concurrent.duration._
-import scala.collection.concurrent.{TrieMap, Map}
-
+import scala.collection.concurrent.{Map, TrieMap}
 import com.github.nscala_time.time.Imports.DateTime
-import org.poker.scc.{TorrentFormatter, SceneTorrent, SceneAccessClient, SceneShow}
-import org.joda.time.{DateTimeZone, Period, DateTimeConstants}
-import org.pircbotx.{Channel, PircBotX}
-import scala.Some
+import org.poker.scc.{SceneAccessClient, SceneShow, SceneTorrent, TorrentFormatter}
+import org.joda.time.{DateTimeConstants, DateTimeZone, Period}
+import org.pircbotx.{Channel}
 import org.poker.ProgramConfiguration
-import akka.actor.SupervisorStrategy.{Escalate, Restart, Resume}
+import akka.actor.SupervisorStrategy.{Escalate, Resume}
+import com.typesafe.scalalogging.slf4j.LazyLogging
 
 
-class SceneAccessPoller(configuration: ProgramConfiguration, ircBot: PircBotX) extends Poller with LazyLogging {
+class SceneAccessPoller(configuration: ProgramConfiguration, messageSender: MessageSender) extends Poller with LazyLogging {
   val system = akka.actor.ActorSystem("system")
   import system.dispatcher
   var dispatchCancellable: Option[Cancellable] = None
@@ -28,7 +27,7 @@ class SceneAccessPoller(configuration: ProgramConfiguration, ircBot: PircBotX) e
       case None => Unit
     }
     logger.debug("starting scc polling")
-    val actor = system.actorOf(Props(classOf[Manager], shows, ircBot, sceneAccessClient))
+    val actor = system.actorOf(Props(classOf[Manager], shows, messageSender, sceneAccessClient))
     dispatchCancellable = Option(system.scheduler.schedule(10 seconds, 1 minute, actor, "schedule"))
   }
 
@@ -55,7 +54,7 @@ class SceneAccessPoller(configuration: ProgramConfiguration, ircBot: PircBotX) e
   }
 }
 
-class Manager(shows: Seq[SceneShow], ircBot: PircBotX, sceneAccessClient: SceneAccessClient) extends Actor with LazyLogging {
+class Manager(shows: Seq[SceneShow], messageSender: MessageSender, sceneAccessClient: SceneAccessClient) extends Actor with LazyLogging {
   val showToDispatch = new TrieMap[SceneShow, (Cancellable, FiniteDuration)]()
   val system = akka.actor.ActorSystem("system")
   val showToActor = this.createActors()
@@ -98,11 +97,11 @@ class Manager(shows: Seq[SceneShow], ircBot: PircBotX, sceneAccessClient: SceneA
   }
 
   private def createActors(): scala.collection.immutable.Map[SceneShow, ActorRef] = {
-    shows.map(s => (s, context.actorOf(Props(classOf[SceneShowActor], s, ircBot, sceneAccessClient)))).toMap
+    shows.map(s => (s, context.actorOf(Props(classOf[SceneShowActor], s, messageSender, sceneAccessClient)))).toMap
   }
 }
 
-class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: SceneAccessClient) extends Actor with LazyLogging {
+class SceneShowActor(show: SceneShow, messageSender: MessageSender, sceneAccessClient: SceneAccessClient) extends Actor with LazyLogging {
   var lastDate: Option[DateTime] = None
 
   override def receive = {
@@ -158,11 +157,8 @@ class SceneShowActor(show: SceneShow, ircBot: PircBotX, sceneAccessClient: Scene
   }
 
   private def sendNewShowMessage(torrent: SceneTorrent): Unit = {
-    val array = new Array[Channel](ircBot.getUserBot.getChannels.size())
-    for (c <- ircBot.getUserBot.getChannels.toArray(array)) {
-      val formatter = new TorrentFormatter()
-      val message = formatter.format(torrent, sceneAccessClient)
-      c.send.message(s"NEW release: " + message)
-    }
+    val formatter = new TorrentFormatter()
+    val message = formatter.format(torrent, sceneAccessClient)
+    messageSender.send(s"NEW release: " + message)
   }
 }

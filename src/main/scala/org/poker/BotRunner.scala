@@ -3,27 +3,24 @@ package org.poker
 
 import com.typesafe.scalalogging.slf4j.StrictLogging
 import org.poker.handler._
-import org.pircbotx.cap.TLSCapHandler
-import org.pircbotx.hooks.Listener
-import org.pircbotx.{UtilSSLSocketFactory, Configuration, PircBotX}
 import org.poker.poller._
 
-import java.nio.charset.Charset
-import java.nio.charset.StandardCharsets
+import sx.blah.discord.api.ClientBuilder;
+import sx.blah.discord.api.IDiscordClient;
+
 
 class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
   val coinMarketCaps = new CoinMarketCaps(pc)
-  val ircBotConfig = this.getIrcBotConfiguration()
-  val ircBot = new PircBotX(ircBotConfig)
-  lazy val sceneAccessPoller = new SceneAccessPoller(pc, ircBot)
-  lazy val untappdPoller = new UntappdPoller(pc, ircBot)
-  lazy val dotaPoller = new DotaPoller(pc, ircBot)
-  lazy val bunkPoller = new BunkPoller(pc, ircBot)
+  val discordBot = buildDiscordBot();
+  val messageSender = new DiscordMessageSender
+  lazy val sceneAccessPoller = new SceneAccessPoller(pc, messageSender)
+  lazy val untappdPoller = new UntappdPoller(pc, messageSender)
+  lazy val dotaPoller = new DotaPoller(pc, messageSender)
 
   def run(): Unit = {
     startPollers()
-    logger.debug("connecting to '{}'", pc.serverHostname)
-    ircBot.startBot()
+    discordBot.getDispatcher.registerListener(getListener())
+    discordBot.login()
   }
 
   def startPollers() {
@@ -51,8 +48,8 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     pc.yahooConsumerKey.isDefined && pc.yahooConsumerSecret.isDefined
   }
 
-  def getListener(): Listener[PircBotX] = {
-    val listener = new BotListener()
+  def getListener(): DiscordListener = {
+    val listener = new DiscordListener()
     listener.addHandler(new UptimeMessageEventHandler)
     listener.addHandler(new GoogleMessageEventHandler(pc))
     listener.addHandler(new UrlMessageEventHandler(pc))
@@ -77,26 +74,10 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     listener
   }
 
-  def getIrcBotConfiguration(): Configuration[PircBotX] = {
-    val listener = getListener()
-    val builder = new Configuration.Builder()
-      .setName(pc.nick)
-      .setFinger(pc.finger)
-      .setRealName(pc.realName)
-      .setCapEnabled(true)
-      .addCapHandler(new TLSCapHandler(new UtilSSLSocketFactory().trustAllCertificates(), true))
-      .setAutoReconnect(true)
-      .addListener(listener)
-      .setLogin(pc.nick)
-      .setAutoSplitMessage(true)
-      .setAutoNickChange(true)
-      .setShutdownHookEnabled(true)
-      .setEncoding(StandardCharsets.UTF_8)
-      .setServerHostname(pc.serverHostname)
-    for (c <- pc.channels) {
-      logger.debug("adding autojoin channel: '{}'", c)
-      builder.addAutoJoinChannel(c)
-    }
-    builder.buildConfiguration()
+  def buildDiscordBot(): IDiscordClient = {
+    new ClientBuilder()
+      .withToken(pc.discordToken.get)
+      .setDaemon(true)
+      .build()
   }
 }

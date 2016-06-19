@@ -1,15 +1,15 @@
 package org.poker.handler
 
-import com.google.api.services.customsearch.Customsearch;
-import scala.util.matching.Regex
-import scala.util.matching.Regex.Match
-import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.PircBotX
-import org.poker.ProgramConfiguration
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+import com.google.api.client.http.{HttpRequest, HttpRequestInitializer, HttpTransport}
 import com.google.api.client.json.JsonFactory
 import com.google.api.client.json.jackson.JacksonFactory
-import com.google.api.client.http.{HttpRequest, HttpRequestInitializer, HttpTransport}
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+import com.google.api.services.customsearch.Customsearch
+import org.poker.ProgramConfiguration
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+
+import scala.util.matching.Regex
+import scala.util.matching.Regex.Match
 
 class GoogleMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val googleClient = createClient()
@@ -18,7 +18,7 @@ class GoogleMessageEventHandler(configuration: ProgramConfiguration) extends Mes
 
   override val messageMatchRegex: Regex = "^[!.](?i)google (?<query>.*)".r
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: Match): Unit = {
     val query = firstMatch.group(1)
     if (configuration.googleSearchApiKey.isDefined && configuration.googleSearchCxKey.isDefined) {
       val list = googleClient.cse().list(query)
@@ -26,14 +26,14 @@ class GoogleMessageEventHandler(configuration: ProgramConfiguration) extends Mes
       list.setKey(configuration.googleSearchApiKey.get)
       val results = list.execute().getItems
       if (results.isEmpty) {
-        event.getChannel.send.message(s"nothing found by google for '$query'")
+        event.getMessage.getChannel.sendMessage(s"nothing found by google for '$query'")
       } else {
         val first = results.get(0)
-        event.getChannel.send.message(first.getLink)
-        event.getChannel.send.message(first.getTitle)
+        event.getMessage.getChannel.sendMessage(first.getLink)
+        event.getMessage.getChannel.sendMessage(first.getTitle)
       }
     } else {
-      event.getChannel.send().message("can't google, api-key and cx-key are required")
+      event.getMessage.getChannel.sendMessage("can't google, api-key and cx-key are required")
     }
   }
 

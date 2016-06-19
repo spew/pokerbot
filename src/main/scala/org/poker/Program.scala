@@ -7,11 +7,7 @@ class TwitterCredentials(val accessToken: String, val accessTokenSecret: String,
 
 // used for command line parsing
 case class ProgramConfiguration(
-  nick: String = "testbot",
-  finger: String = "stfu pete",
-  realName: String = "pete is a donk",
-  serverHostname: String = "irc.gamesurge.net",
-  channels: Seq[String] = List(),
+  discordToken: Option[String] = None,
   steamApiKey: Option[String] = None,
   sceneAccessUserName: Option[String] = None,
   sceneAccessPassword: Option[String] = None,
@@ -36,11 +32,7 @@ object Program extends StrictLogging {
     try {
       val parser = this.createParser();
       parser.parse(args, loadDefaultConfiguration()) map { configuration =>
-        var finalConfiguration = configuration
-        if (configuration.channels.isEmpty) {
-          finalConfiguration = configuration.copy(channels = configuration.channels :+ "#pokerbot")
-        }
-        val botRunner = new BotRunner(finalConfiguration)
+        val botRunner = new BotRunner(configuration)
         botRunner.run()
       } getOrElse {
         logger.warn("Unable to properly parse arguments, exiting...")
@@ -54,6 +46,7 @@ object Program extends StrictLogging {
 
   private def loadDefaultConfiguration(): ProgramConfiguration = {
     var c = ProgramConfiguration()
+    c = c.copy(discordToken = loadEnvVar("DISCORD_TOKEN"))
     c = c.copy(sceneAccessPassword = loadEnvVar("SCC_PASSWORD"))
     c = c.copy(sceneAccessUserName = loadEnvVar("SCC_USERNAME"))
     c = c.copy(steamApiKey = loadEnvVar("STEAM_API_KEY"))
@@ -85,14 +78,7 @@ object Program extends StrictLogging {
   private def createParser(): OptionParser[ProgramConfiguration] = {
     val parser = new OptionParser[ProgramConfiguration]("pokerbot") {
       head("pokerbot", "1.0")
-      opt[String]('n', "nick") optional() action { (n, c) => c.copy(nick = n) } text("nick-name to be used in irc")
-      opt[String]('s', "server-hostname") optional() action { (s, c) => c.copy(serverHostname = s) } text("hostname of irc server")
       opt[Boolean] ("test-mode") optional() maxOccurs(1) action { (t, c) => c.copy(testMode = t) } text("run in test mode")
-      opt[String]("channels") maxOccurs(10) action {
-        (ch, c) => {
-          c.copy(channels = c.channels :+ (if (ch.startsWith("#")) ch else "#" + ch))
-        }
-      } text("channels to join")
       help("help") text("print usage")
     }
     parser

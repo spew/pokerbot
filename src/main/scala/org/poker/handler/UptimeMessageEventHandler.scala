@@ -1,20 +1,20 @@
 package org.poker.handler
 
+import com.github.nscala_time.time.Imports._
+import org.joda.time.format.{PeriodFormatter, PeriodFormatterBuilder}
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.PircBotX
-import com.github.nscala_time.time.Imports._
-import org.joda.time.format.{PeriodFormatterBuilder, PeriodFormatter}
 
 class UptimeMessageEventHandler extends MessageEventHandler {
   val startTime = DateTime.now
   override val helpMessage: Option[String] = Option("!uptime: send bot uptime to channel")
   override val messageMatchRegex: Regex = "^[.!](?i)uptime".r
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: Match): Unit = {
     val message = formatMessage()
-    event.getChannel.send.message(message)
+    event.getMessage.getChannel.sendMessage(message)
   }
 
   private def formatMessage() = {

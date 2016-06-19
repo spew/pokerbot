@@ -1,29 +1,28 @@
 package org.poker.handler
 
+import java.net.URL
+import java.text.NumberFormat
+
+import com.stackmob.newman.ApacheHttpClient
+import com.stackmob.newman.Constants._
+import com.stackmob.newman.dsl._
+import com.xeiam.xchange.{Exchange, ExchangeFactory}
+import com.xeiam.xchange.currency.CurrencyPair
+import com.xeiam.xchange.dto.marketdata.Ticker
+import com.xeiam.xchange.service.polling.PollingMarketDataService
+import org.joda.money.{BigMoney, CurrencyUnit}
+import org.json4s.DefaultFormats
+import org.json4s.native.JsonMethods._
+import org.poker.ProgramConfiguration
+import org.poker.doge.DogecoinAverageResponse
+import org.poker.poller.CoinMarketCaps
+import org.poker.util.HumanReadableLargeNumberFormatter
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+
+import scala.concurrent.Await
+import scala.concurrent.duration._
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import org.poker.util.{HumanReadableLargeNumberFormatter}
-import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.PircBotX
-import com.xeiam.xchange.Exchange
-import com.xeiam.xchange.ExchangeFactory
-import com.xeiam.xchange.service.polling.PollingMarketDataService
-import com.xeiam.xchange.dto.marketdata.Ticker
-import com.xeiam.xchange.currency.CurrencyPair
-import java.text.NumberFormat
-import org.poker.poller.CoinMarketCaps
-import com.stackmob.newman.dsl._
-import java.net.URL
-import scala.concurrent.Await
-import org.json4s.native.JsonMethods._
-import com.stackmob.newman.Constants._
-import org.poker.ProgramConfiguration
-import org.json4s.DefaultFormats
-import com.stackmob.newman.ApacheHttpClient
-import scala.concurrent._
-import scala.concurrent.duration._
-import org.joda.money.{CurrencyUnit, BigMoney}
-import org.poker.doge.DogecoinAverageResponse
 
 class DogecoinMessageEventHandler(configuration: ProgramConfiguration, coinMarketCaps: CoinMarketCaps) extends MessageEventHandler {
 
@@ -31,14 +30,14 @@ class DogecoinMessageEventHandler(configuration: ProgramConfiguration, coinMarke
 
   override val messageMatchRegex: Regex = "^[!.](?i)((doge)|(dogecoin)) ?(?<amount>.*)".r
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: Match): Unit = {
     val query = firstMatch.group(4)
     if (query.isEmpty) {
       val message = getMessage(1000)
-      event.getChannel.send.message(message)
+      event.getMessage.getChannel.sendMessage(message)
     } else {
       val message = getMessage(query.toInt)
-      event.getChannel.send.message(message)
+      event.getMessage.getChannel.sendMessage(message)
     }
   }
 

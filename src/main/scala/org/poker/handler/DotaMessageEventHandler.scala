@@ -1,19 +1,17 @@
 package org.poker.handler
 
 
+import com.github.nscala_time.time.Imports._
+import org.jsoup.Jsoup
+import org.poker.ProgramConfiguration
+import org.poker.dota.{DotaMatchFormatter, KnownPlayers, LatestMatchFinder}
+import org.poker.steam.SteamClient
+import org.poker.steam.dota.MatchDetails
 import org.poker.util.RelativeTimeFormatter
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
 
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.PircBotX
-import com.github.nscala_time.time.Imports._
-import org.poker.ProgramConfiguration
-import org.poker.dota.{DotaMatchFormatter, LatestMatchFinder, KnownPlayers, KnownPlayer}
-import org.jsoup.Jsoup
-import org.poker.steam.SteamClient
-import org.poker.steam.dota.{Player, MatchDetails}
-import org.ocpsoft.prettytime.PrettyTime
 
 class DotaMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val startTime = DateTime.now
@@ -25,9 +23,9 @@ class DotaMessageEventHandler(configuration: ProgramConfiguration) extends Messa
   override val helpMessage: Option[String] = Option("!dota <player>: send to channel stats about <player>, if no <player> then send to channel the last game played")
   override val messageMatchRegex: Regex = "^[!.](?i)((dota)|(dotabuff)) ?(?<player>.*)".r
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: Match): Unit = {
     val message = formatMessage(firstMatch)
-    event.getChannel.send.message(message)
+    event.getMessage.getChannel.sendMessage(message)
   }
 
   private def formatMessage(firstMatch: Match): String = {

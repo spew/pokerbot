@@ -1,14 +1,11 @@
 package org.poker.handler
 
-import org.poker.ProgramConfiguration
+import org.poker.untapped._
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+import sx.blah.discord.handle.obj.IChannel
 
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.{Channel, PircBotX}
-import com.github.nscala_time.time.Imports._
-import org.joda.time.format.PeriodFormatter
-import org.poker.untapped._
 
 class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: String, untappdAccessToken: String) extends MessageEventHandler {
   private val untappedClient = new UntappedClient(untappdClientId, untappdClientSecret, untappdAccessToken)
@@ -27,14 +24,14 @@ class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: Stri
       Nil
   private val userNameMap = knownUsers.map(u => u.aliases.map(a => (a, u))).flatten.toMap
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: Match): Unit = {
     val query = firstMatch.group(1).trim.toLowerCase()
     if (query.isEmpty) {
-      sendTopCheckinToChannel(event.getChannel, untappedClient.recentFriendCheckins(), s"no recent checkins available")
+      sendTopCheckinToChannel(event.getMessage.getChannel, untappedClient.recentFriendCheckins(), s"no recent checkins available")
     } else {
       userNameMap.get(query) match {
         case Some(user) => {
-          sendTopCheckinToChannel(event.getChannel, untappedClient.recentCheckins(user.untappdUserName), s"no checkins available for '${query}'")
+          sendTopCheckinToChannel(event.getMessage.getChannel, untappedClient.recentCheckins(user.untappdUserName), s"no checkins available for '${query}'")
         }
         case None => {
           sendBeerInfoToChannel(event, query)
@@ -43,25 +40,25 @@ class BeerMessageEventHandler(untappdClientId: String, untappdClientSecret: Stri
     }
   }
 
-  private def sendTopCheckinToChannel(channel: Channel, checkinsResponse: UntappedResponse[CheckinsResponse], emptyMessage: String) = {
+  private def sendTopCheckinToChannel(channel: IChannel, checkinsResponse: UntappedResponse[CheckinsResponse], emptyMessage: String) = {
     if (checkinsResponse.response.checkins.items.isEmpty) {
-      channel.send().message(emptyMessage)
+      channel.sendMessage(emptyMessage)
     } else {
       val checkIn = checkinsResponse.response.checkins.items.head
       val beer = untappedClient.beerInfo(checkIn.beer.bid).response.beer
       val message = UntappdMessageFormatter.formatCheckin(checkIn, beer)
-      channel.send.message(message)
+      channel.sendMessage(message)
     }
   }
 
-  private def sendBeerInfoToChannel(event: MessageEvent[PircBotX], query: String) = {
+  private def sendBeerInfoToChannel(event: MessageReceivedEvent, query: String) = {
     val searchResponse = untappedClient.beerSearch(query, CheckinCount)
     if (searchResponse.response.beers.items.isEmpty) {
-      event.getChannel.send.message(s"no beers found for '${query}'")
+      event.getMessage.getChannel.sendMessage(s"no beers found for '${query}'")
     } else {
       val beerInfoResponse = untappedClient.beerInfo(searchResponse.response.beers.items.head.beer.bid)
       val message = UntappdMessageFormatter.formatBeer(beerInfoResponse.response.beer)
-      event.getChannel.send.message(message)
+      event.getMessage.getChannel.sendMessage(message)
     }
   }
 

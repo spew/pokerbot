@@ -1,19 +1,18 @@
 package org.poker.handler
 
+import java.lang.management.ManagementFactory
+
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+
 import scala.util.matching.Regex
 import scala.util.matching.Regex.Match
-import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.PircBotX
-import com.github.nscala_time.time.Imports._
-import org.joda.time.format.{PeriodFormatterBuilder, PeriodFormatter}
-import java.lang.management.ManagementFactory
 
 class InfoMessageEventHandler extends MessageEventHandler {
   override val helpMessage: Option[String] = Option("!info: send information about the bot to channel")
 
   override val messageMatchRegex: Regex = "^[.!](?i)info".r
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: Match): Unit = {
     val runtime = Runtime.getRuntime
     val megabyte = (1024 * 1024).toDouble
     val usedMemory = "%1.2f".format((runtime.totalMemory() - runtime.freeMemory()) / megabyte)
@@ -22,6 +21,6 @@ class InfoMessageEventHandler extends MessageEventHandler {
     message += s" | memory: ${usedMemory}/${totalMemory} MB"
     val threadCount = ManagementFactory.getThreadMXBean.getThreadCount
     message += s" | threads: ${threadCount}"
-    event.getChannel.send().message(message)
+    event.getMessage.getChannel.sendMessage(message)
   }
 }

@@ -1,24 +1,21 @@
 package org.poker.handler
 
-import org.poker.poller.InstagramOembedPatched
-import org.poker.util.SimpleRetrier
-import twitter4j.conf.ConfigurationBuilder
-import twitter4j.Twitter
-import twitter4j.TwitterFactory
-import scala.util.matching.Regex
-import org.pircbotx.hooks.events.MessageEvent
-import org.pircbotx.PircBotX
-import scala.util.matching.Regex.Match
-import org.poker.ProgramConfiguration
-import org.jsoup.{UnsupportedMimeTypeException, Jsoup}
-import com.google.api.services.youtube.YouTube
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson.JacksonFactory
-import org.joda.time.{Period, Duration}
-import org.joda.time.format.{PeriodFormatterBuilder, PeriodFormatter}
-import org.jinstagram.auth.InstagramAuthService
-import org.jinstagram.auth.model.Verifier
-import org.jinstagram.{InstagramOembed, Instagram}
+import com.google.api.services.youtube.YouTube
+import org.jinstagram.Instagram
+import org.joda.time.Period
+import org.joda.time.format.PeriodFormatterBuilder
+import org.jsoup.{Jsoup, UnsupportedMimeTypeException}
+import org.poker.ProgramConfiguration
+import org.poker.poller.InstagramOembedPatched
+import org.poker.util.SimpleRetrier
+import sx.blah.discord.handle.impl.events.MessageReceivedEvent
+import twitter4j.conf.ConfigurationBuilder
+import twitter4j.{Twitter, TwitterFactory}
+
+import scala.util.matching.Regex
+import scala.util.matching.Regex.Match
 
 class UrlMessageEventHandler(configuration: ProgramConfiguration) extends MessageEventHandler {
   val twitterRegex = "https?:\\/\\/(mobile\\.)?twitter\\.com\\/.*?\\/status(es)?\\/(?<statusId>[0-9]+)(\\/photo.*)?".r
@@ -32,15 +29,15 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
 
   val twitter = createTwitter()
 
-  override def onMessage(event: MessageEvent[PircBotX], firstMatch: Match): Unit = {
+  override def onMessage(event: MessageReceivedEvent, firstMatch: Match): Unit = {
     val url = getUrl(firstMatch)
     url match {
       case twitterRegex(mobile, skip, statusId, photo) => {
         if (twitter.isDefined) {
           val status = twitter.get.showStatus(statusId.toLong)
-          event.getChannel.send.message(s"@${status.getUser.getName}: ${status.getText}")
+          event.getMessage.getChannel.sendMessage(s"@${status.getUser.getName}: ${status.getText}")
         } else {
-          event.getChannel.send.message("twitter disabled: have all the access keys been set?")
+          event.getMessage.getChannel.sendMessage("twitter disabled: have all the access keys been set?")
         }
       } case youTubeRegex(videoId) => {
         sendYouTube(event, videoId)
@@ -49,7 +46,7 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
       } case _ => {
         val document = SimpleRetrier.retry(3)(getDocument(url))
         val title = document.title
-        event.getChannel.send.message(s"$title")
+        event.getMessage.getChannel.sendMessage(s"$title")
       }
     }
   }
@@ -72,16 +69,16 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
     }
   }
 
-  private def sendInstagram(event: MessageEvent[PircBotX], url: String): Unit = {
+  private def sendInstagram(event: MessageReceivedEvent, url: String): Unit = {
     val instagramClient = new Instagram(configuration.instagramClientId.get)
     val instagramOembed = new InstagramOembedPatched()
     val oembedInfo = instagramOembed.getOembedInformation(url)
     val mediaInfo = instagramClient.getMediaInfo(oembedInfo.getMediaId)
     val comments = if (mediaInfo.getData.getComments.getCount == 1) "comment" else "comments"
-    event.getChannel.send.message(s"${mediaInfo.getData.getCaption.getText} | ${mediaInfo.getData.getType} | ${mediaInfo.getData.getComments.getCount} ${comments}")
+    event.getMessage.getChannel.sendMessage(s"${mediaInfo.getData.getCaption.getText} | ${mediaInfo.getData.getType} | ${mediaInfo.getData.getComments.getCount} ${comments}")
   }
 
-  private def sendYouTube(event: MessageEvent[PircBotX], videoId: String): Unit = {
+  private def sendYouTube(event: MessageReceivedEvent, videoId: String): Unit = {
     val parts = "id,statistics,contentDetails,snippet"
     val request = youTubeClient.videos().list(parts).setId(videoId)
     request.setKey(configuration.googleSearchApiKey.get)
@@ -94,7 +91,7 @@ class UrlMessageEventHandler(configuration: ProgramConfiguration) extends Messag
       val period = new Period(video.getContentDetails.getDuration)
       val title = video.getSnippet.getTitle
       val message = s"${title} | ${formatPeriod(period)} | ${views} views (+${likeCount}, -${dislikeCount})"
-      event.getChannel.send.message(message)
+      event.getMessage.getChannel.sendMessage(message)
     }
   }
 

@@ -14,6 +14,8 @@ packageArchetype.java_application
 incOptions := incOptions.value.withNameHashing(true)
 
 resolvers += "project-local" at "file:///" + (baseDirectory.value / "repo").getAbsolutePath.toString
+resolvers += "jcenter" at "http://jcenter.bintray.com"
+resolvers += "jitpack.io" at "https://jitpack.io"
 /*resolvers ++= Seq(
   DefaultMavenRepository,
   "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots",
@@ -22,7 +24,7 @@ resolvers += "project-local" at "file:///" + (baseDirectory.value / "repo").getA
 )*/
 
 libraryDependencies ++= Seq(
-  "ch.qos.logback" % "logback-classic" % "1.1.2",
+  //"ch.qos.logback" % "logback-classic" % "1.1.2",
   "org.hibernate" % "hibernate-core" % "4.3.6.Final",
   "org.pircbotx" % "pircbotx" % "2.0.1",
   "org.jsoup" % "jsoup" % "1.8.1",
@@ -32,7 +34,8 @@ libraryDependencies ++= Seq(
   "org.twitter4j" % "twitter4j-core" % "3.0.5",
   "com.sachinhandiekar" % "jInstagram" % "1.1.3",
   "org.ocpsoft.prettytime" % "prettytime" % "3.2.4.Final",
-  "it" % "tomatoclient" % "0.0.1-SNAPSHOT"
+  "it" % "tomatoclient" % "0.0.1-SNAPSHOT",
+  "com.github.austinv11" % "Discord4j" % "2.4.9"
 )
 
 libraryDependencies += "com.github.scopt" %% "scopt" % "3.2.0"
