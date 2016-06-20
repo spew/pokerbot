@@ -52,7 +52,6 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     val listener = new DiscordListener()
     listener.addHandler(new UptimeMessageEventHandler)
     listener.addHandler(new GoogleMessageEventHandler(pc))
-    listener.addHandler(new UrlMessageEventHandler(pc))
     listener.addHandler(new StreamsMessageEventHandler(pc))
     listener.addHandler(new BitcoinMessageEventHandler(pc, coinMarketCaps))
     listener.addHandler(new BitcoinAddressMessageEventHandler(pc))
