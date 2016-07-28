@@ -17,11 +17,8 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
 
   def run(): Unit = {
     discordBot.getDispatcher.registerListener(getListener())
-    //discordBot.login()
+    discordBot.login()
     startPollers()
-    while (true) {
-      Thread.sleep(10000)
-    }
   }
 
   def startPollers() {
