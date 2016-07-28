@@ -4,9 +4,7 @@ package org.poker
 import com.typesafe.scalalogging.slf4j.StrictLogging
 import org.poker.handler._
 import org.poker.poller._
-import sx.blah.discord.api.{ClientBuilder, EventSubscriber, IDiscordClient}
-import sx.blah.discord.handle.impl.events.DiscordDisconnectedEvent
-import sx.blah.discord.handle.impl.events.DiscordDisconnectedEvent.Reason;
+import sx.blah.discord.api.{ClientBuilder, IDiscordClient}
 
 
 class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
@@ -18,10 +16,12 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
   lazy val dotaPoller = new DotaPoller(pc, messageSender)
 
   def run(): Unit = {
-    startPollers()
     discordBot.getDispatcher.registerListener(getListener())
-    discordBot.getDispatcher.registerListener(this)
-    discordBot.login()
+    //discordBot.login()
+    startPollers()
+    while (true) {
+      Thread.sleep(10000)
+    }
   }
 
   def startPollers() {
@@ -78,24 +78,7 @@ class BotRunner(pc: ProgramConfiguration) extends StrictLogging {
     new ClientBuilder()
       .withToken(pc.discordToken.get)
       .setDaemon(true)
+      .withReconnects()
       .build()
-  }
-
-  @EventSubscriber
-  def onDisconnectedEvent(event: DiscordDisconnectedEvent): Unit = {
-    logger.warn("Disconnected from discord: {}", event.getReason)
-    if (shouldReconnect(event.getReason)) {
-      logger.info("Reconnecting...")
-      discordBot.login()
-    }
-  }
-
-  def shouldReconnect(reason : Reason) = {
-    reason match {
-      case DiscordDisconnectedEvent.Reason.UNKNOWN => true
-      case DiscordDisconnectedEvent.Reason.MISSED_PINGS => true
-      case DiscordDisconnectedEvent.Reason.TIMEOUT => true
-      case _ => false
-    }
   }
 }

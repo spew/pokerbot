@@ -2,7 +2,7 @@ package org.poker
 
 import com.typesafe.scalalogging.slf4j.LazyLogging
 import org.poker.handler.{ExpectedFailureException, MessageEventHandler}
-import sx.blah.discord.api.EventSubscriber
+import sx.blah.discord.api.events.EventSubscriber
 import sx.blah.discord.handle.impl.events.{MessageReceivedEvent, ReadyEvent}
 
 

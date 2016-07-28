@@ -35,7 +35,7 @@ libraryDependencies ++= Seq(
   "com.sachinhandiekar" % "jInstagram" % "1.1.3",
   "org.ocpsoft.prettytime" % "prettytime" % "3.2.4.Final",
   "it" % "tomatoclient" % "0.0.1-SNAPSHOT",
-  "com.github.austinv11" % "Discord4j" % "2.4.9"
+  "com.github.austinv11" % "Discord4j" % "2.5.1"
 )
 
 libraryDependencies += "com.github.scopt" %% "scopt" % "3.2.0"
